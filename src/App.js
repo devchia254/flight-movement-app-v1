@@ -35,9 +35,9 @@ class App extends Component {
 
     console.log(flightData);
 
-    this.setState({
-      flights: flightData,
-    });
+    // this.setState({
+    //   flights: flightData,
+    // });
   };
 
   render() {
