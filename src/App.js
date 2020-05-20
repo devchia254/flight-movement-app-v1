@@ -14,7 +14,17 @@ class App extends Component {
           id: "knd26GHI87",
           flightNo: "AN234",
           acReg: "9M-SBO",
-          date: "12-12-20",
+          date: "12/12/2020",
+          time: "9:00",
+          from: "Terminal 2",
+          to: "Petronas Base 3",
+          company: "Sazma",
+        },
+        {
+          id: "kjhd0348907",
+          flightNo: "AN234",
+          acReg: "9M-SBA",
+          date: "12/12/2020",
           time: "9:00",
           from: "Terminal 2",
           to: "Petronas Base 3",
@@ -24,20 +34,38 @@ class App extends Component {
     };
   }
 
-  onSubmit = (data) => {
-    const flightData = [
-      {
+  onSubmit = (formData) => {
+    const storeInArr = [formData];
+
+    const mappedData = storeInArr.map((field) => {
+      const { flightNo, acReg, dateTime, from, to, company } = field;
+
+      const time = dateTime.toLocaleTimeString("en-GB");
+      const date = dateTime.toLocaleDateString("en-GB");
+
+      return {
         id: generate(),
-        ...data,
-      },
+        flightNo: flightNo,
+        acReg: acReg,
+        date: date,
+        time: time,
+        from: from,
+        to: to,
+        company: company,
+      };
+    });
+
+    const flightData = [
+      // mappedData transforms from [{}] to {}
+      ...mappedData,
       ...this.state.flights,
     ];
 
     console.log(flightData);
 
-    // this.setState({
-    //   flights: flightData,
-    // });
+    this.setState({
+      flights: flightData,
+    });
   };
 
   render() {

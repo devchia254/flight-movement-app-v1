@@ -5,27 +5,34 @@ import MyField from "./MyField.js";
 
 import DateFnsUtils from "@date-io/date-fns"; // choose your lib
 import {
-  KeyboardDateTimePicker,
   MuiPickersUtilsProvider,
+  KeyboardDateTimePicker,
 } from "@material-ui/pickers";
 
 //PROBLEM: Label covers the date and time selected. Also - "TypeError: can't access property "length", stateValue is undefined"
-const FormikKeyboardDateTimePicker = ({ form, field, ...rest }) => {
+const FormikDatePicker = ({ form, field, ...other }) => {
   // console.log("field: ", field);
+  const currentError = form.errors[field.name];
+
+  console.log(currentError);
   return (
     <KeyboardDateTimePicker
-      variant="inline"
+      clearable
+      disablePast
       name={field.name}
-      label="Date & Time"
-      format="dd/MM/yyyy HH:mm"
-      placeholder="10/10/2018"
-      // handle clearing outside => pass plain array if you are not controlling value outside
-      onChange={(dateTime) => {
-        console.log("setting value to", dateTime);
-        form.setFieldValue(field.name, dateTime, false);
-      }}
       value={field.value}
-      animateYearScrolling={false}
+      format="dd/MM/yyyy HH:mm"
+      // helperText={currentError}
+      // error={Boolean(currentError)}
+      // onError={(error) => {
+      //   // handle as a side effect
+      //   if (error !== currentError) {
+      //     form.setFieldError(field.name, error);
+      //   }
+      // }}
+      // if you are using custom validation schema you probably want to pass `true` as third argument
+      onChange={(date) => form.setFieldValue(field.name, date, false)}
+      {...other}
     />
   );
 };
@@ -37,8 +44,7 @@ function MyForm({ onSubmit }) {
         initialValues={{
           flightNo: "",
           acReg: "",
-          date: "",
-          time: "",
+          dateTime: new Date(),
           from: "",
           to: "",
           company: "",
@@ -48,13 +54,13 @@ function MyForm({ onSubmit }) {
           resetForm();
         }}
       >
-        {({ values }) => (
+        {({ values, errors }) => (
           <Form>
             <div>
               <Field
                 label="Date"
-                name="date"
-                component={FormikKeyboardDateTimePicker}
+                name="dateTime"
+                component={FormikDatePicker}
               />
             </div>
             <div>
@@ -68,9 +74,9 @@ function MyForm({ onSubmit }) {
             <div>
               <Field label="Aircraft Reg." name="acReg" component={MyField} />
             </div>
-            <div>
+            {/* <div>
               <Field label="Time" name="time" component={MyField} />
-            </div>
+            </div> */}
             <div>
               <Field label="From" name="from" component={MyField} />
             </div>
@@ -82,6 +88,7 @@ function MyForm({ onSubmit }) {
             </div>
             <Button type="submit">submit</Button>
             {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
+            <pre>{JSON.stringify({ errors, values }, null, 2)}</pre>
           </Form>
         )}
       </Formik>
