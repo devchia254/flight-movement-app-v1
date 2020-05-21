@@ -5,6 +5,9 @@ import MyForm from "./MyForm.js";
 import MyTable from "./MyTable.js";
 import "./App.css";
 
+import DateFnsUtils from "@date-io/date-fns"; // choose your lib
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+
 class App extends Component {
   constructor() {
     super();
@@ -40,7 +43,10 @@ class App extends Component {
     const mappedData = storeInArr.map((field) => {
       const { flightNo, acReg, dateTime, from, to, company } = field;
 
-      const time = dateTime.toLocaleTimeString("en-GB");
+      const time = dateTime.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
       const date = dateTime.toLocaleDateString("en-GB");
 
       return {
@@ -74,7 +80,9 @@ class App extends Component {
     return (
       <div className="App" style={{ textAlign: "center" }}>
         <Container fixed>
-          <MyForm onSubmit={this.onSubmit} />
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <MyForm onSubmit={this.onSubmit} />
+          </MuiPickersUtilsProvider>
           <MyTable flights={flights} />
         </Container>
       </div>
