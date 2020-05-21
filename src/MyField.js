@@ -1,7 +1,9 @@
 import React from "react";
 import { TextField } from "@material-ui/core";
 
-export default function MyField({ label, placeholder, field }) {
-  // console.log({ ...field });
-  return <TextField label={label} placeholder={placeholder} {...field} />;
-}
+const MyField = ({ label, field, ...other }) => {
+  // console.log(other);
+  return <TextField label={label} {...field} />;
+};
+
+export default MyField;
