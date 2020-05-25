@@ -5,8 +5,8 @@ import MyForm from "./MyForm.js";
 import MyTable from "./MyTable.js";
 import "./App.css";
 
-import DateFnsUtils from "@date-io/date-fns"; // choose your lib
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns"; // Chosen Date lib
+import { MuiPickersUtilsProvider } from "@material-ui/pickers"; // Requires a Date lib to be chosen
 
 class App extends Component {
   constructor() {
@@ -43,6 +43,7 @@ class App extends Component {
     const mappedData = storeInArr.map((field) => {
       const { flightNo, acReg, dateTime, from, to, company } = field;
 
+      // Convert Date and Time into 24HR format (GB)
       const time = dateTime.toLocaleTimeString("en-GB", {
         hour: "2-digit",
         minute: "2-digit",
@@ -61,13 +62,12 @@ class App extends Component {
       };
     });
 
+    // Note: Switch mappedData and this.state.flights if you want object added at an end of the state array
     const flightData = [
       // mappedData transforms from [{}] to {}
       ...mappedData,
       ...this.state.flights,
     ];
-
-    console.log(flightData);
 
     this.setState({
       flights: flightData,
