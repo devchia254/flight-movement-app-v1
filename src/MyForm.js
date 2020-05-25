@@ -3,6 +3,22 @@ import { Button } from "@material-ui/core";
 import { Formik, Form, Field } from "formik";
 import MyField from "./MyField.js";
 import MyKBDateTimePicker from "./MyKBDateTimePicker.js";
+import * as yup from "yup";
+// import { DisplayFormikProps } from "./DisplayFormikProps.js";
+
+const yupStringRules = yup
+  .string()
+  .required("Required")
+  .max(20, "Must be 20 characters or less");
+
+const yupValidationSchema = yup.object().shape({
+  dateTime: yup.date().nullable().required("Required"),
+  flightNo: yupStringRules,
+  acReg: yupStringRules,
+  from: yupStringRules,
+  to: yupStringRules,
+  company: yupStringRules,
+});
 
 function MyForm({ onSubmit }) {
   return (
@@ -15,11 +31,12 @@ function MyForm({ onSubmit }) {
         to: "",
         company: "",
       }}
-      nextInitialState={{
-        dateTime: "",
-      }}
-      onSubmit={(values, { resetForm }) => {
-        onSubmit(values);
+      validationSchema={yupValidationSchema}
+      onSubmit={(values, { resetForm, setSubmitting }) => {
+        setSubmitting(true); // Makes async call and disables submit button
+        onSubmit(values); // Lift values to state
+        setSubmitting(false); // Enables submit button once submitted
+
         // Clear form after submit
         resetForm({
           values: {
@@ -33,7 +50,7 @@ function MyForm({ onSubmit }) {
         });
       }}
     >
-      {({ values, errors }) => (
+      {(props) => (
         <Form>
           <div>
             <Field
@@ -43,27 +60,25 @@ function MyForm({ onSubmit }) {
             />
           </div>
           <div>
-            <Field
-              label="Flight No."
-              name="flightNo"
-              id="jjbkjb"
-              component={MyField}
-            />
+            <MyField label="Flight No." name="flightNo" />
           </div>
           <div>
-            <Field label="Aircraft Reg." name="acReg" component={MyField} />
+            <MyField label="Aircraft Reg." name="acReg" />
           </div>
           <div>
-            <Field label="From" name="from" component={MyField} />
+            <MyField label="From" name="from" />
           </div>
           <div>
-            <Field label="To" name="to" component={MyField} />
+            <MyField label="To" name="to" />
           </div>
           <div>
-            <Field label="Company" name="company" component={MyField} />
+            <MyField label="Company" name="company" />
           </div>
-          <Button type="submit">submit</Button>
-          <pre>{JSON.stringify({ errors, values }, null, 2)}</pre>
+          <Button disabled={props.isSubmitting} type="submit">
+            submit
+          </Button>
+          {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
+          {/* <DisplayFormikProps {...props} /> */}
         </Form>
       )}
     </Formik>
