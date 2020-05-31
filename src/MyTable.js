@@ -51,9 +51,8 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-function MyTable({ flights }) {
-  // const { flights } = props;
-  console.log(flights[0].acReg);
+function MyTable(props) {
+  const { flights, deleteFlight } = props;
 
   const columns = [
     { title: "ID", field: "id" },
@@ -81,44 +80,16 @@ function MyTable({ flights }) {
         (rowData) => ({
           icon: () => <DeleteOutline />,
           tooltip: "Delete User",
-          onClick: (event, rowData) =>
-            alert("You want to delete " + rowData.name),
-          disabled: rowData.birthYear < 2000,
+          onClick: (event, rowData) => {
+            deleteFlight(rowData.id, event);
+          },
+          // disabled: rowData.birthYear < 2000,
         }),
       ]}
+      options={{
+        actionsColumnIndex: -1,
+      }}
     />
   );
 }
 export default MyTable;
-
-// <TableContainer component={Paper}>
-//   <Table aria-label="simple table">
-//     <TableHead>
-//       <TableRow>
-//         <TableCell>ID</TableCell>
-//         <TableCell>Flight No.</TableCell>
-//         <TableCell>Aircraft Reg.</TableCell>
-//         <TableCell>Date</TableCell>
-//         <TableCell>Time</TableCell>
-//         <TableCell>From</TableCell>
-//         <TableCell>To</TableCell>
-//         <TableCell>Company</TableCell>
-//         <TableCell>Action</TableCell>
-//       </TableRow>
-//     </TableHead>
-//     <TableBody>
-//       {flights.map((row) => (
-//         <TableRow key={row.id}>
-//           <TableCell>{row.id}</TableCell>
-//           <TableCell>{row.flightNo}</TableCell>
-//           <TableCell>{row.acReg}</TableCell>
-//           <TableCell>{row.date}</TableCell>
-//           <TableCell>{row.time}</TableCell>
-//           <TableCell>{row.from}</TableCell>
-//           <TableCell>{row.to}</TableCell>
-//           <TableCell>{row.company}</TableCell>
-//         </TableRow>
-//       ))}
-//     </TableBody>
-//   </Table>
-// </TableContainer>

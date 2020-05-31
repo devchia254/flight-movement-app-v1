@@ -17,8 +17,8 @@ class App extends Component {
           id: "knd26GHI87",
           flightNo: "AN234",
           acReg: "9M-SBO",
-          date: "12/12/2020",
-          time: "9:00",
+          date: "20/12/2020",
+          time: "10:00",
           from: "Terminal 2",
           to: "Petronas Base 3",
           company: "Sazma",
@@ -74,6 +74,18 @@ class App extends Component {
     });
   };
 
+  deleteFlight = (id, e) => {
+    const { flights } = this.state;
+
+    // console.log(id);
+
+    const updateFlights = flights.filter((flight, i, arr) => flight.id !== id);
+
+    if (window.confirm("Are you sure?")) {
+      this.setState({ flights: updateFlights });
+    }
+  };
+
   render() {
     const { flights } = this.state;
 
@@ -83,7 +95,7 @@ class App extends Component {
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <MyForm onSubmit={this.onSubmit} />
           </MuiPickersUtilsProvider>
-          <MyTable flights={flights} />
+          <MyTable flights={flights} deleteFlight={this.deleteFlight} />
         </Container>
       </div>
     );
