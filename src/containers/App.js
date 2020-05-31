@@ -1,38 +1,30 @@
 import React, { Component } from "react";
 import { generate } from "shortid";
 import { Container } from "@material-ui/core";
-import MyForm from "./MyForm.js";
-import MyTable from "./MyTable.js";
+import MyForm from "../components/form/MyForm.js";
+import MyTable from "../components/table/MyTable.js";
 import "./App.css";
 
 import DateFnsUtils from "@date-io/date-fns"; // Chosen Date lib
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"; // Requires a Date lib to be chosen
+import makeData from "../test/makeData"; // Fake data generator
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       flights: [
-        {
-          id: "knd26GHI87",
-          flightNo: "AN234",
-          acReg: "9M-SBO",
-          date: "20/12/2020",
-          time: "10:00",
-          from: "Terminal 2",
-          to: "Petronas Base 3",
-          company: "Sazma",
-        },
-        {
-          id: "kjhd0348907",
-          flightNo: "AN234",
-          acReg: "9M-SBA",
-          date: "12/12/2020",
-          time: "9:00",
-          from: "Terminal 2",
-          to: "Petronas Base 3",
-          company: "Sazma",
-        },
+        ...makeData(10),
+        // {
+        //   id: "knd26GHI87",
+        //   flightNo: "AN234",
+        //   acReg: "9M-SBO",
+        //   date: "20/12/2020",
+        //   time: "10:00",
+        //   from: "Terminal 2",
+        //   to: "Petronas Base 3",
+        //   company: "Sazma",
+        // },
       ],
     };
   }
@@ -76,8 +68,6 @@ class App extends Component {
 
   deleteFlight = (id, e) => {
     const { flights } = this.state;
-
-    // console.log(id);
 
     const updateFlights = flights.filter((flight, i, arr) => flight.id !== id);
 
