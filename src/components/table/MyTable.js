@@ -1,16 +1,8 @@
 import React from "react";
-// import { makeStyles } from "@material-ui/core/styles";
-// import Table from "@material-ui/core/Table";
-// import TableBody from "@material-ui/core/TableBody";
-// import TableCell from "@material-ui/core/TableCell";
-// import TableContainer from "@material-ui/core/TableContainer";
-// import TableHead from "@material-ui/core/TableHead";
-// import TableRow from "@material-ui/core/TableRow";
-// import Paper from "@material-ui/core/Paper";
 import MaterialTable from "material-table";
-
+import EditModal from "./EditModal";
+// Material UI Icons
 import { forwardRef } from "react";
-
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Check from "@material-ui/icons/Check";
@@ -23,9 +15,10 @@ import FilterList from "@material-ui/icons/FilterList";
 import FirstPage from "@material-ui/icons/FirstPage";
 import LastPage from "@material-ui/icons/LastPage";
 import Remove from "@material-ui/icons/Remove";
-import SaveAlt from "@material-ui/icons/SaveAlt";
+// import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
+import EditIcon from "@material-ui/icons/Edit";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -36,7 +29,7 @@ const tableIcons = {
     <ChevronRight {...props} ref={ref} />
   )),
   Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+  // Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
   Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
   FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
   LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
@@ -54,6 +47,15 @@ const tableIcons = {
 function MyTable(props) {
   const { flights, deleteFlight } = props;
 
+  // React Hook: Open/Close Dialog
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => setOpen(false);
+  const handleClickOpen = () => setOpen(true);
+
+  // React Hook: Store rowData from onClick prop
+  const [rowDetails, setRowDetails] = React.useState();
+  const flightObj = { ...rowDetails }; // Stores the rowData into a new object
+
   const columns = [
     { title: "ID", field: "id" },
     { title: "Flight No.", field: "flightNo" },
@@ -66,30 +68,37 @@ function MyTable(props) {
   ];
 
   return (
-    <MaterialTable
-      icons={tableIcons}
-      title="Conditional Actions Preview"
-      columns={columns}
-      data={flights}
-      actions={[
-        {
-          icon: () => <SaveAlt />,
-          tooltip: "Save User",
-          onClick: (event, rowData) => alert("You saved " + rowData.name),
-        },
-        (rowData) => ({
-          icon: () => <DeleteOutline />,
-          tooltip: "Delete User",
-          onClick: (event, rowData) => {
-            deleteFlight(rowData.id, event);
+    <div>
+      <MaterialTable
+        icons={tableIcons}
+        title="Conditional Actions Preview"
+        columns={columns}
+        data={flights}
+        actions={[
+          {
+            icon: () => <EditIcon />,
+            tooltip: "Save User",
+            onClick: (e, rowData) => {
+              handleClickOpen();
+              setRowDetails(rowData);
+            },
+            // onClick: (event, rowData) => alert("You saved " + rowData.name),
           },
-          // disabled: rowData.birthYear < 2000,
-        }),
-      ]}
-      options={{
-        actionsColumnIndex: -1,
-      }}
-    />
+          (rowData) => ({
+            icon: () => <DeleteOutline />,
+            tooltip: "Delete User",
+            onClick: (event, rowData) => {
+              deleteFlight(rowData.id, event);
+            },
+            // disabled: rowData.birthYear < 2000,
+          }),
+        ]}
+        options={{
+          actionsColumnIndex: -1,
+        }}
+      />
+      <EditModal flightObj={flightObj} handleClose={handleClose} open={open} />
+    </div>
   );
 }
 export default MyTable;

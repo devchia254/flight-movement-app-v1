@@ -1,8 +1,8 @@
 import React from "react";
 import { Button } from "@material-ui/core";
 import { Formik, Form, Field } from "formik";
-import MyField from "./custom-fields/MyField.js";
-import MyKBDateTimePicker from "./custom-fields/MyKBDateTimePicker.js";
+import MyField from "../formik-fields/MyField.js";
+import MyKBDateTimePicker from "../formik-fields/MyKBDateTimePicker.js";
 import * as yup from "yup";
 // import { DisplayFormikProps } from "./DisplayFormikProps.js";
 

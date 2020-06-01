@@ -14,7 +14,7 @@ class App extends Component {
     super();
     this.state = {
       flights: [
-        ...makeData(10),
+        ...makeData(50),
         // {
         //   id: "knd26GHI87",
         //   flightNo: "AN234",
