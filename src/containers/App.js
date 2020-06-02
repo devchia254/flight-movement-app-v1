@@ -81,6 +81,7 @@ class App extends Component {
 
     return (
       <div className="App" style={{ textAlign: "center" }}>
+        <h1> Flight Movement App</h1>
         <Container fixed>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <MyForm onSubmit={this.onSubmit} />
