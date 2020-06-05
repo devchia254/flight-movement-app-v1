@@ -8,22 +8,23 @@ const range = (len) => {
   return arr;
 };
 
-// Randomise year only
-function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
-}
-
 // Manipulate here only for fake data object
 const newFlight = () => {
   // Aircraft Reg Probability
   const acRegChance = Math.random();
-  // Random dates
-  const day = Math.floor(Math.random() * 30);
-  const month = Math.floor(Math.random() * 12);
-  const year = Math.floor(getRandomArbitrary(0.999, 1) * 2022);
-  // Random times
-  const hour = Math.floor(Math.random() * 23);
-  const minute = Math.floor(Math.random() * 59);
+  // Random date generator
+  function randomDate(start, end) {
+    const genDate = new Date(
+      start.getTime() + Math.random() * (end.getTime() - start.getTime())
+    );
+    const getTime = genDate.toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    const getDate = genDate.toLocaleDateString("en-GB");
+
+    return `${getDate} ${getTime}`;
+  }
 
   return {
     id: namor.generate({ words: 0, numbers: 0, saltLength: 10 }),
@@ -32,8 +33,9 @@ const newFlight = () => {
       .toUpperCase(),
     acReg:
       acRegChance > 0.66 ? "9M-SBO" : acRegChance > 0.33 ? "9M-SBA" : "9M-SBM",
-    date: `${day}-${month}-${year}`,
-    time: `${hour}:${minute}`,
+    dateTime: randomDate(new Date(2020, 0, 1), new Date()),
+    // date: `${day}-${month}-${year}`,
+    // time: `${hour}:${minute}`,
     from: namor.generate({
       words: 2,
       numbers: 0,
