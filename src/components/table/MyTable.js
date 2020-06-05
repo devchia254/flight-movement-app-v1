@@ -60,8 +60,10 @@ function MyTable(props) {
     { title: "ID", field: "id" },
     { title: "Flight No.", field: "flightNo" },
     { title: "Aircraft Reg.", field: "acReg", type: "numeric" },
-    { title: "Date", field: "date" },
-    { title: "Time", field: "time" },
+    { title: "Date & Time", field: "dateTime" },
+
+    // { title: "Date", field: "date" },
+    // { title: "Time", field: "time" },
     { title: "From", field: "from", type: "numeric" },
     { title: "To", field: "to" },
     { title: "Company", field: "company" },
