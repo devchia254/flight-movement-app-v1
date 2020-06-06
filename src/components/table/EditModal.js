@@ -1,7 +1,11 @@
 import React from "react";
+import ModalForm from "./ModalForm";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers"; // Requires a Date lib to be chosen
+import DateFnsUtils from "@date-io/date-fns"; // Chosen Date lib
+
 // Material Dialog
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
+// import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -26,15 +30,10 @@ const EditModal = (props) => {
           To subscribe to this website, please enter your email address here. We
           will send updates occasionally.
         </DialogContentText>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="name"
-          label="Row ID:"
-          type="string"
-          value={flightObj.id}
-          fullWidth
-        />
+
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <ModalForm flightObj={flightObj} />
+        </MuiPickersUtilsProvider>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">

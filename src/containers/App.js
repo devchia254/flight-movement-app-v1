@@ -14,18 +14,18 @@ class App extends Component {
     super();
     this.state = {
       flights: [
-        ...makeData(5),
         {
           id: "knd26GHI87",
           flightNo: "AN234",
           acReg: "9M-SBO",
-          dateTime: "20/12/2020 10:00",
+          dateTime: "09/12/2020 10:00",
           // date: "20/12/2020",
           // time: "10:00",
           from: "Terminal 2",
           to: "Petronas Base 3",
           company: "Sazma",
         },
+        // ...makeData(5),
       ],
     };
   }
