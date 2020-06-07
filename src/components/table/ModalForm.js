@@ -32,13 +32,12 @@ const useStyles = makeStyles((theme) => ({
 
 function ModalForm({ flightObj }) {
   const classes = useStyles();
-  console.log(flightObj);
   return (
     <Formik
       initialValues={{
         flightNo: flightObj.flightNo,
         acReg: flightObj.acReg,
-        dateTime: flightObj.dateTime,
+        dateTime: flightObj.dateTime, // Returns a US based format
         from: flightObj.from,
         to: flightObj.to,
         company: flightObj.company,

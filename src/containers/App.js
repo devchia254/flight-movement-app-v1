@@ -7,6 +7,8 @@ import "./App.css";
 
 import DateFnsUtils from "@date-io/date-fns"; // Chosen Date lib
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"; // Requires a Date lib to be chosen
+// import enGbLocale from "date-fns/locale/en-GB";
+
 import makeData from "../test/makeData"; // Fake data generator
 
 class App extends Component {
@@ -25,7 +27,7 @@ class App extends Component {
           to: "Petronas Base 3",
           company: "Sazma",
         },
-        // ...makeData(5),
+        ...makeData(5),
       ],
     };
   }
@@ -62,8 +64,6 @@ class App extends Component {
       };
     });
 
-    // console.log(mappedData);
-
     // Note: Switch mappedData and this.state.flights if you want object added at an end of the state array
     const flightData = [
       // mappedData transforms from [{}] to {}
@@ -95,8 +95,8 @@ class App extends Component {
         <Container fixed>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <MyForm onSubmit={this.onSubmit} />
+            <MyTable flights={flights} deleteFlight={this.deleteFlight} />
           </MuiPickersUtilsProvider>
-          <MyTable flights={flights} deleteFlight={this.deleteFlight} />
         </Container>
       </div>
     );

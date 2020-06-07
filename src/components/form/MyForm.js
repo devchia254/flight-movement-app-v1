@@ -4,7 +4,7 @@ import { Formik, Form, Field } from "formik";
 import MyField from "../formik-fields/MyField.js";
 import MyKBDateTimePicker from "../formik-fields/MyKBDateTimePicker.js";
 import * as yup from "yup";
-// import { DisplayFormikProps } from "./DisplayFormikProps.js";
+import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
 
 const yupStringRules = yup
   .string()
@@ -78,7 +78,7 @@ function MyForm({ onSubmit }) {
             submit
           </Button>
           {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
-          {/* <DisplayFormikProps {...props} /> */}
+          <DisplayFormikProps {...props} />
         </Form>
       )}
     </Formik>
