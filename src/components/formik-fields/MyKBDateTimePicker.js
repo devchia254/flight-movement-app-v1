@@ -9,9 +9,10 @@ const MyKBDateTimePicker = ({ form, field, ...props }) => {
     <KeyboardDateTimePicker
       clearable
       disablePast
+      ampm={false}
       name={field.name}
       value={field.value}
-      format="dd/MM/yyyy HH:mm"
+      format="DD/MM/YYYY HH:mm" // Uses Moment token format
       helperText={errorMsg}
       error={Boolean(currentError)}
       // if you are using custom validation schema you probably want to pass `true` as third argument

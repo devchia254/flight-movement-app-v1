@@ -44,8 +44,34 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
+const moment = require("moment"); // require Moment library
+
 function MyTable(props) {
   const { flights, deleteFlight } = props;
+
+  // Table Rows
+  const tableFlights = flights.map((flight) => {
+    return {
+      id: flight.id,
+      flightNo: flight.flightNo,
+      acReg: flight.acReg,
+      dateTime: moment(flight.dateTime, true).format("DD/MM/YYYY HH:mm"), // Strict mode: ISO 8601 (Before conversion to readable format)
+      from: flight.from,
+      to: flight.to,
+      company: flight.company,
+    };
+  });
+
+  // Table columns
+  const columns = [
+    { title: "ID", field: "id" },
+    { title: "Flight No.", field: "flightNo" },
+    { title: "Aircraft Reg.", field: "acReg" },
+    { title: "Date & Time", field: "dateTime" },
+    { title: "From", field: "from" },
+    { title: "To", field: "to" },
+    { title: "Company", field: "company" },
+  ];
 
   // React Hook: Open/Close Dialog
   const [open, setOpen] = React.useState(false);
@@ -56,26 +82,13 @@ function MyTable(props) {
   const [rowDetails, setRowDetails] = React.useState();
   const flightObj = { ...rowDetails }; // Stores the rowData into a new object
 
-  const columns = [
-    { title: "ID", field: "id" },
-    { title: "Flight No.", field: "flightNo" },
-    { title: "Aircraft Reg.", field: "acReg", type: "numeric" },
-    { title: "Date & Time", field: "dateTime" },
-
-    // { title: "Date", field: "date" },
-    // { title: "Time", field: "time" },
-    { title: "From", field: "from", type: "numeric" },
-    { title: "To", field: "to" },
-    { title: "Company", field: "company" },
-  ];
-
   return (
     <div>
       <MaterialTable
         icons={tableIcons}
         title="Conditional Actions Preview"
         columns={columns}
-        data={flights}
+        data={tableFlights}
         actions={[
           {
             icon: () => <EditIcon />,
