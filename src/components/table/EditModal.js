@@ -10,7 +10,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 const EditModal = (props) => {
-  const { open, handleClose, flightObj } = props;
+  const { open, handleClose, flightObj, editFlight } = props;
 
   return (
     <Dialog
@@ -26,14 +26,15 @@ const EditModal = (props) => {
           To subscribe to this website, please enter your email address here. We
           will send updates occasionally.
         </DialogContentText> */}
-        <ModalForm flightObj={flightObj} />
+        <ModalForm
+          flightObj={flightObj}
+          editFlight={editFlight}
+          handleClose={handleClose}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
           Cancel
-        </Button>
-        <Button onClick={handleClose} color="primary">
-          Subscribe
         </Button>
       </DialogActions>
     </Dialog>
