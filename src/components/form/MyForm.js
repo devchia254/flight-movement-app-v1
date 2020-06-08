@@ -4,7 +4,7 @@ import { Formik, Form, Field } from "formik";
 import MyField from "../formik-fields/MyField.js";
 import MyKBDateTimePicker from "../formik-fields/MyKBDateTimePicker.js";
 import * as yup from "yup";
-import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
+// import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
 
 const yupStringRules = yup
   .string()
@@ -21,7 +21,7 @@ const yupValidationSchema = yup.object().shape({
   company: yupStringRules,
 });
 
-function MyForm({ onSubmit }) {
+function MyForm({ addFlight }) {
   return (
     <Formik
       initialValues={{
@@ -35,20 +35,23 @@ function MyForm({ onSubmit }) {
       validationSchema={yupValidationSchema}
       onSubmit={(values, { resetForm, setSubmitting }) => {
         setSubmitting(true); // Makes async call and disables submit button
-        onSubmit(values); // Lift values to state
-        setSubmitting(false); // Enables submit button once submitted
 
-        // Clear form after submit
-        resetForm({
-          values: {
-            flightNo: "",
-            acReg: "",
-            dateTime: null,
-            from: "",
-            to: "",
-            company: "",
-          },
-        });
+        // setTimeout to mimic fetch POST data
+        setTimeout(() => {
+          addFlight(values); // add flight values by lifting to state
+          // Clear form after submit
+          resetForm({
+            values: {
+              flightNo: "",
+              acReg: "",
+              dateTime: null,
+              from: "",
+              to: "",
+              company: "",
+            },
+          });
+          setSubmitting(false); // Enables submit button once submitted
+        }, 3000); // 3 secs timeout
       }}
     >
       {(props) => (
@@ -79,7 +82,7 @@ function MyForm({ onSubmit }) {
             submit
           </Button>
           {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
-          <DisplayFormikProps {...props} />
+          {/* <DisplayFormikProps {...props} /> */}
         </Form>
       )}
     </Formik>

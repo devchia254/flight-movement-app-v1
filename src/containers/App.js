@@ -16,21 +16,21 @@ class App extends Component {
     super();
     this.state = {
       flights: [
-        {
-          id: "knd26GHI87",
-          flightNo: "AN234",
-          acReg: "9M-SBO",
-          dateTime: "09/12/2020 10:00",
-          from: "Terminal 2",
-          to: "Petronas Base 3",
-          company: "Sazma",
-        },
+        // {
+        //   id: "knd26GHI87",
+        //   flightNo: "AN234",
+        //   acReg: "9M-SBO",
+        //   dateTime: "09/12/2020 10:00",
+        //   from: "Terminal 2",
+        //   to: "Petronas Base 3",
+        //   company: "Sazma",
+        // },
         ...makeData(20),
       ],
     };
   }
 
-  onSubmit = (formData) => {
+  addFlight = (formData) => {
     const storeInArr = [formData];
 
     const mappedData = storeInArr.map((field) => {
@@ -59,6 +59,26 @@ class App extends Component {
     });
   };
 
+  // Edit Product
+  editFlight = (id, modalFormData) => {
+    const { flights } = this.state;
+
+    const initialFlights = [...flights];
+
+    const filterFlight = initialFlights.map((flight) => {
+      if (id === flight.id) {
+        // This object clones the product that satisfies the condition above and assigns the corresponding property values from 'editDetails'.
+        return {
+          ...flight,
+          ...modalFormData,
+        };
+      }
+      return flight;
+    });
+
+    this.setState({ flights: filterFlight });
+  };
+
   deleteFlight = (id, e) => {
     const { flights } = this.state;
 
@@ -77,8 +97,12 @@ class App extends Component {
         <h1> Flight Movement App</h1>
         <Container fixed>
           <MuiPickersUtilsProvider utils={MomentUtils}>
-            <MyForm onSubmit={this.onSubmit} />
-            <MyTable flights={flights} deleteFlight={this.deleteFlight} />
+            <MyForm addFlight={this.addFlight} />
+            <MyTable
+              flights={flights}
+              deleteFlight={this.deleteFlight}
+              editFlight={this.editFlight}
+            />
           </MuiPickersUtilsProvider>
         </Container>
       </div>

@@ -47,7 +47,7 @@ const tableIcons = {
 const moment = require("moment"); // require Moment library
 
 function MyTable(props) {
-  const { flights, deleteFlight } = props;
+  const { flights, deleteFlight, editFlight } = props;
 
   // Table Rows
   const tableFlights = flights.map((flight) => {
@@ -86,13 +86,13 @@ function MyTable(props) {
     <div>
       <MaterialTable
         icons={tableIcons}
-        title="Conditional Actions Preview"
+        title="Record of Flights"
         columns={columns}
         data={tableFlights}
         actions={[
           {
             icon: () => <EditIcon />,
-            tooltip: "Save User",
+            tooltip: "Edit Flight",
             onClick: (e, rowData) => {
               handleClickOpen();
               setRowDetails(rowData);
@@ -101,7 +101,7 @@ function MyTable(props) {
           },
           (rowData) => ({
             icon: () => <DeleteOutline />,
-            tooltip: "Delete User",
+            tooltip: "Delete Flight",
             onClick: (event, rowData) => {
               deleteFlight(rowData.id, event);
             },
@@ -112,7 +112,12 @@ function MyTable(props) {
           actionsColumnIndex: -1,
         }}
       />
-      <EditModal flightObj={flightObj} handleClose={handleClose} open={open} />
+      <EditModal
+        flightObj={flightObj}
+        editFlight={editFlight}
+        handleClose={handleClose}
+        open={open}
+      />
     </div>
   );
 }

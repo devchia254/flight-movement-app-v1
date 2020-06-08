@@ -2,7 +2,8 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 
 // Debugging Formik Props
-export const DisplayFormikProps = ({ values, errors, touched }) => (
+// export const DisplayFormikProps = ({ values, errors, touched }) => (
+export const DisplayFormikProps = ({ ...props }) => (
   <Grid container>
     <Grid item xs></Grid>
     <Grid item xs>
@@ -16,7 +17,8 @@ export const DisplayFormikProps = ({ values, errors, touched }) => (
           }}
         >
           <strong>props</strong> ={" "}
-          {JSON.stringify({ errors, touched, values }, null, 2)}
+          {/* {JSON.stringify({ errors, touched, values }, null, 2)} */}
+          {JSON.stringify({ props }, null, 2)}
         </pre>
       </div>
     </Grid>

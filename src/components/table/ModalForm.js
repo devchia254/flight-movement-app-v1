@@ -5,7 +5,7 @@ import MyField from "../formik-fields/MyField.js";
 import MyKBDateTimePicker from "../formik-fields/MyKBDateTimePicker.js";
 import * as yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
-import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
+// import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
 const moment = require("moment"); // require Moment library
 
 // Modal Styling
@@ -33,7 +33,7 @@ const yupValidationSchema = yup.object().shape({
   company: yupStringRules,
 });
 
-function ModalForm({ flightObj }) {
+function ModalForm({ flightObj, editFlight, handleClose }) {
   const classes = useStyles();
   return (
     <Formik
@@ -48,20 +48,24 @@ function ModalForm({ flightObj }) {
       validationSchema={yupValidationSchema}
       onSubmit={(values, { resetForm, setSubmitting }) => {
         setSubmitting(true); // Makes async call and disables submit button
-        // onSubmit(values); // Lift values to state
-        setSubmitting(false); // Enables submit button once submitted
 
-        // Clear form after submit
-        resetForm({
-          values: {
-            flightNo: "",
-            acReg: "",
-            dateTime: null,
-            from: "",
-            to: "",
-            company: "",
-          },
-        });
+        // setTimeout to mimic fetch PUT data
+        setTimeout(() => {
+          editFlight(flightObj.id, values); // Lift values to state
+          // Clear form after submit
+          resetForm({
+            values: {
+              flightNo: "",
+              acReg: "",
+              dateTime: null,
+              from: "",
+              to: "",
+              company: "",
+            },
+          });
+          setSubmitting(false); // Enables submit button once submitted
+          handleClose(); // Closes Modal
+        }, 3000); // 3 secs timeout
       }}
     >
       {(props) => (
@@ -80,9 +84,9 @@ function ModalForm({ flightObj }) {
             submit
           </Button>
           {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
-          <div>
+          {/* <div>
             <DisplayFormikProps {...props} />
-          </div>
+          </div> */}
         </Form>
       )}
     </Formik>
