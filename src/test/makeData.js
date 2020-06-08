@@ -1,4 +1,5 @@
 import namor from "namor";
+const moment = require("moment"); // require
 
 const range = (len) => {
   const arr = [];
@@ -9,7 +10,7 @@ const range = (len) => {
 };
 
 // Manipulate here only for fake data object
-const newFlight = () => {
+const generateFlight = () => {
   // Aircraft Reg Probability
   const acRegChance = Math.random();
   // Random date generator
@@ -17,13 +18,7 @@ const newFlight = () => {
     const genDate = new Date(
       start.getTime() + Math.random() * (end.getTime() - start.getTime())
     );
-    const getTime = genDate.toLocaleTimeString("en-GB", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-    const getDate = genDate.toLocaleDateString("en-GB");
-
-    return `${getDate} ${getTime}`;
+    return moment(genDate).format(); // String format: ISO 8601
   }
 
   return {
@@ -34,8 +29,6 @@ const newFlight = () => {
     acReg:
       acRegChance > 0.66 ? "9M-SBO" : acRegChance > 0.33 ? "9M-SBA" : "9M-SBM",
     dateTime: randomDate(new Date(2020, 0, 1), new Date()),
-    // date: `${day}-${month}-${year}`,
-    // time: `${hour}:${minute}`,
     from: namor.generate({
       words: 2,
       numbers: 0,
@@ -61,7 +54,7 @@ export default function makeData(...lens) {
     const len = lens[depth];
     return range(len).map((d) => {
       return {
-        ...newFlight(),
+        ...generateFlight(),
         // subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined,
       };
     });

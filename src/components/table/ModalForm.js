@@ -6,21 +6,9 @@ import MyKBDateTimePicker from "../formik-fields/MyKBDateTimePicker.js";
 import * as yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
 import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
+const moment = require("moment"); // require Moment library
 
-const yupStringRules = yup
-  .string()
-  .required("Required")
-  .max(20, "Must be 20 characters or less");
-
-const yupValidationSchema = yup.object().shape({
-  dateTime: yup.date().nullable().required("Required"),
-  flightNo: yupStringRules,
-  acReg: yupStringRules,
-  from: yupStringRules,
-  to: yupStringRules,
-  company: yupStringRules,
-});
-
+// Modal Styling
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
@@ -30,6 +18,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const yupStringRules = yup
+  .string()
+  .required("Required")
+  .max(20, "Must be 20 characters or less");
+
+// Yup Configurations
+const yupValidationSchema = yup.object().shape({
+  dateTime: yup.date().nullable().required("Required"),
+  flightNo: yupStringRules,
+  acReg: yupStringRules,
+  from: yupStringRules,
+  to: yupStringRules,
+  company: yupStringRules,
+});
+
 function ModalForm({ flightObj }) {
   const classes = useStyles();
   return (
@@ -37,7 +40,7 @@ function ModalForm({ flightObj }) {
       initialValues={{
         flightNo: flightObj.flightNo,
         acReg: flightObj.acReg,
-        dateTime: flightObj.dateTime, // Returns a US based format
+        dateTime: moment(flightObj.dateTime, "DD/MM/YYYY HH:mm", true).format(), // Converts "DD/MM/YYYY HH:mm" back to ISO 8601
         from: flightObj.from,
         to: flightObj.to,
         company: flightObj.company,

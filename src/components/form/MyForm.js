@@ -11,6 +11,7 @@ const yupStringRules = yup
   .required("Required")
   .max(20, "Must be 20 characters or less");
 
+// Yup Configurations
 const yupValidationSchema = yup.object().shape({
   dateTime: yup.date().nullable().required("Required"),
   flightNo: yupStringRules,
@@ -54,7 +55,7 @@ function MyForm({ onSubmit }) {
         <Form>
           <div>
             <Field
-              label="Date & Time"
+              label="Date & Time (24h)"
               name="dateTime"
               component={MyKBDateTimePicker}
             />
