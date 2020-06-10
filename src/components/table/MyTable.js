@@ -56,6 +56,8 @@ function MyTable(props) {
       flightNo: flight.flightNo,
       acReg: flight.acReg,
       dateTime: moment(flight.dateTime, true).format("DD/MM/YYYY HH:mm"), // Strict mode: ISO 8601 (Before conversion to readable format)
+      // date: moment(flight.dateTime, true).format("DD/MM/YYYY"),
+      // time: moment(flight.dateTime, true).format("HH:mm"),
       from: flight.from,
       to: flight.to,
       company: flight.company,
@@ -67,7 +69,16 @@ function MyTable(props) {
     { title: "ID", field: "id" },
     { title: "Flight No.", field: "flightNo" },
     { title: "Aircraft Reg.", field: "acReg" },
-    { title: "Date & Time", field: "dateTime" },
+    {
+      title: "Date & Time",
+      field: "dateTime",
+      customSort: (a, b) => {
+        // Sort dates based on the difference of moments
+        const momentA = moment(a.dateTime, "DD/MM/YYYY HH:mm");
+        const momentB = moment(b.dateTime, "DD/MM/YYYY HH:mm");
+        return momentA.diff(momentB);
+      },
+    },
     { title: "From", field: "from" },
     { title: "To", field: "to" },
     { title: "Company", field: "company" },
@@ -110,6 +121,8 @@ function MyTable(props) {
         ]}
         options={{
           actionsColumnIndex: -1,
+          sorting: true,
+          filtering: true,
         }}
       />
       <EditModal
