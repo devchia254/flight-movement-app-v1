@@ -65,7 +65,7 @@ function ModalForm({ flightObj, editFlight, handleClose }) {
           });
           setSubmitting(false); // Enables submit button once submitted
           handleClose(); // Closes Modal
-        }, 3000); // 3 secs timeout
+        }, 1500); // 3 secs timeout
       }}
     >
       {(props) => (

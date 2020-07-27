@@ -51,7 +51,7 @@ function MyForm({ addFlight }) {
             },
           });
           setSubmitting(false); // Enables submit button once submitted
-        }, 3000); // 3 secs timeout
+        }, 1500); // 3 secs timeout
       }}
     >
       {(props) => (
