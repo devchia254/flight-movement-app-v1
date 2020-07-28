@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 import TempDrawer from "../components/Drawer";
 
@@ -43,7 +44,10 @@ class Navbar extends Component {
             >
               <MenuIcon />
             </IconButton>
-            <TempDrawer />
+            <TempDrawer>
+              <Link to={"/"}>Home</Link>
+              <Link to={"/user"}>User</Link>
+            </TempDrawer>
             <Typography variant="h6" className={classes.title}>
               {this.props.children}
             </Typography>

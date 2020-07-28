@@ -21,7 +21,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TempDrawer() {
+export default function TempDrawer(props) {
   const classes = useStyles();
   const [state, setState] = React.useState({
     left: false,
@@ -45,7 +45,12 @@ export default function TempDrawer() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+        {/* {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))} */}
+        {props.children.map((text, index) => (
           <ListItem button key={text}>
             <ListItemText primary={text} />
           </ListItem>
