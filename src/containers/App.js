@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
+import CssBaseline from "@material-ui/core/CssBaseline";
+
 import BoardUser from "./Board-User";
 import Homepage from "./Homepage";
+import Navbar from "./Navbar";
 
 class App extends Component {
   constructor() {
@@ -13,12 +16,15 @@ class App extends Component {
   render() {
     return (
       <Router>
+        <CssBaseline />
         <div className="App" style={{ textAlign: "center" }}>
-          <div className="header">
-            <h1> Flight Movement App</h1>
-            <Link to={"/"}>Home</Link>
-            <Link to={"/user"}>User</Link>
-          </div>
+          <Navbar>
+            Flight Movement App
+            {/* <Link to={"/"}>Home</Link>
+            <Link to={"/user"}>User</Link> */}
+          </Navbar>
+          <Link to={"/"}>Home</Link>
+          <Link to={"/user"}>User</Link>
           <div className="content"></div>
           <Switch>
             <Route exact path={"/"} component={Homepage} />
