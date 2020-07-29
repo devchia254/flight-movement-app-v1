@@ -5,7 +5,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 import BoardUser from "./Board-User";
 import Homepage from "./Homepage";
-import Navbar from "./Navbar";
+import Navbar from "../components/navbar/Navbar";
 
 class App extends Component {
   constructor() {
@@ -18,10 +18,8 @@ class App extends Component {
       <div className="App" style={{ textAlign: "center" }}>
         <CssBaseline />
         <Navbar>Flight Movement App</Navbar>
-        {/* <Link to={"/"}>Home</Link>
-        <Link to={"/user"}>User</Link> */}
         <div className="content"></div>
-        {/* Link is at Navbar */}
+        {/* Link is at Drawer */}
         <Switch>
           <Route exact path={"/"} component={Homepage} />
           <Route path={"/user"} component={BoardUser} />
