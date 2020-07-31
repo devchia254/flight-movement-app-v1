@@ -81,6 +81,8 @@ export default function DrawerButton(props) {
           primary="Schedule"
           icon={<CreateIcon color="primary" />}
         />
+        <ListItemLink to="/login" primary="Login" />
+        <ListItemLink to="/register" primary="Register" />
       </List>
     </div>
   );
