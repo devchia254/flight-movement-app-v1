@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 
-import BoardUser from "./Board-User";
+import Schedule from "./Schedule";
 import Homepage from "./Homepage";
 import Navbar from "../components/navbar/Navbar";
 
@@ -22,7 +22,7 @@ class App extends Component {
         {/* Link is at Drawer */}
         <Switch>
           <Route exact path={"/"} component={Homepage} />
-          <Route path={"/user"} component={BoardUser} />
+          <Route path={"/schedule"} component={Schedule} />
         </Switch>
       </div>
     );

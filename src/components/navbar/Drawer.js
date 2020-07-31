@@ -8,9 +8,10 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
-import UserIcon from "@material-ui/icons/AccountCircleOutlined";
+// import UserIcon from "@material-ui/icons/AccountCircleOutlined";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import CreateIcon from "@material-ui/icons/Create";
 // import Divider from "@material-ui/core/Divider";
 
 function ListItemLink(props) {
@@ -77,8 +78,8 @@ export default function DrawerButton(props) {
         />
         <ListItemLink
           to="/user"
-          primary="User"
-          icon={<UserIcon color="primary" />}
+          primary="Schedule"
+          icon={<CreateIcon color="primary" />}
         />
       </List>
     </div>
