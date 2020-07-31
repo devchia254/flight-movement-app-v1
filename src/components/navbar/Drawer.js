@@ -77,7 +77,7 @@ export default function DrawerButton(props) {
           icon={<HomeRoundedIcon color="primary" />}
         />
         <ListItemLink
-          to="/user"
+          to="/schedule"
           primary="Schedule"
           icon={<CreateIcon color="primary" />}
         />

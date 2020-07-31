@@ -11,7 +11,7 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers"; // Requires a Da
 import MomentUtils from "@date-io/moment";
 const moment = require("moment"); // require Moment library
 
-class BoardUser extends Component {
+class Schedule extends Component {
   constructor() {
     super();
     this.state = {
@@ -110,4 +110,4 @@ class BoardUser extends Component {
   }
 }
 
-export default BoardUser;
+export default Schedule;
