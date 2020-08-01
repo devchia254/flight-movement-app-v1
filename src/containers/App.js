@@ -17,7 +17,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App" style={{ textAlign: "center" }}>
+      <div className="App">
         <CssBaseline />
         <Navbar>Flight Movement App</Navbar>
         <div className="content"></div>
