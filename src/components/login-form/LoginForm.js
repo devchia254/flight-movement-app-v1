@@ -2,7 +2,7 @@ import React from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import MyField from "../formik-fields/MyField.js";
 import * as yup from "yup";
 // import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
@@ -23,13 +23,14 @@ const useStyles = makeStyles((theme) => ({
     "& > *": {
       margin: theme.spacing(1),
     },
-    padding: theme.spacing(3),
+    padding: theme.spacing(2, 2, 1),
     width: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    // minWidth: "150px",
-    // maxWidth: "400px",
+  },
+  button: {
+    margin: theme.spacing(2, 0, 1),
   },
 }));
 
@@ -70,6 +71,7 @@ function LoginForm() {
             variant="contained"
             color="primary"
             fullWidth
+            className={classes.button}
           >
             submit
           </Button>

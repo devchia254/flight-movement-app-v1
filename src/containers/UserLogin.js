@@ -6,14 +6,15 @@ import { withStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
+// import Card from "@material-ui/core/Card";
+// import CardContent from "@material-ui/core/CardContent";
 
 import LoginForm from "../components/login-form/LoginForm";
 
 const loginStyles = (theme) => ({
   root: {
     flexGrow: 1,
+    marginTop: theme.spacing(3),
   },
   paper: {
     padding: theme.spacing(2),
@@ -46,9 +47,9 @@ class UserLogin extends Component {
         direction="column"
         alignItems="center"
       >
-        <Grid item sm={3} md={3} lg>
+        {/* <Grid item sm={3} md={3} lg>
           <Paper className={classes.paper}>xs</Paper>
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} sm={6} md={6} lg>
           <Paper elevation={3} className={classes.paper}>
             <Avatar variant="rounded" className={classes.avatar}>
@@ -58,9 +59,9 @@ class UserLogin extends Component {
             <LoginForm />
           </Paper>
         </Grid>
-        <Grid item sm={3} md={3} lg>
+        {/* <Grid item sm={3} md={3} lg>
           <Paper className={classes.paper}>xs</Paper>
-        </Grid>
+        </Grid> */}
       </Grid>
     );
   }
