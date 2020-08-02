@@ -1,5 +1,5 @@
 import React from "react";
-import ModalForm from "./ModalForm";
+import ModalForm from "../forms/ModalForm";
 
 // Material Dialog
 import Button from "@material-ui/core/Button";

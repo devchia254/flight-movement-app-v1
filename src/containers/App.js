@@ -3,10 +3,10 @@ import { Switch, Route } from "react-router-dom";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 
-import Schedule from "./Schedule";
+import SchedulePage from "./SchedulePage";
 import Homepage from "./Homepage";
-import UserLogin from "./UserLogin";
-import UserRegister from "./UserRegister";
+import UserLoginPage from "./UserLoginPage";
+import UserRegisterPage from "./UserRegisterPage";
 import Navbar from "../components/navbar/Navbar";
 
 class App extends Component {
@@ -24,9 +24,9 @@ class App extends Component {
         {/* Link is at Drawer */}
         <Switch>
           <Route exact path={"/"} component={Homepage} />
-          <Route path={"/schedule"} component={Schedule} />
-          <Route path={"/login"} component={UserLogin} />
-          <Route path={"/register"} component={UserRegister} />
+          <Route path={"/schedule"} component={SchedulePage} />
+          <Route path={"/login"} component={UserLoginPage} />
+          <Route path={"/register"} component={UserRegisterPage} />
         </Switch>
       </div>
     );

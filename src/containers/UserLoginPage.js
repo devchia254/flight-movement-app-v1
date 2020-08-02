@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import LoginForm from "../components/forms/LoginForm";
+
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
@@ -8,8 +10,6 @@ import LockOpenIcon from "@material-ui/icons/LockOpen";
 import Typography from "@material-ui/core/Typography";
 // import Card from "@material-ui/core/Card";
 // import CardContent from "@material-ui/core/CardContent";
-
-import LoginForm from "../components/login-form/LoginForm";
 
 const loginStyles = (theme) => ({
   root: {
@@ -37,7 +37,7 @@ const loginStyles = (theme) => ({
   },
 });
 
-class UserLogin extends Component {
+class UserLoginPage extends Component {
   render() {
     const { classes } = this.props;
     return (
@@ -66,4 +66,4 @@ class UserLogin extends Component {
     );
   }
 }
-export default withStyles(loginStyles)(UserLogin);
+export default withStyles(loginStyles)(UserLoginPage);

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { generate } from "shortid";
 import { Container } from "@material-ui/core";
-import MyForm from "../components/form/MyForm.js";
+import ScheduleForm from "../components/forms/ScheduleForm.js";
 import MyTable from "../components/table/MyTable.js";
 import "./App.css";
 import makeData from "../test/makeData"; // Fake data generator
@@ -11,7 +11,7 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers"; // Requires a Da
 import MomentUtils from "@date-io/moment";
 const moment = require("moment"); // require Moment library
 
-class Schedule extends Component {
+class SchedulePage extends Component {
   constructor() {
     super();
     this.state = {
@@ -97,7 +97,7 @@ class Schedule extends Component {
         <h1>Schedule flight</h1>
         <Container fixed>
           <MuiPickersUtilsProvider utils={MomentUtils}>
-            <MyForm addFlight={this.addFlight} />
+            <ScheduleForm addFlight={this.addFlight} />
             <MyTable
               flights={flights}
               deleteFlight={this.deleteFlight}
@@ -110,4 +110,4 @@ class Schedule extends Component {
   }
 }
 
-export default Schedule;
+export default SchedulePage;

@@ -21,7 +21,7 @@ const yupValidationSchema = yup.object().shape({
   company: yupStringRules,
 });
 
-function MyForm({ addFlight }) {
+function ScheduleForm({ addFlight }) {
   return (
     <Formik
       initialValues={{
@@ -89,4 +89,4 @@ function MyForm({ addFlight }) {
   );
 }
 
-export default MyForm;
+export default ScheduleForm;
