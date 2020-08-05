@@ -1,11 +1,61 @@
 import React, { Component } from "react";
 
-export default class UserRegisterPage extends Component {
+import RegisterForm from "../components/forms/RegisterForm";
+
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import { withStyles } from "@material-ui/core/styles";
+import Avatar from "@material-ui/core/Avatar";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
+import Typography from "@material-ui/core/Typography";
+
+const registerStyles = (theme) => ({
+  root: {
+    flexGrow: 1,
+    marginTop: theme.spacing(3),
+  },
+  paper: {
+    padding: theme.spacing(2),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    maxWidth: "500px",
+  },
+  avatar: {
+    margin: theme.spacing(3),
+    backgroundColor: theme.palette.secondary.main,
+    width: theme.spacing(6),
+    height: theme.spacing(6),
+  },
+  form: {
+    paddingBottom: theme.spacing(10),
+  },
+  icon: {
+    fontSize: 30,
+  },
+});
+
+class UserRegisterPage extends Component {
   render() {
+    const { classes } = this.props;
     return (
-      <div>
-        <h1>This is the Registration Page!</h1>
-      </div>
+      <Grid
+        container
+        className={classes.root}
+        direction="column"
+        alignItems="center"
+      >
+        <Grid item xs={12} sm={6} md={6} lg>
+          <Paper elevation={3} className={classes.paper}>
+            <Avatar variant="rounded" className={classes.avatar}>
+              <PersonAddIcon className={classes.icon} />
+            </Avatar>
+            <Typography variant="h4">Register</Typography>
+            <RegisterForm />
+          </Paper>
+        </Grid>
+      </Grid>
     );
   }
 }
+export default withStyles(registerStyles)(UserRegisterPage);

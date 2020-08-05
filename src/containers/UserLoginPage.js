@@ -6,7 +6,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
-import LockOpenIcon from "@material-ui/icons/LockOpen";
+import PersonIcon from "@material-ui/icons/Person";
 import Typography from "@material-ui/core/Typography";
 // import Card from "@material-ui/core/Card";
 // import CardContent from "@material-ui/core/CardContent";
@@ -53,7 +53,7 @@ class UserLoginPage extends Component {
         <Grid item xs={12} sm={6} md={6} lg>
           <Paper elevation={3} className={classes.paper}>
             <Avatar variant="rounded" className={classes.avatar}>
-              <LockOpenIcon className={classes.icon} />
+              <PersonIcon className={classes.icon} />
             </Avatar>
             <Typography variant="h4">Log In</Typography>
             <LoginForm />
