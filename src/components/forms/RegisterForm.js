@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import MyField from "../formik-fields/MyField.js";
-import MyPwdField from "../formik-fields/MyPwdField.js";
 import * as yup from "yup";
 // import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
 
@@ -77,8 +76,8 @@ function RegisterForm() {
         <Form className={classes.form}>
           <MyField label="Username" name="username" />
           <MyField label="Email" name="email" />
-          <MyPwdField label="Password" name="password1" />
-          <MyPwdField label="Verify Password" name="password2" />
+          <MyField label="Password" name="password1" type="password" />
+          <MyField label="Verify Password" name="password2" type="password" />
           <Button
             disabled={props.isSubmitting}
             type="submit"
