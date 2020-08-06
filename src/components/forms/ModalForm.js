@@ -11,10 +11,10 @@ const moment = require("moment"); // require Moment library
 // Modal Styling
 const useStyles = makeStyles((theme) => ({
   root: {
-    "& > *": {
-      margin: theme.spacing(1),
-      width: "25ch",
-    },
+    // "& > *": {
+    //   margin: theme.spacing(1),
+    //   width: "25ch",
+    // },
   },
 }));
 
