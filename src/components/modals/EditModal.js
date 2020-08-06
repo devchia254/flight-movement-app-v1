@@ -1,5 +1,5 @@
 import React from "react";
-import ModalForm from "../forms/ModalForm";
+import EditForm from "../forms/EditForm";
 
 // Material Dialog
 import Button from "@material-ui/core/Button";
@@ -26,7 +26,7 @@ const EditModal = (props) => {
           To subscribe to this website, please enter your email address here. We
           will send updates occasionally.
         </DialogContentText> */}
-        <ModalForm
+        <EditForm
           flightObj={flightObj}
           editFlight={editFlight}
           handleClose={handleClose}

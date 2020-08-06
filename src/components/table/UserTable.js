@@ -1,6 +1,6 @@
 import React from "react";
 import MaterialTable from "material-table";
-import EditModal from "./EditModal";
+import EditModal from "../modals/EditModal";
 // Material UI Icons
 import { forwardRef } from "react";
 import AddBox from "@material-ui/icons/AddBox";
@@ -46,7 +46,7 @@ const tableIcons = {
 
 const moment = require("moment"); // require Moment library
 
-function MyTable(props) {
+function UserTable(props) {
   const { flights, deleteFlight, editFlight } = props;
 
   // Table Rows
@@ -134,4 +134,4 @@ function MyTable(props) {
     </div>
   );
 }
-export default MyTable;
+export default UserTable;

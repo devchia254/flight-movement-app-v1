@@ -33,7 +33,7 @@ const yupValidationSchema = yup.object().shape({
   company: yupStringRules,
 });
 
-function ModalForm({ flightObj, editFlight, handleClose }) {
+function EditForm({ flightObj, editFlight, handleClose }) {
   const classes = useStyles();
   return (
     <Formik
@@ -93,4 +93,4 @@ function ModalForm({ flightObj, editFlight, handleClose }) {
   );
 }
 
-export default ModalForm;
+export default EditForm;
