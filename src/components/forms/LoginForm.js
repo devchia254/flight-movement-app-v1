@@ -4,8 +4,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import MyField from "../formik-fields/MyField.js";
+import MyPwdField from "../formik-fields/MyPwdField.js";
 import * as yup from "yup";
 // import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
+
+const yupPwdRules = yup
+  .string()
+  .required("Required")
+  .min(8, "Must not be less 8 characters");
 
 const yupStringRules = yup
   .string()
@@ -15,7 +21,7 @@ const yupStringRules = yup
 // Yup Configurations
 const yupValidationSchema = yup.object().shape({
   username: yupStringRules,
-  password: yupStringRules,
+  password: yupPwdRules,
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -64,7 +70,7 @@ function LoginForm() {
       {(props) => (
         <Form className={classes.form}>
           <MyField label="Username" name="username" />
-          <MyField label="Password" name="password" />
+          <MyPwdField label="Password" name="password" />
           <Button
             disabled={props.isSubmitting}
             type="submit"
