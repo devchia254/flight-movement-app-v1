@@ -7,6 +7,9 @@ const MyKBDateTimePicker = ({ form, field, ...props }) => {
 
   return (
     <KeyboardDateTimePicker
+      size="small"
+      inputVariant="outlined"
+      fullWidth
       clearable
       disablePast
       ampm={false}

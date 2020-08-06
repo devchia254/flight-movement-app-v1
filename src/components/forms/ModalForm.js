@@ -4,7 +4,19 @@ import { Formik, Form, Field } from "formik";
 import MyField from "../formik-fields/MyField.js";
 import MyKBDateTimePicker from "../formik-fields/MyKBDateTimePicker.js";
 import * as yup from "yup";
+import { makeStyles } from "@material-ui/core/styles";
 // import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
+const moment = require("moment"); // require Moment library
+
+// Modal Styling
+const useStyles = makeStyles((theme) => ({
+  root: {
+    // "& > *": {
+    //   margin: theme.spacing(1),
+    //   width: "25ch",
+    // },
+  },
+}));
 
 const yupStringRules = yup
   .string()
@@ -21,24 +33,25 @@ const yupValidationSchema = yup.object().shape({
   company: yupStringRules,
 });
 
-function MyForm({ addFlight }) {
+function ModalForm({ flightObj, editFlight, handleClose }) {
+  const classes = useStyles();
   return (
     <Formik
       initialValues={{
-        flightNo: "",
-        acReg: "",
-        dateTime: new Date(),
-        from: "",
-        to: "",
-        company: "",
+        flightNo: flightObj.flightNo,
+        acReg: flightObj.acReg,
+        dateTime: moment(flightObj.dateTime, "DD/MM/YYYY HH:mm", true).format(), // Converts "DD/MM/YYYY HH:mm" back to ISO 8601
+        from: flightObj.from,
+        to: flightObj.to,
+        company: flightObj.company,
       }}
       validationSchema={yupValidationSchema}
       onSubmit={(values, { resetForm, setSubmitting }) => {
         setSubmitting(true); // Makes async call and disables submit button
 
-        // setTimeout to mimic fetch POST data
+        // setTimeout to mimic fetch PUT data
         setTimeout(() => {
-          addFlight(values); // add flight values by lifting to state
+          editFlight(flightObj.id, values); // Lift values to state
           // Clear form after submit
           resetForm({
             values: {
@@ -51,42 +64,33 @@ function MyForm({ addFlight }) {
             },
           });
           setSubmitting(false); // Enables submit button once submitted
+          handleClose(); // Closes Modal
         }, 1500); // 3 secs timeout
       }}
     >
       {(props) => (
-        <Form>
-          <div>
-            <Field
-              label="Date & Time (24h)"
-              name="dateTime"
-              component={MyKBDateTimePicker}
-            />
-          </div>
-          <div>
-            <MyField label="Flight No." name="flightNo" />
-          </div>
-          <div>
-            <MyField label="Aircraft Reg." name="acReg" />
-          </div>
-          <div>
-            <MyField label="From" name="from" />
-          </div>
-          <div>
-            <MyField label="To" name="to" />
-          </div>
-          <div>
-            <MyField label="Company" name="company" />
-          </div>
+        <Form className={classes.root}>
+          <Field
+            label="Date & Time"
+            name="dateTime"
+            component={MyKBDateTimePicker}
+          />
+          <MyField label="Flight No." name="flightNo" />
+          <MyField label="Aircraft Reg." name="acReg" />
+          <MyField label="From" name="from" />
+          <MyField label="To" name="to" />
+          <MyField label="Company" name="company" />
           <Button disabled={props.isSubmitting} type="submit">
             submit
           </Button>
           {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
-          {/* <DisplayFormikProps {...props} /> */}
+          {/* <div>
+            <DisplayFormikProps {...props} />
+          </div> */}
         </Form>
       )}
     </Formik>
   );
 }
 
-export default MyForm;
+export default ModalForm;
