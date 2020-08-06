@@ -7,6 +7,11 @@ import MyField from "../formik-fields/MyField.js";
 import * as yup from "yup";
 // import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
 
+const yupEmailRules = yup
+  .string()
+  .required("Required")
+  .email("Must be a valid email");
+
 const yupPwdRules = yup
   .string()
   .required("Required")
@@ -20,7 +25,7 @@ const yupStringRules = yup
 // Yup Configurations
 const yupValidationSchema = yup.object().shape({
   username: yupStringRules,
-  email: yupStringRules,
+  email: yupEmailRules,
   password1: yupPwdRules,
   password2: yupPwdRules,
 });
