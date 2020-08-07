@@ -29,9 +29,6 @@ const loginStyles = (theme) => ({
     width: theme.spacing(6),
     height: theme.spacing(6),
   },
-  form: {
-    paddingBottom: theme.spacing(10),
-  },
   icon: {
     fontSize: 30,
   },
