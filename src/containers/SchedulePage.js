@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import { generate } from "shortid";
 import { Container } from "@material-ui/core";
-import ScheduleForm from "../components/forms/ScheduleForm.js";
+import ScheduleModal from "../components/modals/ScheduleModal.js";
+// import ScheduleForm from "../components/forms/ScheduleForm.js";
 import ScheduleTable from "../components/table/ScheduleTable.js";
 import "./App.css";
 import makeData from "../test/makeData"; // Fake data generator
+
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
 // Material-UI Date Pickers (Moment Library)
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"; // Requires a Date lib to be chosen
@@ -27,6 +31,7 @@ class SchedulePage extends Component {
         // },
         ...makeData(20),
       ],
+      open: false,
     };
   }
 
@@ -89,6 +94,14 @@ class SchedulePage extends Component {
     }
   };
 
+  openModal = () => {
+    this.setState({ open: true });
+  };
+
+  closeModal = () => {
+    this.setState({ open: false });
+  };
+
   render() {
     const { flights } = this.state;
 
@@ -97,7 +110,15 @@ class SchedulePage extends Component {
         <h1>Schedule flight</h1>
         <Container fixed>
           <MuiPickersUtilsProvider utils={MomentUtils}>
-            <ScheduleForm addFlight={this.addFlight} />
+            <Button variant="outlined" color="primary" onClick={this.openModal}>
+              <Typography variant="h6">Schedule</Typography>
+            </Button>
+            <ScheduleModal
+              addFlight={this.addFlight}
+              open={this.state.open}
+              handleClose={this.closeModal}
+            />
+            {/* <ScheduleForm addFlight={this.addFlight} /> */}
             <ScheduleTable
               flights={flights}
               deleteFlight={this.deleteFlight}

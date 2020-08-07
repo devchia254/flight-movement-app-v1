@@ -4,7 +4,25 @@ import { Formik, Form, Field } from "formik";
 import MyField from "../formik-fields/MyField.js";
 import MyKBDateTimePicker from "../formik-fields/MyKBDateTimePicker.js";
 import * as yup from "yup";
+import { makeStyles } from "@material-ui/core/styles";
 // import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
+
+// Modal Styling
+const useStyles = makeStyles((theme) => ({
+  form: {
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+    padding: theme.spacing(2),
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  button: {
+    margin: theme.spacing(2, 0, 1),
+  },
+}));
 
 const yupStringRules = yup
   .string()
@@ -21,7 +39,9 @@ const yupValidationSchema = yup.object().shape({
   company: yupStringRules,
 });
 
-function ScheduleForm({ addFlight }) {
+function ScheduleForm({ addFlight, handleClose }) {
+  const classes = useStyles();
+
   return (
     <Formik
       initialValues={{
@@ -51,11 +71,12 @@ function ScheduleForm({ addFlight }) {
             },
           });
           setSubmitting(false); // Enables submit button once submitted
+          handleClose(); // Closes Modal
         }, 1500); // 3 secs timeout
       }}
     >
       {(props) => (
-        <Form>
+        <Form className={classes.form}>
           <div>
             <Field
               label="Date & Time (24h)"
@@ -78,7 +99,14 @@ function ScheduleForm({ addFlight }) {
           <div>
             <MyField label="Company" name="company" />
           </div>
-          <Button disabled={props.isSubmitting} type="submit">
+          <Button
+            disabled={props.isSubmitting}
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            className={classes.button}
+          >
             submit
           </Button>
           {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
