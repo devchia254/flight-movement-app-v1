@@ -20,13 +20,17 @@ import Typography from "@material-ui/core/Typography";
 //   },
 // });
 const styles = (theme) => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
+  dialogTitle: {
+    // margin: theme.spacing(1),
+    padding: theme.spacing(2, 5, 0),
+  },
+  dialogContent: {
+    // paddingTop: theme.spacing(1),
+    // backgroundColor: "green",
   },
   closeButton: {
     position: "absolute",
-    right: theme.spacing(1),
+    right: theme.spacing(3),
     top: theme.spacing(1),
     color: theme.palette.grey[500],
   },
@@ -35,8 +39,12 @@ const styles = (theme) => ({
 const DialogTitle = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props;
   return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
+    <MuiDialogTitle
+      disableTypography
+      className={classes.dialogTitle}
+      {...other}
+    >
+      <Typography variant="h5">{children}</Typography>
       {onClose ? (
         <IconButton
           aria-label="close"
@@ -50,8 +58,8 @@ const DialogTitle = withStyles(styles)((props) => {
   );
 });
 
-const EditModal = (props) => {
-  // const classes = useStyles();
+const EditModal = withStyles(styles)((props) => {
+  const { classes } = props;
   const { open, handleClose, flightObj, editFlight } = props;
 
   return (
@@ -64,28 +72,18 @@ const EditModal = (props) => {
       maxWidth="xs"
       // className={classes.root}
     >
-      {/* <DialogTitle id="form-dialog-title"></DialogTitle> */}
       <DialogTitle id="customized-dialog-title" onClose={handleClose}>
         Edit Flights Details
       </DialogTitle>
-      <DialogContent id="form-dialog-content">
-        {/* <DialogContentText>
-          To subscribe to this website, please enter your email address here. We
-          will send updates occasionally.
-        </DialogContentText> */}
+      <DialogContent id="form-dialog-content" className={classes.dialogContent}>
         <EditForm
           flightObj={flightObj}
           editFlight={editFlight}
           handleClose={handleClose}
         />
       </DialogContent>
-      {/* <DialogActions>
-        <Button onClick={handleClose} color="primary">
-          Cancel
-        </Button>
-      </DialogActions> */}
     </Dialog>
   );
-};
+});
 
 export default EditModal;

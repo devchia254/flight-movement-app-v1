@@ -46,7 +46,7 @@ const tableIcons = {
 
 const moment = require("moment"); // require Moment library
 
-function UserTable(props) {
+function ScheduleTable(props) {
   const { flights, deleteFlight, editFlight } = props;
 
   // Table Rows
@@ -134,4 +134,4 @@ function UserTable(props) {
     </div>
   );
 }
-export default UserTable;
+export default ScheduleTable;

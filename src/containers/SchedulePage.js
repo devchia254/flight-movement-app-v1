@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { generate } from "shortid";
 import { Container } from "@material-ui/core";
 import ScheduleForm from "../components/forms/ScheduleForm.js";
-import UserTable from "../components/table/UserTable.js";
+import ScheduleTable from "../components/table/ScheduleTable.js";
 import "./App.css";
 import makeData from "../test/makeData"; // Fake data generator
 
@@ -98,7 +98,7 @@ class SchedulePage extends Component {
         <Container fixed>
           <MuiPickersUtilsProvider utils={MomentUtils}>
             <ScheduleForm addFlight={this.addFlight} />
-            <UserTable
+            <ScheduleTable
               flights={flights}
               deleteFlight={this.deleteFlight}
               editFlight={this.editFlight}

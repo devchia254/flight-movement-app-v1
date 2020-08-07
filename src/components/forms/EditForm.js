@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     "& > *": {
       margin: theme.spacing(1),
     },
-    padding: theme.spacing(2, 2, 1),
+    padding: theme.spacing(2),
     width: "100%",
     display: "flex",
     flexDirection: "column",
