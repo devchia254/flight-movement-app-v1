@@ -77,28 +77,16 @@ function ScheduleForm({ addFlight, handleClose }) {
     >
       {(props) => (
         <Form className={classes.form}>
-          <div>
-            <Field
-              label="Date & Time (24h)"
-              name="dateTime"
-              component={MyKBDateTimePicker}
-            />
-          </div>
-          <div>
-            <MyField label="Flight No." name="flightNo" />
-          </div>
-          <div>
-            <MyField label="Aircraft Reg." name="acReg" />
-          </div>
-          <div>
-            <MyField label="From" name="from" />
-          </div>
-          <div>
-            <MyField label="To" name="to" />
-          </div>
-          <div>
-            <MyField label="Company" name="company" />
-          </div>
+          <Field
+            label="Date & Time (24h)"
+            name="dateTime"
+            component={MyKBDateTimePicker}
+          />
+          <MyField label="Flight No." name="flightNo" />
+          <MyField label="Aircraft Reg." name="acReg" />
+          <MyField label="From" name="from" />
+          <MyField label="To" name="to" />
+          <MyField label="Company" name="company" />
           <Button
             disabled={props.isSubmitting}
             type="submit"
