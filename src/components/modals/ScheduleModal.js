@@ -1,5 +1,4 @@
 import React from "react";
-// import EditForm from "../forms/EditForm";
 import ScheduleForm from "../forms/ScheduleForm";
 
 // Material Dialog
@@ -13,7 +12,6 @@ import Typography from "@material-ui/core/Typography";
 
 const styles = (theme) => ({
   dialogTitle: {
-    // margin: theme.spacing(1),
     padding: theme.spacing(2, 5, 0),
   },
   dialogContent: {
@@ -62,7 +60,6 @@ const ScheduleModal = withStyles(styles)((props) => {
       aria-describedby="form-dialog-content"
       fullWidth={true}
       maxWidth="xs"
-      // className={classes.root}
     >
       <DialogTitle id="customized-dialog-title" onClose={handleClose}>
         Schedule Flight

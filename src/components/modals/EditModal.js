@@ -3,25 +3,15 @@ import EditForm from "../forms/EditForm";
 
 // Material Dialog
 import { withStyles } from "@material-ui/core/styles";
-// import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-// import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-// import DialogContentText from "@material-ui/core/DialogContentText";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 
-// const useStyles = makeStyles({
-//   root: {
-//     // backgroundColor: blue[50],
-//     // color: blue[600],
-//   },
-// });
 const styles = (theme) => ({
   dialogTitle: {
-    // margin: theme.spacing(1),
     padding: theme.spacing(2, 5, 0),
   },
   dialogContent: {
@@ -36,6 +26,7 @@ const styles = (theme) => ({
   },
 });
 
+// customized-dialog-title component
 const DialogTitle = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props;
   return (

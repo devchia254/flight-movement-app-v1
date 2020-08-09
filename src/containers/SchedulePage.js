@@ -1,34 +1,49 @@
 import React, { Component } from "react";
 import { generate } from "shortid";
-import { Container } from "@material-ui/core";
-import ScheduleModal from "../components/modals/ScheduleModal.js";
-// import ScheduleForm from "../components/forms/ScheduleForm.js";
-import ScheduleTable from "../components/table/ScheduleTable.js";
-import "./App.css";
 import makeData from "../test/makeData"; // Fake data generator
 
+import ScheduleModal from "../components/modals/ScheduleModal.js";
+import ScheduleTable from "../components/table/ScheduleTable.js";
+
+// Material UI
+import { Container, Typography } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+// import Typography from "@material-ui/core/Typography";
+import AddIcon from "@material-ui/icons/Add";
 
 // Material-UI Date Pickers (Moment Library)
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"; // Requires a Date lib to be chosen
 import MomentUtils from "@date-io/moment";
-const moment = require("moment"); // require Moment library
+const moment = require("moment"); // require Moment library\
+
+// Example of 1 record
+// const sampleData = {
+//   id: "knd26GHI87",
+//   flightNo: "AN234",
+//   acReg: "9M-SBO",
+//   dateTime: "09/12/2020 10:00",
+//   from: "Terminal 2",
+//   to: "Petronas Base 3",
+//   company: "Sazma",
+// };
+
+const scheduleStyles = (theme) => ({
+  header: {
+    marginTop: theme.spacing(2),
+  },
+  button: {
+    margin: theme.spacing(2, 0),
+    borderRadius: theme.spacing(1),
+  },
+});
 
 class SchedulePage extends Component {
   constructor() {
     super();
     this.state = {
       flights: [
-        // {
-        //   id: "knd26GHI87",
-        //   flightNo: "AN234",
-        //   acReg: "9M-SBO",
-        //   dateTime: "09/12/2020 10:00",
-        //   from: "Terminal 2",
-        //   to: "Petronas Base 3",
-        //   company: "Sazma",
-        // },
+        // sampleData,
         ...makeData(20),
       ],
       open: false,
@@ -94,6 +109,7 @@ class SchedulePage extends Component {
     }
   };
 
+  // Modal functions below
   openModal = () => {
     this.setState({ open: true });
   };
@@ -104,21 +120,31 @@ class SchedulePage extends Component {
 
   render() {
     const { flights } = this.state;
+    const { classes } = this.props;
 
     return (
-      <div className="BoardUser" style={{ textAlign: "center" }}>
-        <h1>Schedule flight</h1>
+      <React.Fragment>
         <Container fixed>
+          <Typography variant="h4" className={classes.header}>
+            Schedule flight
+          </Typography>
           <MuiPickersUtilsProvider utils={MomentUtils}>
-            <Button variant="outlined" color="primary" onClick={this.openModal}>
-              <Typography variant="h6">Schedule</Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              startIcon={<AddIcon />}
+              className={classes.button}
+              onClick={this.openModal}
+            >
+              Schedule
+              {/* <Typography variant="h6">Schedule</Typography> */}
             </Button>
             <ScheduleModal
               addFlight={this.addFlight}
               open={this.state.open}
               handleClose={this.closeModal}
             />
-            {/* <ScheduleForm addFlight={this.addFlight} /> */}
             <ScheduleTable
               flights={flights}
               deleteFlight={this.deleteFlight}
@@ -126,9 +152,9 @@ class SchedulePage extends Component {
             />
           </MuiPickersUtilsProvider>
         </Container>
-      </div>
+      </React.Fragment>
     );
   }
 }
 
-export default SchedulePage;
+export default withStyles(scheduleStyles)(SchedulePage);
