@@ -122,7 +122,7 @@ function ScheduleTable(props) {
         options={{
           actionsColumnIndex: -1,
           sorting: true,
-          filtering: true,
+          filtering: false,
         }}
       />
       <EditModal
