@@ -50,22 +50,22 @@ const DialogTitle = withStyles(styles)((props) => {
 
 const ScheduleModal = withStyles(styles)((props) => {
   const { classes } = props;
-  const { addFlight, open, handleClose } = props;
+  const { addFlight, open, closeModal } = props;
 
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
+      onClose={closeModal}
       aria-labelledby="customized-dialog-title"
       aria-describedby="form-dialog-content"
       fullWidth={true}
       maxWidth="xs"
     >
-      <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+      <DialogTitle id="customized-dialog-title" onClose={closeModal}>
         Schedule Flight
       </DialogTitle>
       <DialogContent id="form-dialog-content" className={classes.dialogContent}>
-        <ScheduleForm addFlight={addFlight} handleClose={handleClose} />
+        <ScheduleForm addFlight={addFlight} closeModal={closeModal} />
       </DialogContent>
     </Dialog>
   );

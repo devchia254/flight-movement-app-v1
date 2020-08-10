@@ -6,7 +6,7 @@ import ScheduleModal from "../components/modals/ScheduleModal.js";
 import ScheduleTable from "../components/table/ScheduleTable.js";
 
 // Material UI
-import { Container, Typography } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 // import Typography from "@material-ui/core/Typography";
@@ -125,9 +125,9 @@ class SchedulePage extends Component {
     return (
       <React.Fragment>
         <Container fixed>
-          <Typography variant="h4" className={classes.header}>
+          {/* <Typography variant="h4" className={classes.header}>
             Schedule flight
-          </Typography>
+          </Typography> */}
           <MuiPickersUtilsProvider utils={MomentUtils}>
             <Button
               variant="contained"
@@ -143,7 +143,7 @@ class SchedulePage extends Component {
             <ScheduleModal
               addFlight={this.addFlight}
               open={this.state.open}
-              handleClose={this.closeModal}
+              closeModal={this.closeModal}
             />
             <ScheduleTable
               flights={flights}
