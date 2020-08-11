@@ -1,8 +1,6 @@
 import React from "react";
-import MaterialTable from // MTableToolbar
-"material-table";
+import MaterialTable from "material-table"; // MTableToolbar
 import EditModal from "../modals/EditModal";
-// import ScheduleModal from "../modals/ScheduleModal.js";
 
 // Material UI Icons
 import { forwardRef } from "react";
@@ -18,18 +16,11 @@ import FilterList from "@material-ui/icons/FilterList";
 import FirstPage from "@material-ui/icons/FirstPage";
 import LastPage from "@material-ui/icons/LastPage";
 import Remove from "@material-ui/icons/Remove";
-// import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import EditIcon from "@material-ui/icons/Edit";
-// import { Paper } from "@material-ui/core";
 
-import {
-  // makeStyles,
-  useTheme,
-  createMuiTheme,
-  ThemeProvider,
-} from "@material-ui/core/styles";
+// import { useTheme } from "@material-ui/core/styles";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -59,25 +50,12 @@ const moment = require("moment"); // require Moment library
 
 function ScheduleTable(props) {
   const { flights, deleteFlight, editFlight } = props;
-  const theme = useTheme();
+  // const theme = useTheme();
 
   // Styling
   const myHeaders = {
-    // backgroundColor: theme.palette.primary.main,
-    // color: "green",
     fontWeight: 600,
-    // borderRadius: theme.spacing(1),
   };
-
-  const customTheme = createMuiTheme({
-    overrides: {
-      MuiTableHead: {
-        root: {
-          borderRadius: theme.spacing(1),
-        },
-      },
-    },
-  });
 
   // Table Rows
   const tableFlights = flights.map((flight) => {
@@ -124,60 +102,59 @@ function ScheduleTable(props) {
   const flightObj = { ...rowDetails }; // Stores the rowData into a new object
 
   return (
-    <div>
-      <ThemeProvider theme={customTheme}>
-        <MaterialTable
-          icons={tableIcons}
-          title="Record of Flights"
-          columns={columns}
-          data={tableFlights}
-          actions={[
-            {
-              icon: () => <EditIcon />,
-              tooltip: "Edit Flight",
-              onClick: (e, rowData) => {
-                handleClickOpen();
-                setRowDetails(rowData);
-              },
-              // onClick: (event, rowData) => alert("You saved " + rowData.name),
+    <React.Fragment>
+      {/* <ThemeProvider theme={customTheme}></ThemeProvider> */}
+      <MaterialTable
+        icons={tableIcons}
+        title="Record of Flights"
+        columns={columns}
+        data={tableFlights}
+        actions={[
+          {
+            icon: () => <EditIcon />,
+            tooltip: "Edit Flight",
+            onClick: (e, rowData) => {
+              handleClickOpen();
+              setRowDetails(rowData);
             },
-            (rowData) => ({
-              icon: () => <DeleteOutline />,
-              tooltip: "Delete Flight",
-              onClick: (event, rowData) => {
-                deleteFlight(rowData.id, event);
-              },
-              // disabled: rowData.birthYear < 2000,
-            }),
-          ]}
-          options={{
-            actionsColumnIndex: -1,
-            sorting: true,
-            filtering: false,
-            headerStyle: myHeaders,
-          }}
-          // Overrides the present material-table component
-          components={
-            {
-              // Removes Paper component's box shadow
-              // Container: (props) => <Paper {...props} elevation={1} />,
-              // Toolbar: (props) => (
-              //   <div>
-              //     <MTableToolbar {...props} />
-              //     Hello
-              //   </div>
-              // ),
-            }
+            // onClick: (event, rowData) => alert("You saved " + rowData.name),
+          },
+          (rowData) => ({
+            icon: () => <DeleteOutline />,
+            tooltip: "Delete Flight",
+            onClick: (event, rowData) => {
+              deleteFlight(rowData.id, event);
+            },
+            // disabled: rowData.birthYear < 2000,
+          }),
+        ]}
+        options={{
+          actionsColumnIndex: -1,
+          sorting: true,
+          filtering: false,
+          headerStyle: myHeaders,
+        }}
+        // Overrides the present material-table component
+        components={
+          {
+            // Removes Paper component's box shadow
+            // Container: (props) => <Paper {...props} elevation={1} />,
+            // Toolbar: (props) => (
+            //   <div>
+            //     <MTableToolbar {...props} />
+            //     Hello
+            //   </div>
+            // ),
           }
-        />
-        <EditModal
-          flightObj={flightObj}
-          editFlight={editFlight}
-          handleClose={handleClose}
-          open={open}
-        />
-      </ThemeProvider>
-    </div>
+        }
+      />
+      <EditModal
+        flightObj={flightObj}
+        editFlight={editFlight}
+        handleClose={handleClose}
+        open={open}
+      />
+    </React.Fragment>
   );
 }
 export default ScheduleTable;
