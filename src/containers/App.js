@@ -23,10 +23,10 @@ class App extends Component {
         <div className="content"></div>
         {/* Link is at Drawer */}
         <Switch>
-          <Route exact path={"/"} component={Homepage} />
-          <Route path={"/schedule"} component={SchedulePage} />
-          <Route path={"/login"} component={UserLoginPage} />
-          <Route path={"/register"} component={UserRegisterPage} />
+          <Route exact path="/" component={Homepage} />
+          <Route path="/schedule" component={SchedulePage} />
+          <Route path="/login" component={UserLoginPage} />
+          <Route path="/register" component={UserRegisterPage} />
         </Switch>
       </div>
     );

@@ -10,11 +10,18 @@ const moment = require("moment"); // require Moment library
 
 // Modal Styling
 const useStyles = makeStyles((theme) => ({
-  root: {
-    // "& > *": {
-    //   margin: theme.spacing(1),
-    //   width: "25ch",
-    // },
+  form: {
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+    padding: theme.spacing(2),
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  button: {
+    margin: theme.spacing(2, 0, 1),
   },
 }));
 
@@ -33,7 +40,7 @@ const yupValidationSchema = yup.object().shape({
   company: yupStringRules,
 });
 
-function ModalForm({ flightObj, editFlight, handleClose }) {
+function EditForm({ flightObj, editFlight, handleClose }) {
   const classes = useStyles();
   return (
     <Formik
@@ -69,7 +76,7 @@ function ModalForm({ flightObj, editFlight, handleClose }) {
       }}
     >
       {(props) => (
-        <Form className={classes.root}>
+        <Form className={classes.form}>
           <Field
             label="Date & Time"
             name="dateTime"
@@ -80,7 +87,14 @@ function ModalForm({ flightObj, editFlight, handleClose }) {
           <MyField label="From" name="from" />
           <MyField label="To" name="to" />
           <MyField label="Company" name="company" />
-          <Button disabled={props.isSubmitting} type="submit">
+          <Button
+            disabled={props.isSubmitting}
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            className={classes.button}
+          >
             submit
           </Button>
           {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
@@ -93,4 +107,4 @@ function ModalForm({ flightObj, editFlight, handleClose }) {
   );
 }
 
-export default ModalForm;
+export default EditForm;

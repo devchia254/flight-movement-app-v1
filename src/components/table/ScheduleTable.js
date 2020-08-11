@@ -1,6 +1,7 @@
 import React from "react";
-import MaterialTable from "material-table";
-import EditModal from "./EditModal";
+import MaterialTable from "material-table"; // MTableToolbar
+import EditModal from "../modals/EditModal";
+
 // Material UI Icons
 import { forwardRef } from "react";
 import AddBox from "@material-ui/icons/AddBox";
@@ -15,10 +16,11 @@ import FilterList from "@material-ui/icons/FilterList";
 import FirstPage from "@material-ui/icons/FirstPage";
 import LastPage from "@material-ui/icons/LastPage";
 import Remove from "@material-ui/icons/Remove";
-// import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import EditIcon from "@material-ui/icons/Edit";
+
+// import { useTheme } from "@material-ui/core/styles";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -46,8 +48,14 @@ const tableIcons = {
 
 const moment = require("moment"); // require Moment library
 
-function MyTable(props) {
+function ScheduleTable(props) {
   const { flights, deleteFlight, editFlight } = props;
+  // const theme = useTheme();
+
+  // Styling
+  const myHeaders = {
+    fontWeight: 600,
+  };
 
   // Table Rows
   const tableFlights = flights.map((flight) => {
@@ -94,7 +102,8 @@ function MyTable(props) {
   const flightObj = { ...rowDetails }; // Stores the rowData into a new object
 
   return (
-    <div>
+    <React.Fragment>
+      {/* <ThemeProvider theme={customTheme}></ThemeProvider> */}
       <MaterialTable
         icons={tableIcons}
         title="Record of Flights"
@@ -122,8 +131,22 @@ function MyTable(props) {
         options={{
           actionsColumnIndex: -1,
           sorting: true,
-          filtering: true,
+          filtering: false,
+          headerStyle: myHeaders,
         }}
+        // Overrides the present material-table component
+        components={
+          {
+            // Removes Paper component's box shadow
+            // Container: (props) => <Paper {...props} elevation={1} />,
+            // Toolbar: (props) => (
+            //   <div>
+            //     <MTableToolbar {...props} />
+            //     Hello
+            //   </div>
+            // ),
+          }
+        }
       />
       <EditModal
         flightObj={flightObj}
@@ -131,7 +154,7 @@ function MyTable(props) {
         handleClose={handleClose}
         open={open}
       />
-    </div>
+    </React.Fragment>
   );
 }
-export default MyTable;
+export default ScheduleTable;
