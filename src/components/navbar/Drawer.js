@@ -35,7 +35,7 @@ function ListItemLink(props) {
   );
 }
 
-const useStyles = makeStyles((themes) => ({
+const useStyles = makeStyles((theme) => ({
   list: {
     width: 250,
   },
@@ -43,7 +43,7 @@ const useStyles = makeStyles((themes) => ({
     width: "auto",
   },
   menuButton: {
-    marginRight: themes.spacing(2),
+    marginRight: theme.spacing(2),
   },
 }));
 
