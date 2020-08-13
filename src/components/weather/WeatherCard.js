@@ -70,7 +70,7 @@ function WeatherCard() {
           />
         </div>
         {typeof weather.main != "undefined" ? (
-          <div>
+          <div className="content-box">
             <div className="location-box">
               <div className="location">
                 {weather.name}, {weather.sys.country}
@@ -83,7 +83,7 @@ function WeatherCard() {
             </div>
           </div>
         ) : (
-          <div>
+          <div className="content-box">
             <div className="location-box">
               <div className="location">Location is here</div>
               <div className="date">{dateBuilder(new Date())}</div>
