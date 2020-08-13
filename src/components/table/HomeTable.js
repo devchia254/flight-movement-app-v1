@@ -32,6 +32,7 @@ const StyledTableRow = withStyles((theme) => ({
 const useStyles = makeStyles({
   table: {
     minWidth: 700,
+    // minHeight: 800,
   },
 });
 
@@ -55,7 +56,11 @@ export default function CustomizedTables({ flights }) {
 
   return (
     <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="customized table">
+      <Table
+        className={classes.table}
+        size="medium"
+        aria-label="customized table"
+      >
         <TableHead>
           <TableRow>
             <StyledTableCell>Flight No.</StyledTableCell>

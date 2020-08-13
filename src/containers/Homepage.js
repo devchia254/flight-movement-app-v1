@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import makeData from "../test/makeData"; // Fake data generator
 import HomeTable from "../components/table/HomeTable";
+import WeatherCard from "../components/weather/WeatherCard";
 
 import { Container } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
@@ -32,7 +33,9 @@ class Homepage extends Component {
             <HomeTable flights={this.state.flights} />
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Paper>Weather App</Paper>
+            <Paper>
+              <WeatherCard />
+            </Paper>
           </Grid>
         </Grid>
       </Container>
