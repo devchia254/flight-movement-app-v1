@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
 
 const api = {
   key: "5c1fb17063422a6d6abcfbd2c228fd59",
@@ -108,8 +109,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function WeatherCard() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("Kota Kinabalu");
   const [weather, setWeather] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(
+        `${api.base}weather?q=${query}&units=metric&APPID=${api.key}`
+      );
+      const result = await response.json();
+      setWeather(result);
+    };
+    fetchData();
+  }, [query]);
+  // console.log(weather);
 
   const search = (evt) => {
     if (evt.key === "Enter") {
@@ -121,6 +134,12 @@ function WeatherCard() {
           console.log(result);
         });
     }
+  };
+
+  const getPlace = (e) => {
+    // e.preventDefault();
+    console.log(e.currentTarget);
+    setQuery(e.currentTarget.name);
   };
 
   const dateBuilder = (d) => {
@@ -173,6 +192,25 @@ function WeatherCard() {
             onKeyPress={search}
           />
         </div>
+        <Button
+          variant="contained"
+          size="large"
+          name="Sandakan"
+          onClick={getPlace}
+        >
+          SDK
+        </Button>
+        <Button
+          variant="contained"
+          size="large"
+          name="Kota Kinabalu"
+          onClick={getPlace}
+        >
+          KK
+        </Button>
+        <Button variant="contained" size="large" name="Ipoh" onClick={getPlace}>
+          IPH
+        </Button>
         {typeof weather.main != "undefined" ? (
           <div className={classes.contentBox}>
             <div className={classes.locationBox}>
