@@ -108,38 +108,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// OpenWeatherAPI city IDs
+const cityId = {
+  kotaKinabalu: "1733432",
+  sandakan: "1734052",
+  kualaLumpur: "1733046",
+};
+
 function WeatherCard() {
-  const [query, setQuery] = useState("Kota Kinabalu");
+  const [location, setLocation] = useState(cityId.kotaKinabalu);
   const [weather, setWeather] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `${api.base}weather?q=${query}&units=metric&APPID=${api.key}`
+        `${api.base}weather?id=${location}&units=metric&APPID=${api.key}`
       );
       const result = await response.json();
       setWeather(result);
+      console.log(result);
     };
     fetchData();
-  }, [query]);
-  // console.log(weather);
+  }, [location]);
 
-  const search = (evt) => {
-    if (evt.key === "Enter") {
-      fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
-        .then((res) => res.json())
-        .then((result) => {
-          setWeather(result);
-          setQuery("");
-          console.log(result);
-        });
-    }
-  };
-
-  const getPlace = (e) => {
-    // e.preventDefault();
-    console.log(e.currentTarget);
-    setQuery(e.currentTarget.name);
+  const getCityId = (e) => {
+    // console.log(e.currentTarget);
+    setLocation(e.currentTarget.name);
   };
 
   const dateBuilder = (d) => {
@@ -182,34 +176,29 @@ function WeatherCard() {
     // <div className="cold-bg">
     <div>
       <div className={classes.cardBox}>
-        <div className={classes.searchBox}>
-          <input
-            type="text"
-            className={classes.searchBoxBar}
-            placeholder="Search..."
-            onChange={(e) => setQuery(e.target.value)}
-            value={query}
-            onKeyPress={search}
-          />
-        </div>
         <Button
           variant="contained"
           size="large"
-          name="Sandakan"
-          onClick={getPlace}
+          name={cityId.kotaKinabalu}
+          onClick={getCityId}
+        >
+          KK
+        </Button>
+        <Button
+          variant="contained"
+          size="large"
+          name={cityId.sandakan}
+          onClick={getCityId}
         >
           SDK
         </Button>
         <Button
           variant="contained"
           size="large"
-          name="Kota Kinabalu"
-          onClick={getPlace}
+          name={cityId.kualaLumpur}
+          onClick={getCityId}
         >
-          KK
-        </Button>
-        <Button variant="contained" size="large" name="Ipoh" onClick={getPlace}>
-          IPH
+          KUL
         </Button>
         {typeof weather.main != "undefined" ? (
           <div className={classes.contentBox}>
