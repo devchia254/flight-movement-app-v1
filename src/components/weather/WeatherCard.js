@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import Avatar from "@material-ui/core/Avatar";
 
 const api = {
   key: "5c1fb17063422a6d6abcfbd2c228fd59",
@@ -126,14 +127,18 @@ function WeatherCard() {
       );
       const result = await response.json();
       setWeather(result);
-      console.log(result);
+      // console.log(result.weather[0].icon);
     };
     fetchData();
   }, [location]);
 
   const getCityId = (e) => {
-    // console.log(e.currentTarget);
     setLocation(e.currentTarget.name);
+  };
+
+  const getWeatherIcon = (data) => {
+    const link = `http://openweathermap.org/img/wn/${data}@2x.png`;
+    return link;
   };
 
   const dateBuilder = (d) => {
@@ -169,6 +174,8 @@ function WeatherCard() {
     return `${day} ${date} ${month} ${year}`;
   };
 
+  // const weatherIcon = weather.weather[0].icon;
+  // console.log(weather.weather[0].main);
   const classes = useStyles();
 
   return (
@@ -200,6 +207,7 @@ function WeatherCard() {
         >
           KUL
         </Button>
+
         {typeof weather.main != "undefined" ? (
           <div className={classes.contentBox}>
             <div className={classes.locationBox}>
@@ -214,8 +222,15 @@ function WeatherCard() {
               <div className={classes.weatherBoxTemp}>
                 {Math.round(weather.main.temp)}°c
               </div>
+              <img
+                alt="rain"
+                src={getWeatherIcon(weather.weather[0].icon)}
+                width="100"
+                height="100"
+              />
               <div className={classes.weatherBoxDesc}>
                 {weather.weather[0].main}
+                {weather.weather[0].description}
               </div>
             </div>
           </div>
