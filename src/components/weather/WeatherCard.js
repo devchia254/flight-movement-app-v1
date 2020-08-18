@@ -127,7 +127,7 @@ function WeatherCard() {
       );
       const result = await response.json();
       setWeather(result);
-      // console.log(result.weather[0].icon);
+      console.log(result);
     };
     fetchData();
   }, [location]);
@@ -220,16 +220,16 @@ function WeatherCard() {
             </div>
             <div className={classes.weatherBox}>
               <div className={classes.weatherBoxTemp}>
+                <img
+                  alt={weather.weather[0].main}
+                  src={getWeatherIcon(weather.weather[0].icon)}
+                  width="100"
+                  height="100"
+                />
                 {Math.round(weather.main.temp)}°c
               </div>
-              <img
-                alt="rain"
-                src={getWeatherIcon(weather.weather[0].icon)}
-                width="100"
-                height="100"
-              />
               <div className={classes.weatherBoxDesc}>
-                {weather.weather[0].main}
+                {/* {weather.weather[0].main} */}
                 {weather.weather[0].description}
               </div>
             </div>
