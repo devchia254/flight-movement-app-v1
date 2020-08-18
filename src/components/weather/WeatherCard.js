@@ -141,6 +141,8 @@ function WeatherCard() {
     return link;
   };
 
+  // const capitaliseDesc = (string) => {}
+
   const dateBuilder = (d) => {
     let months = [
       "January",
@@ -230,7 +232,7 @@ function WeatherCard() {
               </div>
               <div className={classes.weatherBoxDesc}>
                 {/* {weather.weather[0].main} */}
-                {weather.weather[0].description}
+                {const desc = weather.weather[0].description}
               </div>
             </div>
           </div>
