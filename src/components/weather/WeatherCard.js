@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
+import { Typography } from "@material-ui/core";
 
 const api = {
   key: "5c1fb17063422a6d6abcfbd2c228fd59",
@@ -64,21 +65,25 @@ const useStyles = makeStyles((theme) => ({
   },
 
   locationBox: {
-    textAlign: "center",
+    // textAlign: "center",
+    display: "flex",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    width: "100%",
   },
 
   locationBoxName: {
     color: "#fff",
-    fontSize: "2.5em",
-    fontWeight: 500,
+    // fontSize: "2.5em",
+    // fontWeight: 500,
     textShadow: "3px 3px rgba(50, 50, 70, 0.5)",
   },
 
   locationBoxDate: {
     color: "#fff",
-    fontSize: "1.5em",
-    fontWeight: 300,
-    fontStyle: "italic",
+    // fontSize: "1.5em",
+    // fontWeight: 300,
+    // fontStyle: "italic",
     textShadow: "2px 2px rgba(50, 50, 70, 0.5)",
   },
 
@@ -94,8 +99,8 @@ const useStyles = makeStyles((theme) => ({
     padding: "15px 25px",
 
     color: "#fff",
-    fontSize: "3em",
-    fontWeight: 900,
+    // fontSize: "3em",
+    // fontWeight: 900,
 
     textShadow: "3px 6px rgba(50, 50, 70, 0.5)",
     boxShadow: "3px 6px rgba(0, 0, 0, 0.2)",
@@ -145,19 +150,28 @@ function WeatherCard() {
 
   const dateBuilder = (d) => {
     let months = [
-      "January",
-      "February",
-      "March",
-      "April",
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
       "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
     ];
+
+    let date = d.getDate();
+    let month = months[d.getMonth()];
+    let year = d.getFullYear();
+
+    return `${date} ${month} ${year}`;
+  };
+
+  const dayHeader = (d) => {
     let days = [
       "Sunday",
       "Monday",
@@ -169,11 +183,7 @@ function WeatherCard() {
     ];
 
     let day = days[d.getDay()];
-    let date = d.getDate();
-    let month = months[d.getMonth()];
-    let year = d.getFullYear();
-
-    return `${day} ${date} ${month} ${year}`;
+    return `${day}`;
   };
 
   // const weatherIcon = weather.weather[0].icon;
@@ -185,6 +195,50 @@ function WeatherCard() {
     // <div className="cold-bg">
     <div>
       <div className={classes.cardBox}>
+        {typeof weather.main != "undefined" ? (
+          <div className={classes.contentBox}>
+            <div className={classes.locationBox}>
+              <div className={classes.locationBoxDate}>
+                <Typography variant="h5">{dayHeader(new Date())}</Typography>
+                <Typography variant="h6">{dateBuilder(new Date())}</Typography>
+                <Typography variant="h7">{weather.name}</Typography>
+              </div>
+              <div className={classes.locationBoxName}>
+                <Typography variant="h3">
+                  {Math.round(weather.main.temp)}°C
+                </Typography>
+              </div>
+              {/* {weather.sys.country} */}
+            </div>
+            <div className={classes.weatherBox}>
+              <div className={classes.weatherBoxTemp}>
+                <img
+                  alt={weather.weather[0].main}
+                  src={getWeatherIcon(weather.weather[0].icon)}
+                  width="100"
+                  height="100"
+                />
+                {weather.weather[0].description}
+              </div>
+              <div className={classes.weatherBoxDesc}>
+                {/* {weather.weather[0].main} */}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className={classes.contentBox}>
+            <div className={classes.locationBox}>
+              <div className={classes.locationBoxName}>Location is here</div>
+              <div className={classes.locationBoxDate}>
+                {dateBuilder(new Date())}
+              </div>
+            </div>
+            <div className={classes.weatherBox}>
+              <div className={classes.weatherBoxTemp}>-°c</div>
+              <div className={classes.weatherBoxDesc}>Weather is here</div>
+            </div>
+          </div>
+        )}
         <Button
           variant="contained"
           size="large"
@@ -209,47 +263,6 @@ function WeatherCard() {
         >
           KUL
         </Button>
-
-        {typeof weather.main != "undefined" ? (
-          <div className={classes.contentBox}>
-            <div className={classes.locationBox}>
-              <div className={classes.locationBoxName}>
-                {weather.name}, {weather.sys.country}
-              </div>
-              <div className={classes.locationBoxDate}>
-                {dateBuilder(new Date())}
-              </div>
-            </div>
-            <div className={classes.weatherBox}>
-              <div className={classes.weatherBoxTemp}>
-                <img
-                  alt={weather.weather[0].main}
-                  src={getWeatherIcon(weather.weather[0].icon)}
-                  width="100"
-                  height="100"
-                />
-                {Math.round(weather.main.temp)}°c
-              </div>
-              <div className={classes.weatherBoxDesc}>
-                {/* {weather.weather[0].main} */}
-                {const desc = weather.weather[0].description}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className={classes.contentBox}>
-            <div className={classes.locationBox}>
-              <div className={classes.locationBoxName}>Location is here</div>
-              <div className={classes.locationBoxDate}>
-                {dateBuilder(new Date())}
-              </div>
-            </div>
-            <div className={classes.weatherBox}>
-              <div className={classes.weatherBoxTemp}>-°c</div>
-              <div className={classes.weatherBoxDesc}>Weather is here</div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
