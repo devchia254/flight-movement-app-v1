@@ -33,7 +33,7 @@ class Homepage extends Component {
             <HomeTable flights={this.state.flights} />
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Paper>
+            <Paper elevation={10}>
               <WeatherCard />
             </Paper>
           </Grid>

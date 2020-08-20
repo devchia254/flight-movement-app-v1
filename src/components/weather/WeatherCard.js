@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import Avatar from "@material-ui/core/Avatar";
+// import Avatar from "@material-ui/core/Avatar";
 import { Typography } from "@material-ui/core";
 
 const api = {
@@ -25,38 +25,39 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage:
       "linear-gradient(to bottom, rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0.75))",
     padding: "25px",
+    borderRadius: "inherit",
   },
 
-  searchBox: {
-    width: "100%",
-    margin: "0 0 40px",
-  },
+  // searchBox: {
+  //   width: "100%",
+  //   margin: "0 0 40px",
+  // },
 
-  searchBoxBar: {
-    display: "block",
-    width: "100%",
-    padding: "15px",
+  // searchBoxBar: {
+  //   display: "block",
+  //   width: "100%",
+  //   padding: "15px",
 
-    appearance: "none",
-    background: "none",
-    border: "none",
-    outline: "none",
+  //   appearance: "none",
+  //   background: "none",
+  //   border: "none",
+  //   outline: "none",
 
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
-    borderRadius: "0px 0px 16px 16px",
-    marginTop: "-25px",
+  //   backgroundColor: "rgba(255, 255, 255, 0.5)",
+  //   borderRadius: "0px 0px 16px 16px",
+  //   marginTop: "-25px",
 
-    boxShadow: "0px 5px rgba(0, 0, 0, 0.2)",
+  //   boxShadow: "0px 5px rgba(0, 0, 0, 0.2)",
 
-    color: "#313131",
-    fontSize: "20px",
+  //   color: "#313131",
+  //   fontSize: "20px",
 
-    transition: "0.4s ease",
+  //   transition: "0.4s ease",
 
-    "&:focus": {
-      backgroundColor: "rgba(255, 255, 255, 0.75)",
-    },
-  },
+  //   "&:focus": {
+  //     backgroundColor: "rgba(255, 255, 255, 0.75)",
+  //   },
+  // },
 
   contentBox: {
     display: "flex",
@@ -64,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
 
-  locationBox: {
+  headerBox: {
     // textAlign: "center",
     display: "flex",
     justifyContent: "space-between",
@@ -72,14 +73,14 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
 
-  locationBoxName: {
+  headerBoxTemp: {
     color: "#fff",
     // fontSize: "2.5em",
     // fontWeight: 500,
     textShadow: "3px 3px rgba(50, 50, 70, 0.5)",
   },
 
-  locationBoxDate: {
+  headerBoxDate: {
     color: "#fff",
     // fontSize: "1.5em",
     // fontWeight: 300,
@@ -89,21 +90,22 @@ const useStyles = makeStyles((theme) => ({
 
   weatherBox: {
     textAlign: "center",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
   },
 
-  weatherBoxTemp: {
-    margin: "30px auto",
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
-    borderRadius: "16px",
-
-    padding: "15px 25px",
-
+  weatherDesc: {
     color: "#fff",
-    // fontSize: "3em",
+    textShadow: "3px 6px rgba(50, 50, 70, 0.5)",
+    // fontSize: "2em",
     // fontWeight: 900,
 
-    textShadow: "3px 6px rgba(50, 50, 70, 0.5)",
-    boxShadow: "3px 6px rgba(0, 0, 0, 0.2)",
+    // padding: "15px 25px",
+    // boxShadow: "3px 6px rgba(0, 0, 0, 0.2)",
+    // margin: "30px auto",
+    // backgroundColor: "rgba(255, 255, 255, 0.2)",
+    // borderRadius: "16px",
   },
 
   weatherBoxDesc: {
@@ -111,6 +113,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "2.5em",
     fontWeight: 700,
     textShadow: "3px 3px rgba(50, 50, 70, 0.5)",
+  },
+
+  locationBox: {
+    marginTop: theme.spacing(3),
   },
 }));
 
@@ -193,52 +199,69 @@ function WeatherCard() {
   return (
     // <div className={(typeof weather.main != "undefined") ? ((weather.main.temp > 16) ? 'app warm' : 'app') : 'app'}>
     // <div className="cold-bg">
-    <div>
-      <div className={classes.cardBox}>
-        {typeof weather.main != "undefined" ? (
-          <div className={classes.contentBox}>
-            <div className={classes.locationBox}>
-              <div className={classes.locationBoxDate}>
-                <Typography variant="h5">{dayHeader(new Date())}</Typography>
-                <Typography variant="h6">{dateBuilder(new Date())}</Typography>
-                <Typography variant="h7">{weather.name}</Typography>
-              </div>
-              <div className={classes.locationBoxName}>
-                <Typography variant="h3">
-                  {Math.round(weather.main.temp)}°C
-                </Typography>
-              </div>
-              {/* {weather.sys.country} */}
+
+    <div className={classes.cardBox}>
+      {typeof weather.main != "undefined" ? (
+        <div className={classes.contentBox}>
+          <div className={classes.headerBox}>
+            <div className={classes.headerBoxDate}>
+              <Typography variant="h5">{dayHeader(new Date())}</Typography>
+              <Typography variant="h6">{dateBuilder(new Date())}</Typography>
+              <Typography variant="h7">{weather.name}</Typography>
             </div>
-            <div className={classes.weatherBox}>
-              <div className={classes.weatherBoxTemp}>
-                <img
-                  alt={weather.weather[0].main}
-                  src={getWeatherIcon(weather.weather[0].icon)}
-                  width="100"
-                  height="100"
-                />
+            <div className={classes.headerBoxTemp}>
+              <Typography variant="h3">
+                {Math.round(weather.main.temp)}°C
+              </Typography>
+            </div>
+            {/* {weather.sys.country} */}
+          </div>
+          <div className={classes.weatherBox}>
+            <div className={classes.weatherIcon}>
+              <img
+                alt={weather.weather[0].main}
+                src={getWeatherIcon(weather.weather[0].icon)}
+                width="100"
+                height="100"
+              />
+            </div>
+            <div className={classes.weatherDesc}>
+              <Typography variant="h5">
                 {weather.weather[0].description}
-              </div>
-              <div className={classes.weatherBoxDesc}>
-                {/* {weather.weather[0].main} */}
-              </div>
+              </Typography>
+            </div>
+            {/* <div className={classes.weatherBoxDesc}>
+            </div> */}
+            {/* {weather.weather[0].main} */}
+          </div>
+          <div className={classes.footerBox}>
+            <Typography variant="h7">Wind: {weather.wind.speed}m/s</Typography>
+            <Typography variant="h7">
+              Humidity: {weather.main.humidity}%
+            </Typography>
+            <Typography variant="h7">
+              Cloudiness: {weather.clouds.all}%
+            </Typography>
+            <Typography variant="h7">
+              Visibility: {weather.visibility}m
+            </Typography>
+          </div>
+        </div>
+      ) : (
+        <div className={classes.contentBox}>
+          <div className={classes.headerBox}>
+            <div className={classes.headerBoxTemp}>Location is here</div>
+            <div className={classes.headerBoxDate}>
+              {dateBuilder(new Date())}
             </div>
           </div>
-        ) : (
-          <div className={classes.contentBox}>
-            <div className={classes.locationBox}>
-              <div className={classes.locationBoxName}>Location is here</div>
-              <div className={classes.locationBoxDate}>
-                {dateBuilder(new Date())}
-              </div>
-            </div>
-            <div className={classes.weatherBox}>
-              <div className={classes.weatherBoxTemp}>-°c</div>
-              <div className={classes.weatherBoxDesc}>Weather is here</div>
-            </div>
+          <div className={classes.weatherBox}>
+            <div className={classes.weatherDesc}>-°c</div>
+            <div className={classes.weatherBoxDesc}>Weather is here</div>
           </div>
-        )}
+        </div>
+      )}
+      <div className={classes.locationBox}>
         <Button
           variant="contained"
           size="large"
