@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 // import Avatar from "@material-ui/core/Avatar";
 import { Typography } from "@material-ui/core";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
 
 const api = {
   key: "5c1fb17063422a6d6abcfbd2c228fd59",
@@ -25,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
   cardBox: {
     minHeight: "60vh",
     backgroundImage:
-      "linear-gradient(to bottom, rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0.75))",
-    // backgroundImage: "url('../../assets/mtKinabaluCrop.jpg')",
+      "linear-gradient(340deg, rgba(114,237,242, 0.7),rgba(81,81,229, 1))",
+    // "linear-gradient(to bottom, rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0.75))",
 
     padding: "25px",
     borderRadius: "inherit",
@@ -241,9 +242,16 @@ function WeatherCard() {
           <div className={classes.contentBox}>
             <div className={classes.headerBox}>
               <div className={classes.headerBoxDate}>
-                <Typography variant="h5">{dayHeader(new Date())}</Typography>
+                <Typography variant="h5" style={{ fontWeight: 700 }}>
+                  {dayHeader(new Date())}
+                </Typography>
                 <Typography variant="h6">{dateBuilder(new Date())}</Typography>
-                <Typography variant="body1">{weather.name}</Typography>
+                <Typography variant="body1">
+                  <LocationOnIcon
+                    style={{ fontSize: "1em", marginRight: "0.2em" }}
+                  />
+                  {weather.name}
+                </Typography>
               </div>
               <div className={classes.headerBoxTemp}>
                 <Typography variant="h3">
@@ -271,16 +279,16 @@ function WeatherCard() {
               {/* {weather.weather[0].main} */}
             </div>
             <div className={classes.footerBox}>
-              <Typography className={classes.footerItems} variant="body2">
+              <Typography className={classes.footerItems} variant="body1">
                 Wind: {weather.wind.speed}m/s
               </Typography>
-              <Typography className={classes.footerItems} variant="body2">
+              <Typography className={classes.footerItems} variant="body1">
                 Humidity: {weather.main.humidity}%
               </Typography>
-              <Typography className={classes.footerItems} variant="body2">
+              <Typography className={classes.footerItems} variant="body1">
                 Cloudiness: {weather.clouds.all}%
               </Typography>
-              <Typography className={classes.footerItems} variant="body2">
+              <Typography className={classes.footerItems} variant="body1">
                 Visibility: {weather.visibility}m
               </Typography>
             </div>
