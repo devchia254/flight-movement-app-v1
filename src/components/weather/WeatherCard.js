@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import kkImage from "../../assets/mtKinabaluCrop.jpg";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -11,11 +12,12 @@ const api = {
 };
 
 const useStyles = makeStyles((theme) => ({
-  coldBg: {
-    /* background-image: "url('./assets/cold-bg.jpg')", */
+  kkBg: {
+    backgroundImage: `url(${kkImage})`,
     backgroundSize: "cover",
     backgroundPosition: "bottom",
     transition: "0.4 ease",
+    borderRadius: "inherit",
   },
 
   warmBg: {},
@@ -24,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "60vh",
     backgroundImage:
       "linear-gradient(to bottom, rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0.75))",
+    // backgroundImage: "url('../../assets/mtKinabaluCrop.jpg')",
+
     padding: "25px",
     borderRadius: "inherit",
   },
@@ -83,9 +87,9 @@ const useStyles = makeStyles((theme) => ({
   headerBoxDate: {
     color: "#fff",
     // fontSize: "1.5em",
-    // fontWeight: 300,
+    fontWeight: 600,
     // fontStyle: "italic",
-    textShadow: "2px 2px rgba(50, 50, 70, 0.5)",
+    // textShadow: "2px 2px rgba(50, 50, 70, 0.5)",
   },
 
   weatherBox: {
@@ -97,7 +101,9 @@ const useStyles = makeStyles((theme) => ({
 
   weatherDesc: {
     color: "#fff",
-    textShadow: "3px 6px rgba(50, 50, 70, 0.5)",
+    textShadow: "3px 3px rgba(50, 50, 70, 0.5)",
+    fontWeight: "Bold",
+
     // fontSize: "2em",
     // fontWeight: 900,
 
@@ -108,15 +114,42 @@ const useStyles = makeStyles((theme) => ({
     // borderRadius: "16px",
   },
 
-  weatherBoxDesc: {
+  // weatherBoxDesc: {
+  //   color: "#fff",
+  //   fontSize: "2.5em",
+  //   fontWeight: 700,
+  //   textShadow: "3px 3px rgba(50, 50, 70, 0.5)",
+  // },
+
+  footerBox: {
     color: "#fff",
-    fontSize: "2.5em",
-    fontWeight: 700,
-    textShadow: "3px 3px rgba(50, 50, 70, 0.5)",
+    // fontWeight: 600,
+    // textShadow: "2px 2px rgba(50, 50, 70, 0.5)",
+    margin: theme.spacing(2, 0),
+    width: "100%",
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+  },
+
+  footerItems: {
+    // backgroundColor: "rgba(255, 255, 255, 0.2)",
+    // border: "1px solid orange",
+    // width: "auto",
   },
 
   locationBox: {
-    marginTop: theme.spacing(3),
+    width: "100%",
+    margin: theme.spacing(1, 0),
+    display: "flex",
+    justifyContent: "center",
+    flexWrap: "wrap",
+  },
+
+  locationBtn: {
+    borderRadius: theme.spacing(3),
+    padding: theme.spacing(0.5),
+    fontWeight: 600,
+    margin: theme.spacing(0.5, 2),
   },
 }));
 
@@ -192,100 +225,109 @@ function WeatherCard() {
     return `${day}`;
   };
 
+  const capitalise = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
   // const weatherIcon = weather.weather[0].icon;
   // console.log(weather.weather[0].main);
   const classes = useStyles();
 
   return (
     // <div className={(typeof weather.main != "undefined") ? ((weather.main.temp > 16) ? 'app warm' : 'app') : 'app'}>
-    // <div className="cold-bg">
-
-    <div className={classes.cardBox}>
-      {typeof weather.main != "undefined" ? (
-        <div className={classes.contentBox}>
-          <div className={classes.headerBox}>
-            <div className={classes.headerBoxDate}>
-              <Typography variant="h5">{dayHeader(new Date())}</Typography>
-              <Typography variant="h6">{dateBuilder(new Date())}</Typography>
-              <Typography variant="h7">{weather.name}</Typography>
+    <div className={classes.kkBg}>
+      <div className={classes.cardBox}>
+        {typeof weather.main != "undefined" ? (
+          <div className={classes.contentBox}>
+            <div className={classes.headerBox}>
+              <div className={classes.headerBoxDate}>
+                <Typography variant="h5">{dayHeader(new Date())}</Typography>
+                <Typography variant="h6">{dateBuilder(new Date())}</Typography>
+                <Typography variant="body1">{weather.name}</Typography>
+              </div>
+              <div className={classes.headerBoxTemp}>
+                <Typography variant="h3">
+                  {Math.round(weather.main.temp)}°C
+                </Typography>
+              </div>
+              {/* {weather.sys.country} */}
             </div>
-            <div className={classes.headerBoxTemp}>
-              <Typography variant="h3">
-                {Math.round(weather.main.temp)}°C
-              </Typography>
-            </div>
-            {/* {weather.sys.country} */}
-          </div>
-          <div className={classes.weatherBox}>
-            <div className={classes.weatherIcon}>
-              <img
-                alt={weather.weather[0].main}
-                src={getWeatherIcon(weather.weather[0].icon)}
-                width="100"
-                height="100"
-              />
-            </div>
-            <div className={classes.weatherDesc}>
-              <Typography variant="h5">
-                {weather.weather[0].description}
-              </Typography>
-            </div>
-            {/* <div className={classes.weatherBoxDesc}>
+            <div className={classes.weatherBox}>
+              <div className={classes.weatherIcon}>
+                <img
+                  alt={weather.weather[0].main}
+                  src={getWeatherIcon(weather.weather[0].icon)}
+                  width="100"
+                  height="100"
+                />
+              </div>
+              <div className={classes.weatherDesc}>
+                <Typography variant="h5">
+                  {capitalise(weather.weather[0].description)}
+                </Typography>
+              </div>
+              {/* <div className={classes.weatherBoxDesc}>
             </div> */}
-            {/* {weather.weather[0].main} */}
-          </div>
-          <div className={classes.footerBox}>
-            <Typography variant="h7">Wind: {weather.wind.speed}m/s</Typography>
-            <Typography variant="h7">
-              Humidity: {weather.main.humidity}%
-            </Typography>
-            <Typography variant="h7">
-              Cloudiness: {weather.clouds.all}%
-            </Typography>
-            <Typography variant="h7">
-              Visibility: {weather.visibility}m
-            </Typography>
-          </div>
-        </div>
-      ) : (
-        <div className={classes.contentBox}>
-          <div className={classes.headerBox}>
-            <div className={classes.headerBoxTemp}>Location is here</div>
-            <div className={classes.headerBoxDate}>
-              {dateBuilder(new Date())}
+              {/* {weather.weather[0].main} */}
+            </div>
+            <div className={classes.footerBox}>
+              <Typography className={classes.footerItems} variant="body2">
+                Wind: {weather.wind.speed}m/s
+              </Typography>
+              <Typography className={classes.footerItems} variant="body2">
+                Humidity: {weather.main.humidity}%
+              </Typography>
+              <Typography className={classes.footerItems} variant="body2">
+                Cloudiness: {weather.clouds.all}%
+              </Typography>
+              <Typography className={classes.footerItems} variant="body2">
+                Visibility: {weather.visibility}m
+              </Typography>
             </div>
           </div>
-          <div className={classes.weatherBox}>
-            <div className={classes.weatherDesc}>-°c</div>
-            <div className={classes.weatherBoxDesc}>Weather is here</div>
+        ) : (
+          <div className={classes.contentBox}>
+            <div className={classes.headerBox}>
+              <div className={classes.headerBoxTemp}>Location is here</div>
+              <div className={classes.headerBoxDate}>
+                {dateBuilder(new Date())}
+              </div>
+            </div>
+            <div className={classes.weatherBox}>
+              <div className={classes.weatherDesc}>-°c</div>
+              <div className={classes.weatherBoxDesc}>Weather is here</div>
+            </div>
           </div>
+        )}
+        <div className={classes.locationBox}>
+          <Button
+            variant="contained"
+            size="large"
+            className={classes.locationBtn}
+            name={cityId.kotaKinabalu}
+            onClick={getCityId}
+          >
+            KK
+          </Button>
+          <Button
+            variant="contained"
+            size="large"
+            className={classes.locationBtn}
+            name={cityId.sandakan}
+            onClick={getCityId}
+          >
+            SDK
+          </Button>
+          <Button
+            variant="contained"
+            size="large"
+            className={classes.locationBtn}
+            name={cityId.kualaLumpur}
+            onClick={getCityId}
+          >
+            KUL
+          </Button>
         </div>
-      )}
-      <div className={classes.locationBox}>
-        <Button
-          variant="contained"
-          size="large"
-          name={cityId.kotaKinabalu}
-          onClick={getCityId}
-        >
-          KK
-        </Button>
-        <Button
-          variant="contained"
-          size="large"
-          name={cityId.sandakan}
-          onClick={getCityId}
-        >
-          SDK
-        </Button>
-        <Button
-          variant="contained"
-          size="large"
-          name={cityId.kualaLumpur}
-          onClick={getCityId}
-        >
-          KUL
-        </Button>
       </div>
     </div>
   );
