@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import kkImage from "../../assets/mtKinabaluCrop.jpg";
+import sdkImage from "../../assets/sdkCrop.jpg";
+import kulImage from "../../assets/klCrop.jpg";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -21,12 +23,28 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "inherit",
   },
 
+  sdkBg: {
+    backgroundImage: `url(${sdkImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "bottom",
+    transition: "0.4 ease",
+    borderRadius: "inherit",
+  },
+
+  kulBg: {
+    backgroundImage: `url(${kulImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "bottom",
+    transition: "0.4 ease",
+    borderRadius: "inherit",
+  },
+
   warmBg: {},
 
   cardBox: {
-    minHeight: "60vh",
+    // minHeight: "60vh",
     backgroundImage:
-      "linear-gradient(340deg, rgba(114,237,242, 0.7),rgba(81,81,229, 1))",
+      "linear-gradient(340deg, rgba(114,237,242, 0.3),rgba(81,81,229, 0.7))",
     // "linear-gradient(to bottom, rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0.75))",
 
     padding: "25px",
@@ -100,9 +118,13 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
 
+  // weatherIcon: {
+  //   textShadow: "2px 2px rgba(50, 50, 70, 0.5)",
+  // },
+
   weatherDesc: {
     color: "#fff",
-    textShadow: "3px 3px rgba(50, 50, 70, 0.5)",
+    textShadow: "1px 1px rgba(50, 50, 70, 0.5)",
     fontWeight: "Bold",
 
     // fontSize: "2em",
@@ -115,17 +137,11 @@ const useStyles = makeStyles((theme) => ({
     // borderRadius: "16px",
   },
 
-  // weatherBoxDesc: {
-  //   color: "#fff",
-  //   fontSize: "2.5em",
-  //   fontWeight: 700,
-  //   textShadow: "3px 3px rgba(50, 50, 70, 0.5)",
-  // },
-
-  footerBox: {
+  footerBoxGrid2: {
     color: "#fff",
     // fontWeight: 600,
     // textShadow: "2px 2px rgba(50, 50, 70, 0.5)",
+    textShadow: "1px 1px rgba(50, 50, 70, 0.5)",
     margin: theme.spacing(2, 0),
     width: "100%",
     display: "grid",
@@ -133,9 +149,11 @@ const useStyles = makeStyles((theme) => ({
   },
 
   footerItems: {
+    // textAlign: "center",
     // backgroundColor: "rgba(255, 255, 255, 0.2)",
     // border: "1px solid orange",
     // width: "auto",
+    justifySelf: "center",
   },
 
   locationBox: {
@@ -234,9 +252,25 @@ function WeatherCard() {
   // console.log(weather.weather[0].main);
   const classes = useStyles();
 
+  const changeBg = (name) => {
+    switch (name) {
+      case "Kota Kinabalu":
+        return classes.kkBg;
+      case "Sandakan":
+        return classes.sdkBg;
+      case "Kuala Lumpur":
+        return classes.kulBg;
+      default:
+        return null;
+    }
+  };
+
   return (
     // <div className={(typeof weather.main != "undefined") ? ((weather.main.temp > 16) ? 'app warm' : 'app') : 'app'}>
-    <div className={classes.kkBg}>
+
+    <div
+      className={typeof weather.main != "undefined" && changeBg(weather.name)}
+    >
       <div className={classes.cardBox}>
         {typeof weather.main != "undefined" ? (
           <div className={classes.contentBox}>
@@ -270,7 +304,7 @@ function WeatherCard() {
                 />
               </div>
               <div className={classes.weatherDesc}>
-                <Typography variant="h5">
+                <Typography variant="h5" style={{ fontWeight: 700 }}>
                   {capitalise(weather.weather[0].description)}
                 </Typography>
               </div>
@@ -278,19 +312,22 @@ function WeatherCard() {
             </div> */}
               {/* {weather.weather[0].main} */}
             </div>
-            <div className={classes.footerBox}>
+            <div className={classes.footerBoxGrid2}>
               <Typography className={classes.footerItems} variant="body1">
                 Wind: {weather.wind.speed}m/s
-              </Typography>
-              <Typography className={classes.footerItems} variant="body1">
-                Humidity: {weather.main.humidity}%
-              </Typography>
-              <Typography className={classes.footerItems} variant="body1">
+                <br></br>
                 Cloudiness: {weather.clouds.all}%
               </Typography>
               <Typography className={classes.footerItems} variant="body1">
+                Humidity: {weather.main.humidity}%<br></br>
                 Visibility: {weather.visibility}m
               </Typography>
+              {/* <Typography className={classes.footerItems} variant="body1">
+                
+              </Typography>
+              <Typography className={classes.footerItems} variant="body1">
+                
+              </Typography> */}
             </div>
           </div>
         ) : (
