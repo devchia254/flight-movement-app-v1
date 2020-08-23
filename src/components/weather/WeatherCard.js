@@ -15,28 +15,22 @@ const api = {
 };
 
 const useStyles = makeStyles((theme) => ({
-  kkBg: {
-    backgroundImage: `url(${kkImage})`,
+  mainBg: {
     backgroundSize: "cover",
     backgroundPosition: "bottom",
-    transition: "0.4 ease",
     borderRadius: "inherit",
+  },
+
+  kkBg: {
+    backgroundImage: `url(${kkImage})`,
   },
 
   sdkBg: {
     backgroundImage: `url(${sdkImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "bottom",
-    transition: "0.4 ease",
-    borderRadius: "inherit",
   },
 
   kulBg: {
     backgroundImage: `url(${kulImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "bottom",
-    transition: "0.4 ease",
-    borderRadius: "inherit",
   },
 
   warmBg: {},
@@ -51,37 +45,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "inherit",
   },
 
-  // searchBox: {
-  //   width: "100%",
-  //   margin: "0 0 40px",
-  // },
-
-  // searchBoxBar: {
-  //   display: "block",
-  //   width: "100%",
-  //   padding: "15px",
-
-  //   appearance: "none",
-  //   background: "none",
-  //   border: "none",
-  //   outline: "none",
-
-  //   backgroundColor: "rgba(255, 255, 255, 0.5)",
-  //   borderRadius: "0px 0px 16px 16px",
-  //   marginTop: "-25px",
-
-  //   boxShadow: "0px 5px rgba(0, 0, 0, 0.2)",
-
-  //   color: "#313131",
-  //   fontSize: "20px",
-
-  //   transition: "0.4s ease",
-
-  //   "&:focus": {
-  //     backgroundColor: "rgba(255, 255, 255, 0.75)",
-  //   },
-  // },
-
   contentBox: {
     display: "flex",
     flexDirection: "column",
@@ -89,7 +52,6 @@ const useStyles = makeStyles((theme) => ({
   },
 
   headerBox: {
-    // textAlign: "center",
     display: "flex",
     justifyContent: "space-between",
     flexWrap: "wrap",
@@ -98,17 +60,13 @@ const useStyles = makeStyles((theme) => ({
 
   headerBoxTemp: {
     color: "#fff",
-    // fontSize: "2.5em",
-    // fontWeight: 500,
+
     textShadow: "3px 3px rgba(50, 50, 70, 0.5)",
   },
 
   headerBoxDate: {
     color: "#fff",
-    // fontSize: "1.5em",
     fontWeight: 600,
-    // fontStyle: "italic",
-    // textShadow: "2px 2px rgba(50, 50, 70, 0.5)",
   },
 
   weatherBox: {
@@ -118,29 +76,15 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
 
-  // weatherIcon: {
-  //   textShadow: "2px 2px rgba(50, 50, 70, 0.5)",
-  // },
-
   weatherDesc: {
     color: "#fff",
     textShadow: "1px 1px rgba(50, 50, 70, 0.5)",
     fontWeight: "Bold",
-
-    // fontSize: "2em",
-    // fontWeight: 900,
-
-    // padding: "15px 25px",
     // boxShadow: "3px 6px rgba(0, 0, 0, 0.2)",
-    // margin: "30px auto",
-    // backgroundColor: "rgba(255, 255, 255, 0.2)",
-    // borderRadius: "16px",
   },
 
   footerBoxGrid2: {
     color: "#fff",
-    // fontWeight: 600,
-    // textShadow: "2px 2px rgba(50, 50, 70, 0.5)",
     textShadow: "1px 1px rgba(50, 50, 70, 0.5)",
     margin: theme.spacing(2, 0),
     width: "100%",
@@ -149,10 +93,6 @@ const useStyles = makeStyles((theme) => ({
   },
 
   footerItems: {
-    // textAlign: "center",
-    // backgroundColor: "rgba(255, 255, 255, 0.2)",
-    // border: "1px solid orange",
-    // width: "auto",
     justifySelf: "center",
   },
 
@@ -248,8 +188,6 @@ function WeatherCard() {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
-  // const weatherIcon = weather.weather[0].icon;
-  // console.log(weather.weather[0].main);
   const classes = useStyles();
 
   const changeBg = (name) => {
@@ -266,10 +204,11 @@ function WeatherCard() {
   };
 
   return (
-    // <div className={(typeof weather.main != "undefined") ? ((weather.main.temp > 16) ? 'app warm' : 'app') : 'app'}>
-
     <div
-      className={typeof weather.main != "undefined" && changeBg(weather.name)}
+      className={
+        typeof weather.main != "undefined" &&
+        `${classes.mainBg} ${changeBg(weather.name)}`
+      }
     >
       <div className={classes.cardBox}>
         {typeof weather.main != "undefined" ? (
@@ -292,7 +231,6 @@ function WeatherCard() {
                   {Math.round(weather.main.temp)}°C
                 </Typography>
               </div>
-              {/* {weather.sys.country} */}
             </div>
             <div className={classes.weatherBox}>
               <div className={classes.weatherIcon}>
@@ -308,9 +246,6 @@ function WeatherCard() {
                   {capitalise(weather.weather[0].description)}
                 </Typography>
               </div>
-              {/* <div className={classes.weatherBoxDesc}>
-            </div> */}
-              {/* {weather.weather[0].main} */}
             </div>
             <div className={classes.footerBoxGrid2}>
               <Typography className={classes.footerItems} variant="body1">
@@ -322,25 +257,52 @@ function WeatherCard() {
                 Humidity: {weather.main.humidity}%<br></br>
                 Visibility: {weather.visibility}m
               </Typography>
-              {/* <Typography className={classes.footerItems} variant="body1">
-                
-              </Typography>
-              <Typography className={classes.footerItems} variant="body1">
-                
-              </Typography> */}
             </div>
           </div>
         ) : (
           <div className={classes.contentBox}>
             <div className={classes.headerBox}>
-              <div className={classes.headerBoxTemp}>Location is here</div>
               <div className={classes.headerBoxDate}>
-                {dateBuilder(new Date())}
+                <Typography variant="h5" style={{ fontWeight: 700 }}>
+                  Day is here
+                </Typography>
+                <Typography variant="h6">Date is here</Typography>
+                <Typography variant="body1">
+                  <LocationOnIcon
+                    style={{ fontSize: "1em", marginRight: "0.2em" }}
+                  />
+                  Location is here
+                </Typography>
+              </div>
+              <div className={classes.headerBoxTemp}>
+                <Typography variant="h3">- °C</Typography>
               </div>
             </div>
             <div className={classes.weatherBox}>
-              <div className={classes.weatherDesc}>-°c</div>
-              <div className={classes.weatherBoxDesc}>Weather is here</div>
+              <div className={classes.weatherIcon}>
+                <img
+                  alt="Icon is here"
+                  // src={getWeatherIcon(weather.weather[0].icon)}
+                  width="100"
+                  height="100"
+                />
+              </div>
+              <div className={classes.weatherDesc}>
+                <Typography variant="h5" style={{ fontWeight: 700 }}>
+                  Description is here
+                </Typography>
+              </div>
+            </div>
+            <div className={classes.footerBoxGrid2}>
+              <Typography className={classes.footerItems} variant="body1">
+                Wind: - m/s
+                <br></br>
+                Cloudiness: - %
+              </Typography>
+              <Typography className={classes.footerItems} variant="body1">
+                Humidity: - %<br></br>
+                Visibility: - m
+              </Typography>
             </div>
           </div>
         )}
