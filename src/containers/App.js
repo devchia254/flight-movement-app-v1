@@ -9,10 +9,24 @@ import UserLoginPage from "./UserLoginPage";
 import UserRegisterPage from "./UserRegisterPage";
 import Navbar from "../components/navbar/Navbar";
 
+import AuthService from "../services/auth-service";
+
 class App extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      currentUser: undefined,
+      showLogin: false,
+      showSchedule: false,
+    };
+  }
+
+  componentDidMount() {
+    const stdUser = AuthService.getStandardUser();
+    const admUser = AuthService.getAdminUser();
+
+    console.log("standardUser: ", stdUser);
+    console.log("adminUser: ", admUser);
   }
 
   render() {
