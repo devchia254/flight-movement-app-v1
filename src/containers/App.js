@@ -22,18 +22,35 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const stdUser = AuthService.getStandardUser();
-    const admUser = AuthService.getAdminUser();
+    // const user = AuthService.getStandardUser(); // Test Standard user
+    // const user = AuthService.getAdminUser(); // Test Admin user
+    const user = undefined; // Test no user
 
-    console.log("standardUser: ", stdUser);
-    console.log("adminUser: ", admUser);
+    if (user) {
+      this.setState({
+        currentUser: user,
+        showSchedule:
+          user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
+        showLogin:
+          user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
+        showRegister: user.roles.includes("ROLE_ADMIN"),
+      });
+    }
   }
 
   render() {
+    const { showSchedule, showRegister, showLogin } = this.state;
+
     return (
       <div className="App">
         <CssBaseline />
-        <Navbar>Flight Movement App</Navbar>
+        <Navbar
+          showSchedule={showSchedule}
+          showRegister={showRegister}
+          showLogin={showLogin}
+        >
+          Flight Movement App
+        </Navbar>
         <div className="content"></div>
         {/* Link is at Drawer */}
         <Switch>

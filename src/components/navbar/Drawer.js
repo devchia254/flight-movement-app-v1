@@ -14,6 +14,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import CreateIcon from "@material-ui/icons/Create";
 // import Divider from "@material-ui/core/Divider";
 
+// Custom Link item
 function ListItemLink(props) {
   const { icon, primary, to } = props;
 
@@ -48,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function DrawerButton(props) {
+  const { showSchedule, showRegister, showLogin } = props;
   const classes = useStyles();
   const [state, setState] = React.useState({
     left: false,
@@ -76,13 +78,21 @@ export default function DrawerButton(props) {
           primary="Home"
           icon={<HomeRoundedIcon color="primary" />}
         />
-        <ListItemLink
-          to="/schedule"
-          primary="Schedule"
-          icon={<CreateIcon color="primary" />}
-        />
-        <ListItemLink to="/login" primary="Login" />
-        <ListItemLink to="/register" primary="Register" />
+
+        {/* Admin and Standard can view */}
+        {showSchedule && (
+          <ListItemLink
+            to="/schedule"
+            primary="Schedule"
+            icon={<CreateIcon color="primary" />}
+          />
+        )}
+
+        {/* Admin and Standard cannot view */}
+        {!showLogin && <ListItemLink to="/login" primary="Login" />}
+
+        {/* Only Admin can view */}
+        {showRegister && <ListItemLink to="/register" primary="Register" />}
       </List>
     </div>
   );

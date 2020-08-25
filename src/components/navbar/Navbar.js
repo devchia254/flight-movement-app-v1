@@ -22,19 +22,23 @@ const navStyle = (theme) => ({
 });
 
 class Navbar extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {};
   }
 
   render() {
-    const { classes } = this.props;
-    console.log(this.props.children);
+    const { classes, showSchedule, showRegister, showLogin } = this.props;
+    console.log(showSchedule);
     return (
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <DrawerButton />
+            <DrawerButton
+              showSchedule={showSchedule}
+              showRegister={showRegister}
+              showLogin={showLogin}
+            />
             <Typography variant="h6" className={classes.title}>
               {this.props.children}
             </Typography>
