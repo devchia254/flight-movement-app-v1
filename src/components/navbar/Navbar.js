@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -18,6 +18,10 @@ const navStyle = (theme) => ({
   },
   title: {
     flexGrow: 1,
+  },
+  link: {
+    color: theme.palette.common.white,
+    textDecoration: "none",
   },
 });
 
@@ -42,7 +46,11 @@ class Navbar extends Component {
             <Typography variant="h6" className={classes.title}>
               {this.props.children}
             </Typography>
-            <Button color="inherit">Login</Button>
+            <Button color="inherit">
+              <Link to="/profile" className={classes.link}>
+                User
+              </Link>
+            </Button>
           </Toolbar>
         </AppBar>
       </div>
