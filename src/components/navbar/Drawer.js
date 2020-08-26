@@ -11,11 +11,31 @@ import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
 // import UserIcon from "@material-ui/icons/AccountCircleOutlined";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import CreateIcon from "@material-ui/icons/Create";
+// import CreateIcon from "@material-ui/icons/Create";
+import ScheduleIcon from "@material-ui/icons/Schedule";
+import RegisterIcon from "@material-ui/icons/PersonAdd";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 // import Divider from "@material-ui/core/Divider";
+
+const useStyles = makeStyles((theme) => ({
+  listIcon: {
+    minWidth: 0,
+    marginRight: theme.spacing(2),
+  },
+  list: {
+    width: 250,
+  },
+  fullList: {
+    width: "auto",
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+}));
 
 // Custom RouterLink item - without prop forwarding
 function ListItemLink(props) {
+  const classes = useStyles();
   const { icon, primary, to } = props;
 
   const renderLink = React.useMemo(
@@ -28,25 +48,15 @@ function ListItemLink(props) {
 
   return (
     <li>
-      <ListItem button component={renderLink}>
-        {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+      <ListItem button className={classes.listItem} component={renderLink}>
+        {icon ? (
+          <ListItemIcon className={classes.listIcon}>{icon}</ListItemIcon>
+        ) : null}
         <ListItemText primary={primary} />
       </ListItem>
     </li>
   );
 }
-
-const useStyles = makeStyles((theme) => ({
-  list: {
-    width: 250,
-  },
-  fullList: {
-    width: "auto",
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-}));
 
 export default function DrawerButton(props) {
   const { showSchedule, showRegister, showLogin } = props;
@@ -84,15 +94,27 @@ export default function DrawerButton(props) {
           <ListItemLink
             to="/schedule"
             primary="Schedule"
-            icon={<CreateIcon color="primary" />}
+            icon={<ScheduleIcon color="primary" />}
           />
         )}
 
         {/* Admin and Standard cannot view */}
-        {!showLogin && <ListItemLink to="/login" primary="Login" />}
+        {!showLogin && (
+          <ListItemLink
+            to="/login"
+            primary="Login"
+            icon={<AccountCircleIcon color="primary" />}
+          />
+        )}
 
         {/* Only Admin can view */}
-        {showRegister && <ListItemLink to="/register" primary="Register" />}
+        {showRegister && (
+          <ListItemLink
+            to="/register"
+            primary="Register"
+            icon={<RegisterIcon color="primary" />}
+          />
+        )}
       </List>
     </div>
   );

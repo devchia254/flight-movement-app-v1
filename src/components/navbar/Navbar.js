@@ -5,8 +5,9 @@ import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
-// import Button from "@material-ui/core/Button";
+// import Link from "@material-ui/core/Link";
+import PersonIcon from "@material-ui/icons/Person";
+import Button from "@material-ui/core/Button";
 
 import DrawerButton from "./Drawer";
 import AuthService from "../../services/auth-service";
@@ -15,22 +16,30 @@ const navStyle = (theme) => ({
   root: {
     flexGrow: 1,
   },
+  profileLink: {
+    display: "flex",
+  },
+  profileIcon: {
+    background: theme.palette.common.white,
+    color: theme.palette.primary.main,
+    borderRadius: theme.spacing(1),
+  },
   menuButton: {
     marginRight: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
   },
-  link: {
-    textDecoration: "none",
+  profileButton: {
+    textTransform: "none",
   },
 });
 
 // Toggle between types of users here
 const ToggleUser = () => {
   // const user = AuthService.getStandardUser(); // Test Standard user
-  // const user = AuthService.getAdminUser(); // Test Admin user
-  const user = null; // Test no user
+  const user = AuthService.getAdminUser(); // Test Admin user
+  // const user = null; // Test no user
   return user;
 };
 
@@ -92,15 +101,14 @@ class Navbar extends Component {
               {this.props.children}
             </Typography>
             {showProfile && (
-              <Link
+              <Button
                 color="inherit"
-                className={classes.link}
+                className={classes.profileButton}
                 component={this.ProfileLink}
-                underline="none"
-                variant="body1"
+                startIcon={<PersonIcon className={classes.profileIcon} />}
               >
                 {!currentUser ? "username here" : currentUser.username}
-              </Link>
+              </Button>
             )}
           </Toolbar>
         </AppBar>
