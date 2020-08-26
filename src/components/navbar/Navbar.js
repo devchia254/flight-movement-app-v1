@@ -28,9 +28,9 @@ const navStyle = (theme) => ({
 
 // Toggle between types of users here
 const ToggleUser = () => {
-  const user = AuthService.getStandardUser(); // Test Standard user
+  // const user = AuthService.getStandardUser(); // Test Standard user
   // const user = AuthService.getAdminUser(); // Test Admin user
-  // const user = null; // Test no user
+  const user = null; // Test no user
   return user;
 };
 
@@ -41,6 +41,7 @@ class Navbar extends Component {
       currentUser: ToggleUser(),
       showLogin: false,
       showSchedule: false,
+      showProfile: false,
     };
   }
 
@@ -50,6 +51,8 @@ class Navbar extends Component {
     if (user) {
       this.setState({
         currentUser: user,
+        showProfile:
+          user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
         showSchedule:
           user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
         showLogin:
@@ -65,7 +68,13 @@ class Navbar extends Component {
   ));
 
   render() {
-    const { showSchedule, showRegister, showLogin, currentUser } = this.state;
+    const {
+      showSchedule,
+      showRegister,
+      showLogin,
+      showProfile,
+      currentUser,
+    } = this.state;
     const { classes } = this.props;
 
     console.log(currentUser);
@@ -82,15 +91,17 @@ class Navbar extends Component {
             <Typography variant="h6" className={classes.title}>
               {this.props.children}
             </Typography>
-            <Link
-              color="inherit"
-              className={classes.link}
-              component={this.ProfileLink}
-              underline="none"
-              variant="body1"
-            >
-              {!currentUser ? "username here" : currentUser.username}
-            </Link>
+            {showProfile && (
+              <Link
+                color="inherit"
+                className={classes.link}
+                component={this.ProfileLink}
+                underline="none"
+                variant="body1"
+              >
+                {!currentUser ? "username here" : currentUser.username}
+              </Link>
+            )}
           </Toolbar>
         </AppBar>
       </div>
