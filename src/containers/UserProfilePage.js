@@ -14,7 +14,9 @@ const useStyles = (theme) => ({
 class UserProfilePage extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      currentUser: undefined,
+    };
   }
 
   render() {

@@ -5,7 +5,8 @@ import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
+import Link from "@material-ui/core/Link";
+// import Button from "@material-ui/core/Button";
 
 import DrawerButton from "./Drawer";
 import AuthService from "../../services/auth-service";
@@ -21,25 +22,30 @@ const navStyle = (theme) => ({
     flexGrow: 1,
   },
   link: {
-    color: theme.palette.common.white,
     textDecoration: "none",
   },
 });
+
+// Toggle between types of users here
+const ToggleUser = () => {
+  const user = AuthService.getStandardUser(); // Test Standard user
+  // const user = AuthService.getAdminUser(); // Test Admin user
+  // const user = null; // Test no user
+  return user;
+};
 
 class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: undefined,
+      currentUser: ToggleUser(),
       showLogin: false,
       showSchedule: false,
     };
   }
 
   componentDidMount() {
-    // const user = AuthService.getStandardUser(); // Test Standard user
-    const user = AuthService.getAdminUser(); // Test Admin user
-    // const user = undefined; // Test no user
+    const user = ToggleUser();
 
     if (user) {
       this.setState({
@@ -59,8 +65,11 @@ class Navbar extends Component {
   ));
 
   render() {
-    const { showSchedule, showRegister, showLogin } = this.state;
+    const { showSchedule, showRegister, showLogin, currentUser } = this.state;
     const { classes } = this.props;
+
+    console.log(currentUser);
+
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -73,13 +82,15 @@ class Navbar extends Component {
             <Typography variant="h6" className={classes.title}>
               {this.props.children}
             </Typography>
-            <Button
+            <Link
               color="inherit"
-              className={classes.test}
+              className={classes.link}
               component={this.ProfileLink}
+              underline="none"
+              variant="body1"
             >
-              User
-            </Button>
+              {!currentUser ? "username here" : currentUser.username}
+            </Link>
           </Toolbar>
         </AppBar>
       </div>
