@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -14,14 +14,14 @@ import MenuIcon from "@material-ui/icons/Menu";
 import CreateIcon from "@material-ui/icons/Create";
 // import Divider from "@material-ui/core/Divider";
 
-// Custom Link item
+// Custom RouterLink item - without prop forwarding
 function ListItemLink(props) {
   const { icon, primary, to } = props;
 
   const renderLink = React.useMemo(
     () =>
       React.forwardRef((itemProps, ref) => (
-        <Link to={to} ref={ref} {...itemProps} />
+        <RouterLink to={to} ref={ref} {...itemProps} />
       )),
     [to]
   );

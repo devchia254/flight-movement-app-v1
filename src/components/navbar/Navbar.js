@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
 import DrawerButton from "./Drawer";
+import AuthService from "../../services/auth-service";
 
 const navStyle = (theme) => ({
   root: {
@@ -28,12 +29,38 @@ const navStyle = (theme) => ({
 class Navbar extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      currentUser: undefined,
+      showLogin: false,
+      showSchedule: false,
+    };
   }
 
+  componentDidMount() {
+    // const user = AuthService.getStandardUser(); // Test Standard user
+    const user = AuthService.getAdminUser(); // Test Admin user
+    // const user = undefined; // Test no user
+
+    if (user) {
+      this.setState({
+        currentUser: user,
+        showSchedule:
+          user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
+        showLogin:
+          user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
+        showRegister: user.roles.includes("ROLE_ADMIN"),
+      });
+    }
+  }
+
+  // Custom Link
+  ProfileLink = React.forwardRef((props, ref) => (
+    <RouterLink ref={ref} to="/profile" {...props} />
+  ));
+
   render() {
-    const { classes, showSchedule, showRegister, showLogin } = this.props;
-    console.log(showSchedule);
+    const { showSchedule, showRegister, showLogin } = this.state;
+    const { classes } = this.props;
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -46,10 +73,12 @@ class Navbar extends Component {
             <Typography variant="h6" className={classes.title}>
               {this.props.children}
             </Typography>
-            <Button color="inherit">
-              <Link to="/profile" className={classes.link}>
-                User
-              </Link>
+            <Button
+              color="inherit"
+              className={classes.test}
+              component={this.ProfileLink}
+            >
+              User
             </Button>
           </Toolbar>
         </AppBar>
