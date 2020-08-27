@@ -37,9 +37,9 @@ const navStyle = (theme) => ({
 
 // Toggle between types of users here
 const ToggleUser = () => {
-  // const user = AuthService.getStandardUser(); // Test Standard user
   const user = AuthService.getAdminUser(); // Test Admin user
-  // const user = null; // Test no user
+  // const user = AuthService.getStandardUser(); // Test Standard user
+  // const user = undefined; // Test no user
   return user;
 };
 
@@ -49,6 +49,7 @@ class Navbar extends Component {
     this.state = {
       currentUser: ToggleUser(),
       showLogin: false,
+      showLogout: false,
       showSchedule: false,
       showProfile: false,
     };
@@ -66,6 +67,8 @@ class Navbar extends Component {
           user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
         showLogin:
           user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
+        showLogout:
+          user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
         showRegister: user.roles.includes("ROLE_ADMIN"),
       });
     }
@@ -81,6 +84,7 @@ class Navbar extends Component {
       showSchedule,
       showRegister,
       showLogin,
+      showLogout,
       showProfile,
       currentUser,
     } = this.state;
@@ -96,6 +100,7 @@ class Navbar extends Component {
               showSchedule={showSchedule}
               showRegister={showRegister}
               showLogin={showLogin}
+              showLogout={showLogout}
             />
             <Typography variant="h6" className={classes.title}>
               {this.props.children}

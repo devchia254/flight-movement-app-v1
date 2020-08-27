@@ -15,6 +15,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 import RegisterIcon from "@material-ui/icons/PersonAdd";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import LogOutIcon from "@material-ui/icons/PowerSettingsNew";
 // import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,6 +31,12 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
+  },
+  drawerFlex: {
+    display: "flex",
+    height: "100vh",
+    flexDirection: "column",
+    justifyContent: "space-between",
   },
 }));
 
@@ -59,7 +66,7 @@ function ListItemLink(props) {
 }
 
 export default function DrawerButton(props) {
-  const { showSchedule, showRegister, showLogin } = props;
+  const { showSchedule, showRegister, showLogin, showLogout } = props;
   const classes = useStyles();
   const [state, setState] = React.useState({
     left: false,
@@ -82,39 +89,50 @@ export default function DrawerButton(props) {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <List>
-        <ListItemLink
-          to="/"
-          primary="Home"
-          icon={<HomeRoundedIcon color="primary" />}
-        />
-
-        {/* Admin and Standard can view */}
-        {showSchedule && (
+      <List className={classes.drawerFlex}>
+        <div className={classes.topSection}>
           <ListItemLink
-            to="/schedule"
-            primary="Schedule"
-            icon={<ScheduleIcon color="primary" />}
+            to="/"
+            primary="Home"
+            icon={<HomeRoundedIcon color="primary" />}
           />
-        )}
 
-        {/* Admin and Standard cannot view */}
-        {!showLogin && (
-          <ListItemLink
-            to="/login"
-            primary="Login"
-            icon={<AccountCircleIcon color="primary" />}
-          />
-        )}
+          {/* Admin and Standard can view */}
+          {showSchedule && (
+            <ListItemLink
+              to="/schedule"
+              primary="Schedule"
+              icon={<ScheduleIcon color="primary" />}
+            />
+          )}
 
-        {/* Only Admin can view */}
-        {showRegister && (
-          <ListItemLink
-            to="/register"
-            primary="Register"
-            icon={<RegisterIcon color="primary" />}
-          />
-        )}
+          {/* Admin and Standard cannot view */}
+          {!showLogin && (
+            <ListItemLink
+              to="/login"
+              primary="Login"
+              icon={<AccountCircleIcon color="primary" />}
+            />
+          )}
+
+          {/* Only Admin can view */}
+          {showRegister && (
+            <ListItemLink
+              to="/register"
+              primary="Register"
+              icon={<RegisterIcon color="primary" />}
+            />
+          )}
+        </div>
+        <div className={classes.bottomSection}>
+          {showLogout && (
+            <ListItemLink
+              // to="/register"
+              primary="Log Out"
+              icon={<LogOutIcon color="primary" />}
+            />
+          )}
+        </div>
       </List>
     </div>
   );
