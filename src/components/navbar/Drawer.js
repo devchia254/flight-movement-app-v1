@@ -66,7 +66,7 @@ function ListItemLink(props) {
 }
 
 export default function DrawerButton(props) {
-  const { showSchedule, showRegister, showLogin, showLogout } = props;
+  const { showRegister, currentUser } = props;
   const classes = useStyles();
   const [state, setState] = React.useState({
     left: false,
@@ -97,8 +97,8 @@ export default function DrawerButton(props) {
             icon={<HomeRoundedIcon color="primary" />}
           />
 
-          {/* Admin and Standard can view */}
-          {showSchedule && (
+          {/* if there is a user, Admin and Standard can viee schedule page */}
+          {currentUser && (
             <ListItemLink
               to="/schedule"
               primary="Schedule"
@@ -106,8 +106,8 @@ export default function DrawerButton(props) {
             />
           )}
 
-          {/* Admin and Standard cannot view */}
-          {!showLogin && (
+          {/* if there is no user, Admin and Standard can view login page */}
+          {!currentUser && (
             <ListItemLink
               to="/login"
               primary="Login"
@@ -125,7 +125,7 @@ export default function DrawerButton(props) {
           )}
         </div>
         <div className={classes.bottomSection}>
-          {showLogout && (
+          {currentUser && (
             <ListItemLink
               // to="/register"
               primary="Log Out"

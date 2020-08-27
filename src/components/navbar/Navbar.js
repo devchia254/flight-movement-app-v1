@@ -37,9 +37,9 @@ const navStyle = (theme) => ({
 
 // Toggle between types of users here
 const ToggleUser = () => {
-  const user = AuthService.getAdminUser(); // Test Admin user
+  // const user = AuthService.getAdminUser(); // Test Admin user
   // const user = AuthService.getStandardUser(); // Test Standard user
-  // const user = undefined; // Test no user
+  const user = undefined; // Test no user
   return user;
 };
 
@@ -48,10 +48,7 @@ class Navbar extends Component {
     super(props);
     this.state = {
       currentUser: ToggleUser(),
-      showLogin: false,
-      showLogout: false,
-      showSchedule: false,
-      showProfile: false,
+      showRegister: false,
     };
   }
 
@@ -61,15 +58,15 @@ class Navbar extends Component {
     if (user) {
       this.setState({
         currentUser: user,
-        showProfile:
-          user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
-        showSchedule:
-          user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
-        showLogin:
-          user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
-        showLogout:
-          user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
-        showRegister: user.roles.includes("ROLE_ADMIN"),
+        showRegister: user.roles.includes("ROLE_ADMIN"), // Only admin can register user
+        // showProfile:
+        //   user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
+        // showSchedule:
+        //   user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
+        // showLogin:
+        //   user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
+        // showLogout:
+        //   user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
       });
     }
   }
@@ -80,32 +77,24 @@ class Navbar extends Component {
   ));
 
   render() {
-    const {
-      showSchedule,
-      showRegister,
-      showLogin,
-      showLogout,
-      showProfile,
-      currentUser,
-    } = this.state;
+    const { showRegister, currentUser } = this.state;
     const { classes } = this.props;
 
-    // console.log(currentUser);
+    console.log(showRegister);
 
     return (
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
             <DrawerButton
-              showSchedule={showSchedule}
               showRegister={showRegister}
-              showLogin={showLogin}
-              showLogout={showLogout}
+              currentUser={currentUser}
             />
             <Typography variant="h6" className={classes.title}>
               {this.props.children}
             </Typography>
-            {showProfile && (
+            {/* if there is a user, show profile link */}
+            {currentUser && (
               <Button
                 color="inherit"
                 className={classes.profileButton}
