@@ -130,7 +130,7 @@ function WeatherCard() {
       );
       const result = await response.json();
       setWeather(result);
-      console.log(result);
+      // console.log(result);
     };
     fetchData();
   }, [location]);
@@ -206,8 +206,9 @@ function WeatherCard() {
   return (
     <div
       className={
-        typeof weather.main != "undefined" &&
-        `${classes.mainBg} ${changeBg(weather.name)}`
+        typeof weather.main != "undefined"
+          ? `${classes.mainBg} ${changeBg(weather.name)}`
+          : `${classes.mainBg}`
       }
     >
       <div className={classes.cardBox}>

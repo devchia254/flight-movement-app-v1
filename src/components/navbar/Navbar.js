@@ -86,7 +86,7 @@ class Navbar extends Component {
     } = this.state;
     const { classes } = this.props;
 
-    console.log(currentUser);
+    // console.log(currentUser);
 
     return (
       <div className={classes.root}>
