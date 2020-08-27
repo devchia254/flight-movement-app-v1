@@ -37,9 +37,9 @@ const navStyle = (theme) => ({
 
 // Toggle between types of users here
 const ToggleUser = () => {
-  // const user = AuthService.getAdminUser(); // Test Admin user
+  const user = AuthService.getAdminUser(); // Test Admin user
   // const user = AuthService.getStandardUser(); // Test Standard user
-  const user = undefined; // Test no user
+  // const user = AuthService.getNoUser(); // Test no user
   return user;
 };
 
@@ -80,7 +80,7 @@ class Navbar extends Component {
     const { showRegister, currentUser } = this.state;
     const { classes } = this.props;
 
-    console.log(showRegister);
+    // console.log(showRegister);
 
     return (
       <div className={classes.root}>

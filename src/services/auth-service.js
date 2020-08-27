@@ -17,6 +17,9 @@ class AuthService {
       username: "admUser",
     };
   }
+  getNoUser() {
+    return undefined;
+  }
 }
 
 export default new AuthService();

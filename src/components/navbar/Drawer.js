@@ -55,7 +55,12 @@ function ListItemLink(props) {
 
   return (
     <li>
-      <ListItem button className={classes.listItem} component={renderLink}>
+      <ListItem
+        button
+        className={classes.listItem}
+        component={renderLink}
+        onClick={() => console.log("Click!")}
+      >
         {icon ? (
           <ListItemIcon className={classes.listIcon}>{icon}</ListItemIcon>
         ) : null}
@@ -81,6 +86,8 @@ export default function DrawerButton(props) {
     }
     setState({ ...state, left: open });
   };
+
+  // const testLogout = () => console.log("Testing Log Out!");
 
   const list = (anchor) => (
     <div
@@ -127,7 +134,7 @@ export default function DrawerButton(props) {
         <div className={classes.bottomSection}>
           {currentUser && (
             <ListItemLink
-              // to="/register"
+              // to="/login"
               primary="Log Out"
               icon={<LogOutIcon color="primary" />}
             />
