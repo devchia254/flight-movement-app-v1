@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 // Custom RouterLink item - without prop forwarding
 function ListItemLink(props) {
   const classes = useStyles();
-  const { icon, primary, to } = props;
+  const { icon, primary, to, name, testLogout } = props;
 
   const renderLink = React.useMemo(
     () =>
@@ -59,7 +59,9 @@ function ListItemLink(props) {
         button
         className={classes.listItem}
         component={renderLink}
-        onClick={() => console.log("Click!")}
+        name={name}
+        // onClick={(evt) => console.log(evt.currentTarget.name)}
+        onClick={testLogout}
       >
         {icon ? (
           <ListItemIcon className={classes.listIcon}>{icon}</ListItemIcon>
@@ -71,7 +73,7 @@ function ListItemLink(props) {
 }
 
 export default function DrawerButton(props) {
-  const { showRegister, currentUser } = props;
+  const { showRegister, currentUser, testLogout } = props;
   const classes = useStyles();
   const [state, setState] = React.useState({
     left: false,
@@ -101,6 +103,7 @@ export default function DrawerButton(props) {
           <ListItemLink
             to="/"
             primary="Home"
+            name="home"
             icon={<HomeRoundedIcon color="primary" />}
           />
 
@@ -109,6 +112,7 @@ export default function DrawerButton(props) {
             <ListItemLink
               to="/schedule"
               primary="Schedule"
+              name="schedule"
               icon={<ScheduleIcon color="primary" />}
             />
           )}
@@ -118,6 +122,7 @@ export default function DrawerButton(props) {
             <ListItemLink
               to="/login"
               primary="Login"
+              name="login"
               icon={<AccountCircleIcon color="primary" />}
             />
           )}
@@ -127,6 +132,7 @@ export default function DrawerButton(props) {
             <ListItemLink
               to="/register"
               primary="Register"
+              name="register"
               icon={<RegisterIcon color="primary" />}
             />
           )}
@@ -134,9 +140,12 @@ export default function DrawerButton(props) {
         <div className={classes.bottomSection}>
           {currentUser && (
             <ListItemLink
-              // to="/login"
+              // Maybe add if statement in "to" to trigger only when access token is deleted
+              to="/login"
               primary="Log Out"
+              name="logout"
               icon={<LogOutIcon color="primary" />}
+              testLogout={testLogout}
             />
           )}
         </div>

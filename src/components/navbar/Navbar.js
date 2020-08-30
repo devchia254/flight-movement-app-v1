@@ -71,6 +71,11 @@ class Navbar extends Component {
     }
   }
 
+  testLogout = () => {
+    // console.log("testLogout function");
+    this.setState({ currentUser: AuthService.getNoUser() });
+  };
+
   // Custom Link
   ProfileLink = React.forwardRef((props, ref) => (
     <RouterLink ref={ref} to="/profile" {...props} />
@@ -89,6 +94,7 @@ class Navbar extends Component {
             <DrawerButton
               showRegister={showRegister}
               currentUser={currentUser}
+              testLogout={this.testLogout}
             />
             <Typography variant="h6" className={classes.title}>
               {this.props.children}
