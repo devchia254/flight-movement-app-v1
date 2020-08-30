@@ -7,6 +7,7 @@ import SchedulePage from "./SchedulePage";
 import Homepage from "./Homepage";
 import UserLoginPage from "./UserLoginPage";
 import UserRegisterPage from "./UserRegisterPage";
+import UserProfilePage from "./UserProfilePage";
 import Navbar from "../components/navbar/Navbar";
 
 class App extends Component {
@@ -27,6 +28,7 @@ class App extends Component {
           <Route path="/schedule" component={SchedulePage} />
           <Route path="/login" component={UserLoginPage} />
           <Route path="/register" component={UserRegisterPage} />
+          <Route path="/profile" component={UserProfilePage} />
         </Switch>
       </div>
     );
