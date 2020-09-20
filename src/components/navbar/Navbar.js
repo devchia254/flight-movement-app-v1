@@ -35,30 +35,32 @@ const navStyle = (theme) => ({
   },
 });
 
-// Toggle between types of users here
-const ToggleUser = () => {
-  const user = AuthService.getAdminUser(); // Test Admin user
-  // const user = AuthService.getStandardUser(); // Test Standard user
-  // const user = AuthService.getNoUser(); // Test no user
-  return user;
-};
+// // Toggle between types of users here
+// const ToggleUser = () => {
+//   // const user = AuthService.getAdminUser(); // Test Admin user
+//   // const user = AuthService.getStandardUser(); // Test Standard user
+//   const user = AuthService.getNoUser(); // Test no user
+//   return user;
+// };
 
 class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: ToggleUser(),
+      // currentUser: ToggleUser(),
+      currentUser: undefined,
       showRegister: false,
     };
   }
 
   componentDidMount() {
-    const user = ToggleUser();
+    // const user = ToggleUser();
+    const user = AuthService.getCurrentUser();
 
     if (user) {
       this.setState({
         currentUser: user,
-        showRegister: user.roles.includes("ROLE_ADMIN"), // Only admin can register user
+        showRegister: user.role.includes("ROLE_ADMIN"), // Only admin can register user
         // showProfile:
         //   user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
         // showSchedule:
@@ -107,7 +109,7 @@ class Navbar extends Component {
                 component={this.ProfileLink}
                 startIcon={<PersonIcon className={classes.profileIcon} />}
               >
-                {!currentUser ? "username here" : currentUser.username}
+                {!currentUser ? "username here" : currentUser.email}
               </Button>
             )}
           </Toolbar>

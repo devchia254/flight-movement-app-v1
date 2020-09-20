@@ -1,13 +1,40 @@
+import axios from "axios";
+
+const API_URL = "http://localhost:3030/api/auth/";
+
 class AuthService {
-  getStandardUser() {
-    return {
-      accessToken: "encrypted123",
-      email: "stdUser@email.com",
-      id: 1,
-      roles: ["ROLE_USER"],
-      username: "stdUser",
-    };
+  login(email, password) {
+    return axios
+      .post(API_URL + "signin", {
+        email,
+        password,
+      })
+      .then((response) => {
+        if (response.data.accessToken) {
+          localStorage.setItem("user", JSON.stringify(response.data));
+        }
+
+        return response.data;
+      });
   }
+
+  logout() {
+    localStorage.removeItem("user");
+  }
+
+  getCurrentUser() {
+    return JSON.parse(localStorage.getItem("user"));
+  }
+
+  // getStandardUser() {
+  //   return {
+  //     accessToken: "encrypted123",
+  //     email: "stdUser@email.com",
+  //     id: 1,
+  //     roles: ["ROLE_USER"],
+  //     username: "stdUser",
+  //   };
+  // }
   getAdminUser() {
     return {
       accessToken: "encrypted456",

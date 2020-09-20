@@ -1,4 +1,7 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
+
+import AuthService from "../../services/auth-service";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
@@ -10,7 +13,7 @@ import * as yup from "yup";
 const yupPwdRules = yup
   .string()
   .required("Required")
-  .min(8, "Must not be less 8 characters");
+  .min(5, "Must not be less 8 characters");
 
 const yupStringRules = yup
   .string()
@@ -19,7 +22,7 @@ const yupStringRules = yup
 
 // Yup Configurations
 const yupValidationSchema = yup.object().shape({
-  username: yupStringRules,
+  email: yupStringRules,
   password: yupPwdRules,
 });
 
@@ -39,36 +42,58 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function LoginForm() {
+function LoginForm(props) {
   const classes = useStyles();
-
+  const { history } = props;
   return (
     <Formik
       initialValues={{
-        username: "",
+        email: "",
         password: "",
       }}
       validationSchema={yupValidationSchema}
       onSubmit={(values, { resetForm, setSubmitting }) => {
         setSubmitting(true); // Makes async call and disables submit button
 
-        // setTimeout to mimic fetch POST data
-        setTimeout(() => {
-          alert(JSON.stringify(values));
-          // Clear form after submit
-          resetForm({
-            values: {
-              username: "",
-              password: "",
-            },
-          });
-          setSubmitting(false); // Enables submit button once submitted
-        }, 1500); // 3 secs timeout
+        AuthService.login(values.email, values.password).then(
+          () => {
+            history.push("/profile");
+            // window.location.reload();
+          },
+          (error) => {
+            const resMessage =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
+
+            this.setState({
+              loading: false,
+              message: resMessage,
+            });
+          }
+        );
+
+        // // setTimeout to mimic fetch POST data
+        // setTimeout(() => {
+        //   alert(JSON.stringify(values));
+        //   // Clear form after submit
+        //   resetForm({
+        //     values: {
+        //       username: "",
+        //       password: "",
+        //     },
+        //   });
+        //   setSubmitting(false); // Enables submit button once submitted
+        // }, 1500); // 3 secs timeout
+
+        setSubmitting(false);
       }}
     >
       {(props) => (
         <Form className={classes.form}>
-          <MyField label="Username" name="username" />
+          <MyField label="Email" name="email" />
           <MyField label="Password" name="password" type="password" />
           <Button
             disabled={props.isSubmitting}
@@ -88,4 +113,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default withRouter(LoginForm);
