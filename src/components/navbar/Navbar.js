@@ -56,6 +56,7 @@ class Navbar extends Component {
   componentDidMount() {
     // const user = ToggleUser();
     const user = AuthService.getCurrentUser();
+    console.log(user);
 
     if (user) {
       this.setState({

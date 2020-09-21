@@ -58,7 +58,7 @@ function LoginForm(props) {
         AuthService.login(values.email, values.password).then(
           () => {
             history.push("/profile");
-            // window.location.reload();
+            window.location.reload();
           },
           (error) => {
             const resMessage =

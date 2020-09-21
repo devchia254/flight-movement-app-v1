@@ -18,6 +18,7 @@ class AuthService {
       });
   }
 
+  // LAST WORKING HERE: 20/09/20
   logout() {
     localStorage.removeItem("user");
   }
@@ -35,15 +36,16 @@ class AuthService {
   //     username: "stdUser",
   //   };
   // }
-  getAdminUser() {
-    return {
-      accessToken: "encrypted456",
-      email: "admUser@email.com",
-      id: 1,
-      roles: ["ROLE_ADMIN"],
-      username: "admUser",
-    };
-  }
+  // getAdminUser() {
+  //   return {
+  //     accessToken: "encrypted456",
+  //     email: "admUser@email.com",
+  //     id: 1,
+  //     roles: ["ROLE_ADMIN"],
+  //     username: "admUser",
+  //   };
+  // }
+
   getNoUser() {
     return undefined;
   }
