@@ -57,6 +57,7 @@ function LoginForm(props) {
 
         AuthService.login(values.email, values.password).then(
           () => {
+            setSubmitting(false); // Enables submit button once submitted
             history.push("/profile");
             window.location.reload();
           },
@@ -67,11 +68,13 @@ function LoginForm(props) {
                 error.response.data.message) ||
               error.message ||
               error.toString();
-
-            this.setState({
-              loading: false,
-              message: resMessage,
-            });
+            if (resMessage) {
+              console.log(resMessage);
+            }
+            // this.setState({
+            //   loading: false,
+            //   message: resMessage,
+            // });
           }
         );
 

@@ -21,6 +21,7 @@ class AuthService {
   // LAST WORKING HERE: 20/09/20
   logout() {
     localStorage.removeItem("user");
+    // window.location.reload();
   }
 
   getCurrentUser() {
