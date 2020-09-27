@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link as RouterLink, withRouter } from "react-router-dom";
+import { Link as RouterLink, withRouter, Redirect } from "react-router-dom";
 
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -94,6 +94,10 @@ class Navbar extends Component {
     const { classes } = this.props;
 
     // console.log(showRegister);
+    if (!AuthService.getCurrentUser()) {
+      return <Redirect to="/login" />;
+      // console.log("No user logged in!");
+    }
 
     return (
       <div className={classes.root}>
