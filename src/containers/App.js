@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
+import { ProtectedRoute } from "../routes/protected-route";
+import { RedirectUserRoute } from "../routes/redirectuser-route";
+import { AdminRoute } from "../routes/admin-route";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 
@@ -25,10 +28,10 @@ class App extends Component {
         {/* Link is at Drawer */}
         <Switch>
           <Route exact path="/" component={Homepage} />
-          <Route path="/schedule" component={SchedulePage} />
-          <Route path="/login" component={UserLoginPage} />
-          <Route path="/register" component={UserRegisterPage} />
-          <Route path="/profile" component={UserProfilePage} />
+          <RedirectUserRoute path="/login" component={UserLoginPage} />
+          <ProtectedRoute path="/schedule" component={SchedulePage} />
+          <ProtectedRoute path="/profile" component={UserProfilePage} />
+          <AdminRoute path="/register" component={UserRegisterPage} />
         </Switch>
       </div>
     );

@@ -12,7 +12,7 @@ import * as yup from "yup";
 const yupPwdRules = yup
   .string()
   .required("Required")
-  .min(5, "Must not be less 8 characters");
+  .min(3, "Must not be less 3 characters (CHANGE LATER!)");
 
 const yupStringRules = yup
   .string()
@@ -44,6 +44,8 @@ const useStyles = makeStyles((theme) => ({
 function LoginForm(props) {
   const classes = useStyles();
   const { history } = props;
+
+  console.log("History: ", history);
   return (
     <Formik
       initialValues={{

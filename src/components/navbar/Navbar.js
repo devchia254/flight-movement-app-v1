@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, withRouter } from "react-router-dom";
 
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -77,10 +77,10 @@ class Navbar extends Component {
   testLogout = () => {
     // console.log("testLogout function");
     // this.setState({ currentUser: AuthService.getNoUser() });
-    // const { history } = this.props;
-    // AuthService.logout();
-    // // history.push("/login");
-    // window.location.reload();
+    const { history } = this.props;
+    AuthService.logout();
+    history.push("/login");
+    window.location.reload();
   };
 
   // Custom Link
@@ -126,4 +126,4 @@ class Navbar extends Component {
     );
   }
 }
-export default withStyles(navStyle)(Navbar);
+export default withRouter(withStyles(navStyle)(Navbar));
