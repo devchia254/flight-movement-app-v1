@@ -1,5 +1,4 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
 
 import AuthService from "../../services/auth-service";
 
@@ -116,4 +115,4 @@ function LoginForm(props) {
   );
 }
 
-export default withRouter(LoginForm);
+export default LoginForm;
