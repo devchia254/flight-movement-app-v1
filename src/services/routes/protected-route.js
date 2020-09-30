@@ -1,14 +1,13 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import auth from "../services/auth-service";
+import auth from "../auth/auth-service";
 
-export const AdminRoute = ({ component: Component, ...rest }) => {
+export const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
       render={(props) => {
-        const user = auth.getCurrentUser();
-        if (user.role.includes("ROLE_ADMIN")) {
+        if (auth.getCurrentUser()) {
           return <Component {...props} />;
         } else {
           return (

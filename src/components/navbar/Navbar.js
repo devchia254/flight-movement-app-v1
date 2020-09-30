@@ -10,7 +10,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import Button from "@material-ui/core/Button";
 
 import DrawerButton from "./Drawer";
-import AuthService from "../../services/auth-service";
+import AuthService from "../../services/auth/auth-service";
 
 const navStyle = (theme) => ({
   root: {
@@ -56,7 +56,7 @@ class Navbar extends Component {
   componentDidMount() {
     // const user = ToggleUser();
     const user = AuthService.getCurrentUser();
-    console.log(user);
+    // console.log(user);
 
     if (user) {
       this.setState({

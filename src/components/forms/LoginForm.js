@@ -1,6 +1,6 @@
 import React from "react";
 
-import AuthService from "../../services/auth-service";
+import AuthService from "../../services/auth/auth-service";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
@@ -45,7 +45,7 @@ function LoginForm(props) {
   const classes = useStyles();
   const { history } = props;
 
-  console.log("History: ", history);
+  // console.log("History: ", history);
   return (
     <Formik
       initialValues={{

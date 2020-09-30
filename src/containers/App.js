@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
-import { ProtectedRoute } from "../routes/protected-route";
-import { RedirectUserRoute } from "../routes/redirectuser-route";
-import { AdminRoute } from "../routes/admin-route";
+import { ProtectedRoute } from "../services/routes/protected-route";
+import { RedirectUserRoute } from "../services/routes/redirectuser-route";
+import { AdminRoute } from "../services/routes/admin-route";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 
@@ -32,6 +32,7 @@ class App extends Component {
           <ProtectedRoute path="/schedule" component={SchedulePage} />
           <ProtectedRoute path="/profile" component={UserProfilePage} />
           <AdminRoute path="/register" component={UserRegisterPage} />
+          <Route path="*" component={() => "404 NOT FOUND"} />
         </Switch>
       </div>
     );
