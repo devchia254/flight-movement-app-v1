@@ -17,6 +17,10 @@ const yupPwdRules = yup
   .required("Required")
   .min(8, "Must not be less 8 characters");
 
+const yupPwdVerify = yup
+  .string()
+  .oneOf([yup.ref("password"), null], "Passwords must match");
+
 const yupStringRules = yup
   .string()
   .required("Required")
@@ -24,10 +28,11 @@ const yupStringRules = yup
 
 // Yup Configurations
 const yupValidationSchema = yup.object().shape({
-  username: yupStringRules,
+  firstName: yupStringRules,
+  lastName: yupStringRules,
   email: yupEmailRules,
-  password1: yupPwdRules,
-  password2: yupPwdRules,
+  password: yupPwdRules,
+  passwordVerify: yupPwdVerify,
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -52,10 +57,11 @@ function RegisterForm() {
   return (
     <Formik
       initialValues={{
-        username: "",
+        firstName: "",
+        lastName: "",
         email: "",
-        password1: "",
-        password2: "",
+        password: "",
+        passwordVerify: "",
       }}
       validationSchema={yupValidationSchema}
       onSubmit={(values, { resetForm, setSubmitting }) => {
@@ -67,10 +73,11 @@ function RegisterForm() {
           // Clear form after submit
           resetForm({
             values: {
-              username: "",
+              firstName: "",
+              lastName: "",
               email: "",
-              password1: "",
-              password2: "",
+              password: "",
+              passwordVerify: "",
             },
           });
           setSubmitting(false); // Enables submit button once submitted
@@ -79,10 +86,15 @@ function RegisterForm() {
     >
       {(props) => (
         <Form className={classes.form}>
-          <MyField label="Username" name="username" />
+          <MyField label="First Name" name="firstName" />
+          <MyField label="Last Name" name="lastName" />
           <MyField label="Email" name="email" />
-          <MyField label="Password" name="password1" type="password" />
-          <MyField label="Verify Password" name="password2" type="password" />
+          <MyField label="Password" name="password" type="password" />
+          <MyField
+            label="Verify Password"
+            name="passwordVerify"
+            type="password"
+          />
           <Button
             disabled={props.isSubmitting}
             type="submit"
