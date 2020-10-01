@@ -14,14 +14,14 @@ const yupPwdRules = yup
   .required("Required")
   .min(3, "Must not be less 3 characters (CHANGE LATER!)");
 
-const yupStringRules = yup
+const yupEmailRules = yup
   .string()
   .required("Required")
-  .max(20, "Must be 20 characters or less");
+  .email("Must be a valid email");
 
 // Yup Configurations
 const yupValidationSchema = yup.object().shape({
-  email: yupStringRules,
+  email: yupEmailRules,
   password: yupPwdRules,
 });
 
