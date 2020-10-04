@@ -1,4 +1,5 @@
 import axios from "axios";
+import authHeader from "./auth-header";
 
 const API_URL = "http://localhost:3030/api/auth/";
 
@@ -16,6 +17,20 @@ class AuthService {
 
         return response.data;
       });
+  }
+
+  register(firstName, lastName, email, password, role) {
+    return axios.post(
+      API_URL + "signup",
+      {
+        firstName,
+        lastName,
+        email,
+        password,
+        role,
+      },
+      { headers: authHeader() }
+    );
   }
 
   // LAST WORKING HERE: 20/09/20

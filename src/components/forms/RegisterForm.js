@@ -1,5 +1,7 @@
 import React from "react";
 
+import AuthService from "../../services/auth/auth-service";
+
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import { Formik, Form } from "formik";
@@ -67,21 +69,59 @@ function RegisterForm() {
       onSubmit={(values, { resetForm, setSubmitting }) => {
         setSubmitting(true); // Makes async call and disables submit button
 
-        // setTimeout to mimic fetch POST data
-        setTimeout(() => {
-          alert(JSON.stringify(values));
-          // Clear form after submit
-          resetForm({
-            values: {
-              firstName: "",
-              lastName: "",
-              email: "",
-              password: "",
-              passwordVerify: "",
-            },
-          });
-          setSubmitting(false); // Enables submit button once submitted
-        }, 1500); // 3 secs timeout
+        AuthService.register(
+          values.firstName,
+          values.lastName,
+          values.email,
+          values.password,
+          "user"
+        ).then(
+          () => {
+            resetForm({
+              values: {
+                firstName: "",
+                lastName: "",
+                email: "",
+                password: "",
+                passwordVerify: "",
+              },
+            });
+            setSubmitting(false); // Enables submit button once submitted
+            // history.push("/profile");
+            // window.location.reload();
+          },
+          (error) => {
+            const resMessage =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
+            if (resMessage) {
+              console.log(resMessage);
+            }
+            // this.setState({
+            //   loading: false,
+            //   message: resMessage,
+            // });
+          }
+        );
+
+        // // setTimeout to mimic fetch POST data
+        // setTimeout(() => {
+        //   alert(JSON.stringify(values));
+        //   // Clear form after submit
+        //   resetForm({
+        //     values: {
+        //       firstName: "",
+        //       lastName: "",
+        //       email: "",
+        //       password: "",
+        //       passwordVerify: "",
+        //     },
+        //   });
+        //   setSubmitting(false); // Enables submit button once submitted
+        // }, 1500); // 3 secs timeout
       }}
     >
       {(props) => (
