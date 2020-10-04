@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
+import { ProtectedRoute } from "../services/routes/protected-route";
+import { RedirectUserRoute } from "../services/routes/redirectuser-route";
+import { AdminRoute } from "../services/routes/admin-route";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 
@@ -8,6 +11,7 @@ import Homepage from "./Homepage";
 import UserLoginPage from "./UserLoginPage";
 import UserRegisterPage from "./UserRegisterPage";
 import UserProfilePage from "./UserProfilePage";
+import FourOhFour from "./FourOhFour";
 import Navbar from "../components/navbar/Navbar";
 
 class App extends Component {
@@ -25,10 +29,11 @@ class App extends Component {
         {/* Link is at Drawer */}
         <Switch>
           <Route exact path="/" component={Homepage} />
-          <Route path="/schedule" component={SchedulePage} />
-          <Route path="/login" component={UserLoginPage} />
-          <Route path="/register" component={UserRegisterPage} />
-          <Route path="/profile" component={UserProfilePage} />
+          <RedirectUserRoute path="/login" component={UserLoginPage} />
+          <ProtectedRoute path="/schedule" component={SchedulePage} />
+          <ProtectedRoute path="/profile" component={UserProfilePage} />
+          <AdminRoute path="/register" component={UserRegisterPage} />
+          <Route path="*" component={FourOhFour} />
         </Switch>
       </div>
     );

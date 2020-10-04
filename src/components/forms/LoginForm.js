@@ -1,5 +1,7 @@
 import React from "react";
 
+import AuthService from "../../services/auth/auth-service";
+
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import { Formik, Form } from "formik";
@@ -10,16 +12,16 @@ import * as yup from "yup";
 const yupPwdRules = yup
   .string()
   .required("Required")
-  .min(8, "Must not be less 8 characters");
+  .min(3, "Must not be less 3 characters (CHANGE LATER!)");
 
-const yupStringRules = yup
+const yupEmailRules = yup
   .string()
   .required("Required")
-  .max(20, "Must be 20 characters or less");
+  .email("Must be a valid email");
 
 // Yup Configurations
 const yupValidationSchema = yup.object().shape({
-  username: yupStringRules,
+  email: yupEmailRules,
   password: yupPwdRules,
 });
 
@@ -39,36 +41,63 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function LoginForm() {
+function LoginForm(props) {
   const classes = useStyles();
+  const { history } = props;
 
+  // console.log("History: ", history);
   return (
     <Formik
       initialValues={{
-        username: "",
+        email: "",
         password: "",
       }}
       validationSchema={yupValidationSchema}
       onSubmit={(values, { resetForm, setSubmitting }) => {
         setSubmitting(true); // Makes async call and disables submit button
 
-        // setTimeout to mimic fetch POST data
-        setTimeout(() => {
-          alert(JSON.stringify(values));
-          // Clear form after submit
-          resetForm({
-            values: {
-              username: "",
-              password: "",
-            },
-          });
-          setSubmitting(false); // Enables submit button once submitted
-        }, 1500); // 3 secs timeout
+        AuthService.login(values.email, values.password).then(
+          () => {
+            setSubmitting(false); // Enables submit button once submitted
+            history.push("/profile");
+            window.location.reload();
+          },
+          (error) => {
+            const resMessage =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
+            if (resMessage) {
+              console.log(resMessage);
+            }
+            // this.setState({
+            //   loading: false,
+            //   message: resMessage,
+            // });
+          }
+        );
+
+        // // setTimeout to mimic fetch POST data
+        // setTimeout(() => {
+        //   alert(JSON.stringify(values));
+        //   // Clear form after submit
+        //   resetForm({
+        //     values: {
+        //       username: "",
+        //       password: "",
+        //     },
+        //   });
+        //   setSubmitting(false); // Enables submit button once submitted
+        // }, 1500); // 3 secs timeout
+
+        setSubmitting(false);
       }}
     >
       {(props) => (
         <Form className={classes.form}>
-          <MyField label="Username" name="username" />
+          <MyField label="Email" name="email" />
           <MyField label="Password" name="password" type="password" />
           <Button
             disabled={props.isSubmitting}

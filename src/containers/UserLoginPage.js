@@ -36,7 +36,7 @@ const loginStyles = (theme) => ({
 
 class UserLoginPage extends Component {
   render() {
-    const { classes } = this.props;
+    const { classes, history } = this.props;
     return (
       <Grid
         container
@@ -53,7 +53,7 @@ class UserLoginPage extends Component {
               <PersonIcon className={classes.icon} />
             </Avatar>
             <Typography variant="h4">Log In</Typography>
-            <LoginForm />
+            <LoginForm history={history} />
           </Paper>
         </Grid>
         {/* <Grid item sm={3} md={3} lg>

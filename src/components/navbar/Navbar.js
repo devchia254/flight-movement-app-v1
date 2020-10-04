@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, withRouter } from "react-router-dom";
 
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -10,7 +10,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import Button from "@material-ui/core/Button";
 
 import DrawerButton from "./Drawer";
-import AuthService from "../../services/auth-service";
+import AuthService from "../../services/auth/auth-service";
 
 const navStyle = (theme) => ({
   root: {
@@ -35,30 +35,33 @@ const navStyle = (theme) => ({
   },
 });
 
-// Toggle between types of users here
-const ToggleUser = () => {
-  const user = AuthService.getAdminUser(); // Test Admin user
-  // const user = AuthService.getStandardUser(); // Test Standard user
-  // const user = AuthService.getNoUser(); // Test no user
-  return user;
-};
+// // Toggle between types of users here
+// const ToggleUser = () => {
+//   // const user = AuthService.getAdminUser(); // Test Admin user
+//   // const user = AuthService.getStandardUser(); // Test Standard user
+//   const user = AuthService.getNoUser(); // Test no user
+//   return user;
+// };
 
 class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: ToggleUser(),
+      // currentUser: ToggleUser(),
+      currentUser: undefined,
       showRegister: false,
     };
   }
 
   componentDidMount() {
-    const user = ToggleUser();
+    // const user = ToggleUser();
+    const user = AuthService.getCurrentUser();
+    // console.log(user);
 
     if (user) {
       this.setState({
         currentUser: user,
-        showRegister: user.roles.includes("ROLE_ADMIN"), // Only admin can register user
+        showRegister: user.role.includes("ROLE_ADMIN"), // Only admin can register user
         // showProfile:
         //   user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
         // showSchedule:
@@ -73,7 +76,11 @@ class Navbar extends Component {
 
   testLogout = () => {
     // console.log("testLogout function");
-    this.setState({ currentUser: AuthService.getNoUser() });
+    // this.setState({ currentUser: AuthService.getNoUser() });
+    const { history } = this.props;
+    AuthService.logout();
+    history.push("/login");
+    window.location.reload();
   };
 
   // Custom Link
@@ -85,7 +92,10 @@ class Navbar extends Component {
     const { showRegister, currentUser } = this.state;
     const { classes } = this.props;
 
-    // console.log(showRegister);
+    // if (!AuthService.getCurrentUser()) {
+    //   return <Redirect to="/login" />;
+    //   // console.log("No user logged in!");
+    // }
 
     return (
       <div className={classes.root}>
@@ -107,7 +117,7 @@ class Navbar extends Component {
                 component={this.ProfileLink}
                 startIcon={<PersonIcon className={classes.profileIcon} />}
               >
-                {!currentUser ? "username here" : currentUser.username}
+                {!currentUser ? "username here" : currentUser.email}
               </Button>
             )}
           </Toolbar>
@@ -116,4 +126,4 @@ class Navbar extends Component {
     );
   }
 }
-export default withStyles(navStyle)(Navbar);
+export default withRouter(withStyles(navStyle)(Navbar));
