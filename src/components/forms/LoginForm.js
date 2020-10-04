@@ -7,6 +7,8 @@ import { Button } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import MyField from "../formik-fields/MyField.js";
 import * as yup from "yup";
+import { useSnackbar } from "notistack";
+
 // import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
 
 const yupPwdRules = yup
@@ -44,6 +46,13 @@ const useStyles = makeStyles((theme) => ({
 function LoginForm(props) {
   const classes = useStyles();
   const { history } = props;
+  const { enqueueSnackbar } = useSnackbar();
+
+  const loginError = (msg) => {
+    enqueueSnackbar(msg, {
+      variant: "error",
+    });
+  };
 
   // console.log("History: ", history);
   return (
@@ -56,28 +65,26 @@ function LoginForm(props) {
       onSubmit={(values, { resetForm, setSubmitting }) => {
         setSubmitting(true); // Makes async call and disables submit button
 
-        AuthService.login(values.email, values.password).then(
-          () => {
+        AuthService.login(values.email, values.password)
+          .then(() => {
             setSubmitting(false); // Enables submit button once submitted
             history.push("/profile");
             window.location.reload();
-          },
-          (error) => {
+          })
+          .catch((error) => {
             const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
+              (error.response && error.response.data.message) ||
               error.message ||
               error.toString();
             if (resMessage) {
-              console.log(resMessage);
+              // console.log(resMessage);
+              loginError(resMessage);
             }
             // this.setState({
             //   loading: false,
             //   message: resMessage,
             // });
-          }
-        );
+          });
 
         // // setTimeout to mimic fetch POST data
         // setTimeout(() => {
