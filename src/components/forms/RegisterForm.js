@@ -75,8 +75,8 @@ function RegisterForm() {
           values.email,
           values.password,
           "user"
-        ).then(
-          () => {
+        )
+          .then(() => {
             resetForm({
               values: {
                 firstName: "",
@@ -89,8 +89,8 @@ function RegisterForm() {
             setSubmitting(false); // Enables submit button once submitted
             // history.push("/profile");
             // window.location.reload();
-          },
-          (error) => {
+          })
+          .catch((error) => {
             const resMessage =
               (error.response &&
                 error.response.data &&
@@ -100,12 +100,13 @@ function RegisterForm() {
             if (resMessage) {
               console.log(resMessage);
             }
+            setSubmitting(false); // Enables submit button once submitted
+
             // this.setState({
             //   loading: false,
             //   message: resMessage,
             // });
-          }
-        );
+          });
 
         // // setTimeout to mimic fetch POST data
         // setTimeout(() => {
