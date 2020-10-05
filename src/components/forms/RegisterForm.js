@@ -103,8 +103,6 @@ function RegisterForm(props) {
               },
             });
             setSubmitting(false); // Enables submit button once submitted
-            // history.push("/profile");
-            // window.location.reload();
           })
           .catch((error) => {
             const resMessage =
@@ -113,33 +111,18 @@ function RegisterForm(props) {
                 error.response.data.message) ||
               error.message ||
               error.toString();
+
             if (resMessage) {
               // console.log(resMessage);
               regError(resMessage);
             }
-            setSubmitting(false); // Enables submit button once submitted
 
+            setSubmitting(false); // Enables submit button once submitted
             // this.setState({
             //   loading: false,
             //   message: resMessage,
             // });
           });
-
-        // // setTimeout to mimic fetch POST data
-        // setTimeout(() => {
-        //   alert(JSON.stringify(values));
-        //   // Clear form after submit
-        //   resetForm({
-        //     values: {
-        //       firstName: "",
-        //       lastName: "",
-        //       email: "",
-        //       password: "",
-        //       passwordVerify: "",
-        //     },
-        //   });
-        //   setSubmitting(false); // Enables submit button once submitted
-        // }, 1500); // 3 secs timeout
       }}
     >
       {(props) => (

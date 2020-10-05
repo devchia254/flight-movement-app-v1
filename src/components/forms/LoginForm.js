@@ -76,30 +76,19 @@ function LoginForm(props) {
               (error.response && error.response.data.message) ||
               error.message ||
               error.toString();
+
             if (resMessage) {
               // console.log(resMessage);
               loginError(resMessage);
             }
+
+            setSubmitting(false);
+
             // this.setState({
             //   loading: false,
             //   message: resMessage,
             // });
           });
-
-        // // setTimeout to mimic fetch POST data
-        // setTimeout(() => {
-        //   alert(JSON.stringify(values));
-        //   // Clear form after submit
-        //   resetForm({
-        //     values: {
-        //       username: "",
-        //       password: "",
-        //     },
-        //   });
-        //   setSubmitting(false); // Enables submit button once submitted
-        // }, 1500); // 3 secs timeout
-
-        setSubmitting(false);
       }}
     >
       {(props) => (
