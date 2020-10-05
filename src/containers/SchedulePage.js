@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { generate } from "shortid";
-import makeData from "../test/makeData"; // Fake data generator
+import AuthSchedule from "../services/auth/auth-schedule";
+
+// import makeData from "../test/makeData"; // Fake data generator
 
 import ScheduleModal from "../components/modals/ScheduleModal.js";
 import ScheduleTable from "../components/table/ScheduleTable.js";
@@ -42,12 +44,54 @@ class SchedulePage extends Component {
   constructor() {
     super();
     this.state = {
-      flights: [
-        // sampleData,
-        ...makeData(20),
-      ],
+      // flights: [
+      //   // ...makeData(20),
+      // ]
+      flights: [],
       open: false,
     };
+  }
+
+  componentDidMount() {
+    AuthSchedule.getFlights()
+      .then((res) => {
+        console.log(res.data.flightData);
+
+        const mappedFlights = res.data.flightData.map((flight) => {
+          const {
+            flight_id,
+            flight_no,
+            ac_reg,
+            date_time,
+            from,
+            to,
+            company,
+            user_email,
+            createdAt,
+            updatedAt,
+            updated_by,
+          } = flight;
+          return {
+            id: flight_id,
+            flightNo: flight_no,
+            acReg: ac_reg,
+            dateTime: date_time,
+            from: from,
+            to: to,
+            company: company,
+            userEmail: user_email,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            updated_by: updated_by,
+          };
+        });
+
+        this.setState((state) => {
+          const fetchedflights = [...state.flights, ...mappedFlights];
+          return { flights: fetchedflights };
+        });
+      })
+      .catch((err) => console.log("Error with fetching flights: ", err));
   }
 
   addFlight = (formData) => {
