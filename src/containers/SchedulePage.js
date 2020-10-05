@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { generate } from "shortid";
+// import { generate } from "shortid";
+import AuthService from "../services/auth/auth-service";
 import AuthSchedule from "../services/auth/auth-schedule";
 
 // import makeData from "../test/makeData"; // Fake data generator
@@ -55,7 +56,7 @@ class SchedulePage extends Component {
   componentDidMount() {
     AuthSchedule.getFlights()
       .then((res) => {
-        console.log(res.data.flightData);
+        // console.log(res.data.flightData);
 
         const mappedFlights = res.data.flightData.map((flight) => {
           const {
@@ -94,33 +95,41 @@ class SchedulePage extends Component {
       .catch((err) => console.log("Error with fetching flights: ", err));
   }
 
-  addFlight = (formData) => {
-    const storeInArr = [formData];
+  createFlight = (formData) => {
+    // console.log(formData);
+    const { flightNo, acReg, dateTime, from, to, company } = formData;
 
-    const mappedData = storeInArr.map((field) => {
-      const { flightNo, acReg, dateTime, from, to, company } = field;
+    const postData = {
+      flightNo: flightNo,
+      acReg: acReg,
+      dateTime: moment(dateTime).format(), // String format: ISO 8601
+      from: from,
+      to: to,
+      company: company,
+      email: AuthService.getUserEmail(),
+    };
+    console.log(postData);
 
-      return {
-        id: generate(),
-        flightNo: flightNo,
-        acReg: acReg,
-        dateTime: moment(dateTime).format(), // String format: ISO 8601
-        from: from,
-        to: to,
-        company: company,
-      };
-    });
+    AuthSchedule.createFlight(postData)
+      .then((res) => {
+        console.log("Response: ", res.data.message);
+      })
+      .catch((err) => {
+        console.log("Error: ", err);
+      });
 
     // Note: Switch mappedData and this.state.flights if you want object added at an end of the state array
-    const flightData = [
-      // mappedData transforms from [{}] to {}
-      ...mappedData,
-      ...this.state.flights,
-    ];
+    // const flightData = [
+    //   // mappedData transforms from [{}] to {}
+    //   ...mappedData,
+    //   ...this.state.flights,
+    // ];
 
-    this.setState({
-      flights: flightData,
-    });
+    // this.setState({
+    //   flights: flightData,
+    // });
+
+    // console.log(this.state.flights);
   };
 
   // Edit Product
@@ -185,7 +194,7 @@ class SchedulePage extends Component {
               {/* <Typography variant="h6">Schedule</Typography> */}
             </Button>
             <ScheduleModal
-              addFlight={this.addFlight}
+              createFlight={this.createFlight}
               open={this.state.open}
               closeModal={this.closeModal}
             />

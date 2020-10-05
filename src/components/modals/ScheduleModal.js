@@ -50,7 +50,7 @@ const DialogTitle = withStyles(styles)((props) => {
 
 const ScheduleModal = withStyles(styles)((props) => {
   const { classes } = props;
-  const { addFlight, open, closeModal } = props;
+  const { createFlight, open, closeModal } = props;
 
   return (
     <Dialog
@@ -65,7 +65,7 @@ const ScheduleModal = withStyles(styles)((props) => {
         Schedule Flight
       </DialogTitle>
       <DialogContent id="form-dialog-content" className={classes.dialogContent}>
-        <ScheduleForm addFlight={addFlight} closeModal={closeModal} />
+        <ScheduleForm createFlight={createFlight} closeModal={closeModal} />
       </DialogContent>
     </Dialog>
   );

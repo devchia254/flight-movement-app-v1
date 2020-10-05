@@ -7,6 +7,10 @@ class AuthSchedule {
   getFlights() {
     return axios.get(API_URL, { headers: authHeader() });
   }
+
+  createFlight(flightDetails) {
+    return axios.post(API_URL, flightDetails, { headers: authHeader() });
+  }
 }
 
 export default new AuthSchedule();
