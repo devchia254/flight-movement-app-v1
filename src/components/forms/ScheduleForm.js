@@ -39,7 +39,7 @@ const yupValidationSchema = yup.object().shape({
   company: yupStringRules,
 });
 
-function ScheduleForm({ createFlight, closeModal }) {
+function ScheduleForm({ createFlight }) {
   const classes = useStyles();
 
   return (
@@ -69,8 +69,6 @@ function ScheduleForm({ createFlight, closeModal }) {
           },
         });
         setSubmitting(false); // Enables submit button once submitted
-        closeModal(); // Closes Modal
-
         // // setTimeout to mimic fetch POST data
         // setTimeout(() => {}, 1500); // 3 secs timeout
       }}

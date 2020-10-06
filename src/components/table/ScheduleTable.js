@@ -71,6 +71,7 @@ function ScheduleTable(props) {
       from: flight.from,
       to: flight.to,
       company: flight.company,
+      createdAt: moment(flight.createdAt, true).format("DD/MM/YYYY HH:mm"),
     };
   });
 
@@ -93,6 +94,7 @@ function ScheduleTable(props) {
     { title: "From", field: "from" },
     { title: "To", field: "to" },
     { title: "Company", field: "company" },
+    { title: "Created At", field: "createdAt", defaultSort: "desc" },
   ];
 
   // React Hook: Open/Close Dialog

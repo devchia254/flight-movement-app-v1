@@ -15,10 +15,12 @@ import Button from "@material-ui/core/Button";
 // import Typography from "@material-ui/core/Typography";
 import AddIcon from "@material-ui/icons/Add";
 
+import { withSnackbar } from "notistack";
+
 // Material-UI Date Pickers (Moment Library)
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"; // Requires a Date lib to be chosen
 import MomentUtils from "@date-io/moment";
-const moment = require("moment"); // require Moment library\
+const moment = require("moment"); // require Moment library
 
 // Example of 1 record
 // const sampleData = {
@@ -49,15 +51,29 @@ class SchedulePage extends Component {
       //   // ...makeData(20),
       // ]
       flights: [],
-      open: false,
+      open: false, // Trigger Dialog(modal) to be visible
     };
   }
 
   componentDidMount() {
-    AuthSchedule.getFlights()
-      .then((res) => {
-        // console.log(res.data.flightData);
+    this.getFlights();
+  }
 
+  snackBarSuccess(msg) {
+    this.props.enqueueSnackbar(msg, {
+      variant: "success",
+    });
+  }
+
+  snackBarFail(msg) {
+    this.props.enqueueSnackbar(msg, {
+      variant: "error",
+    });
+  }
+
+  getFlights = () => {
+    AuthSchedule.allFlights()
+      .then((res) => {
         const mappedFlights = res.data.flightData.map((flight) => {
           const {
             flight_id,
@@ -92,11 +108,19 @@ class SchedulePage extends Component {
           return { flights: fetchedflights };
         });
       })
-      .catch((err) => console.log("Error with fetching flights: ", err));
-  }
+      .catch((error) => {
+        const resMessage =
+          (error.response && error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        if (resMessage) {
+          console.log("Error with fetching flights: ", resMessage);
+        }
+      });
+  };
 
   createFlight = (formData) => {
-    // console.log(formData);
     const { flightNo, acReg, dateTime, from, to, company } = formData;
 
     const postData = {
@@ -108,28 +132,23 @@ class SchedulePage extends Component {
       company: company,
       email: AuthService.getUserEmail(),
     };
-    console.log(postData);
 
     AuthSchedule.createFlight(postData)
       .then((res) => {
-        console.log("Response: ", res.data.message);
+        this.snackBarSuccess(res.data.message);
+        this.getFlights(); // Fetch flights after creating flight was a success
+        this.closeModal();
       })
-      .catch((err) => {
-        console.log("Error: ", err);
+      .catch((error) => {
+        const resMessage =
+          (error.response && error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        if (resMessage) {
+          this.snackBarFail(resMessage);
+        }
       });
-
-    // Note: Switch mappedData and this.state.flights if you want object added at an end of the state array
-    // const flightData = [
-    //   // mappedData transforms from [{}] to {}
-    //   ...mappedData,
-    //   ...this.state.flights,
-    // ];
-
-    // this.setState({
-    //   flights: flightData,
-    // });
-
-    // console.log(this.state.flights);
   };
 
   // Edit Product
@@ -210,4 +229,4 @@ class SchedulePage extends Component {
   }
 }
 
-export default withStyles(scheduleStyles)(SchedulePage);
+export default withSnackbar(withStyles(scheduleStyles)(SchedulePage));

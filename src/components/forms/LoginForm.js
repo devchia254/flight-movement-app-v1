@@ -72,6 +72,7 @@ function LoginForm(props) {
             window.location.reload();
           })
           .catch((error) => {
+            console.log(error.response);
             const resMessage =
               (error.response && error.response.data.message) ||
               error.message ||
