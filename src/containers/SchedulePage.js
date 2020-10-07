@@ -133,9 +133,9 @@ class SchedulePage extends Component {
       email: AuthService.getUserEmail(),
     };
 
-    console.log("JS Date: ", dateTime);
-    console.log("Moment with no UTC: ", moment(dateTime).format());
-    console.log("Moment with UTC: ", moment.utc(dateTime).format());
+    // console.log("JS Date: ", dateTime);
+    // console.log("Moment with no UTC: ", moment(dateTime).format());
+    // console.log("Moment with UTC: ", moment.utc(dateTime).format());
 
     AuthSchedule.createFlight(postData)
       .then((res) => {
@@ -156,23 +156,46 @@ class SchedulePage extends Component {
   };
 
   // Edit Product
-  editFlight = (id, modalFormData) => {
-    const { flights } = this.state;
+  editFlight = (modalFormData, flightId) => {
+    // console.log(id);
+    // console.log({ ...modalFormData, updatedBy: AuthService.getUserEmail() });
 
-    const initialFlights = [...flights];
+    const putData = { ...modalFormData, updatedBy: AuthService.getUserEmail() };
 
-    const filterFlight = initialFlights.map((flight) => {
-      if (id === flight.id) {
-        // This object clones the product that satisfies the condition above and assigns the corresponding property values from 'editDetails'.
-        return {
-          ...flight,
-          ...modalFormData,
-        };
-      }
-      return flight;
-    });
+    AuthSchedule.editFlight(putData, flightId)
+      .then((res) => {
+        this.snackbarSuccess(res.data.message);
+        this.getFlights(); // Fetch flights after creating flight was a success
+        // LAST WORKING PLACE - 08/10/2020
+        this.closeModal();
+      })
+      .catch((error) => {
+        const resMessage =
+          (error.response && error.response.data.message) ||
+          error.message ||
+          error.toString();
 
-    this.setState({ flights: filterFlight });
+        if (resMessage) {
+          this.snackbarFail(resMessage);
+        }
+      });
+
+    // const { flights } = this.state;
+
+    // const initialFlights = [...flights];
+
+    // const filterFlight = initialFlights.map((flight) => {
+    //   if (id === flight.id) {
+    //     // This object clones the product that satisfies the condition above and assigns the corresponding property values from 'editDetails'.
+    //     return {
+    //       ...flight,
+    //       ...modalFormData,
+    //     };
+    //   }
+    //   return flight;
+    // });
+
+    // this.setState({ flights: filterFlight });
   };
 
   deleteFlight = (id, e) => {

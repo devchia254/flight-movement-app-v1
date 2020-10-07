@@ -72,6 +72,7 @@ function ScheduleTable(props) {
       to: flight.to,
       company: flight.company,
       createdAt: moment(flight.createdAt, true).format("DD/MM/YYYY HH:mm"),
+      updatedAt: moment(flight.updatedAt, true).format("DD/MM/YYYY HH:mm"),
     };
   });
 
@@ -94,7 +95,27 @@ function ScheduleTable(props) {
     { title: "From", field: "from" },
     { title: "To", field: "to" },
     { title: "Company", field: "company" },
-    { title: "Created At", field: "createdAt", defaultSort: "desc" },
+    {
+      title: "Created At",
+      field: "createdAt",
+      customSort: (a, b) => {
+        // Sort dates based on the difference of moments
+        const momentA = moment(a.createdAt, "DD/MM/YYYY HH:mm");
+        const momentB = moment(b.createdAt, "DD/MM/YYYY HH:mm");
+        return momentA.diff(momentB);
+      },
+    },
+    {
+      title: "Updated At",
+      field: "updatedAt",
+      defaultSort: "desc",
+      customSort: (a, b) => {
+        // Sort dates based on the difference of moments
+        const momentA = moment(a.updatedAt, "DD/MM/YYYY HH:mm");
+        const momentB = moment(b.updatedAt, "DD/MM/YYYY HH:mm");
+        return momentA.diff(momentB);
+      },
+    },
   ];
 
   // React Hook: Open/Close Dialog
@@ -119,8 +140,8 @@ function ScheduleTable(props) {
             icon: () => <EditIcon />,
             tooltip: "Edit Flight",
             onClick: (evt, rowData) => {
-              handleClickOpen();
               setRowDetails(rowData);
+              handleClickOpen();
             },
             // onClick: (event, rowData) => alert("You saved " + rowData.name),
           },

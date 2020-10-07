@@ -52,7 +52,7 @@ class UserLoginPage extends Component {
   loginUser = (email, password) => {
     AuthService.login(email, password)
       .then(() => {
-        this.props.history.push("/profile");
+        this.props.history.push("/schedule");
         window.location.reload();
       })
       .catch((error) => {
