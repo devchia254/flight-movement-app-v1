@@ -59,13 +59,13 @@ class SchedulePage extends Component {
     this.getFlights();
   }
 
-  snackBarSuccess(msg) {
+  snackbarSuccess(msg) {
     this.props.enqueueSnackbar(msg, {
       variant: "success",
     });
   }
 
-  snackBarFail(msg) {
+  snackbarFail(msg) {
     this.props.enqueueSnackbar(msg, {
       variant: "error",
     });
@@ -126,16 +126,20 @@ class SchedulePage extends Component {
     const postData = {
       flightNo: flightNo,
       acReg: acReg,
-      dateTime: moment(dateTime).format(), // String format: ISO 8601
+      dateTime: moment.utc(dateTime).format(), // String format: ISO 8601
       from: from,
       to: to,
       company: company,
       email: AuthService.getUserEmail(),
     };
 
+    console.log("JS Date: ", dateTime);
+    console.log("Moment with no UTC: ", moment(dateTime).format());
+    console.log("Moment with UTC: ", moment.utc(dateTime).format());
+
     AuthSchedule.createFlight(postData)
       .then((res) => {
-        this.snackBarSuccess(res.data.message);
+        this.snackbarSuccess(res.data.message);
         this.getFlights(); // Fetch flights after creating flight was a success
         this.closeModal();
       })
@@ -146,7 +150,7 @@ class SchedulePage extends Component {
           error.toString();
 
         if (resMessage) {
-          this.snackBarFail(resMessage);
+          this.snackbarFail(resMessage);
         }
       });
   };

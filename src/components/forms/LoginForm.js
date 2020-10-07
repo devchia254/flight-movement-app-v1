@@ -1,13 +1,10 @@
 import React from "react";
 
-import AuthService from "../../services/auth/auth-service";
-
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import MyField from "../formik-fields/MyField.js";
 import * as yup from "yup";
-import { useSnackbar } from "notistack";
 
 // import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
 
@@ -45,16 +42,8 @@ const useStyles = makeStyles((theme) => ({
 
 function LoginForm(props) {
   const classes = useStyles();
-  const { history } = props;
-  const { enqueueSnackbar } = useSnackbar();
+  const { loginUser } = props;
 
-  const loginError = (msg) => {
-    enqueueSnackbar(msg, {
-      variant: "error",
-    });
-  };
-
-  // console.log("History: ", history);
   return (
     <Formik
       initialValues={{
@@ -64,32 +53,8 @@ function LoginForm(props) {
       validationSchema={yupValidationSchema}
       onSubmit={(values, { resetForm, setSubmitting }) => {
         setSubmitting(true); // Makes async call and disables submit button
-
-        AuthService.login(values.email, values.password)
-          .then(() => {
-            setSubmitting(false); // Enables submit button once submitted
-            history.push("/profile");
-            window.location.reload();
-          })
-          .catch((error) => {
-            console.log(error.response);
-            const resMessage =
-              (error.response && error.response.data.message) ||
-              error.message ||
-              error.toString();
-
-            if (resMessage) {
-              // console.log(resMessage);
-              loginError(resMessage);
-            }
-
-            setSubmitting(false);
-
-            // this.setState({
-            //   loading: false,
-            //   message: resMessage,
-            // });
-          });
+        loginUser(values.email, values.password);
+        setSubmitting(false);
       }}
     >
       {(props) => (

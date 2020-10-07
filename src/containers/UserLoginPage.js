@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import LoginForm from "../components/forms/LoginForm";
+import AuthService from "../services/auth/auth-service";
 
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -10,6 +11,8 @@ import PersonIcon from "@material-ui/icons/Person";
 import Typography from "@material-ui/core/Typography";
 // import Card from "@material-ui/core/Card";
 // import CardContent from "@material-ui/core/CardContent";
+
+import { withSnackbar } from "notistack";
 
 const loginStyles = (theme) => ({
   root: {
@@ -35,6 +38,41 @@ const loginStyles = (theme) => ({
 });
 
 class UserLoginPage extends Component {
+  constructor() {
+    super();
+    this.state = {};
+  }
+
+  snackbarFail = (msg) => {
+    this.props.enqueueSnackbar(msg, {
+      variant: "error",
+    });
+  };
+
+  loginUser = (email, password) => {
+    AuthService.login(email, password)
+      .then(() => {
+        this.props.history.push("/profile");
+        window.location.reload();
+      })
+      .catch((error) => {
+        // console.log(error.response);
+        const resMessage =
+          (error.response && error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        if (resMessage) {
+          // console.log(resMessage);
+          this.snackbarFail(resMessage);
+        }
+        // this.setState({
+        //   loading: false,
+        //   message: resMessage,
+        // });
+      });
+  };
+
   render() {
     const { classes, history } = this.props;
     return (
@@ -53,7 +91,7 @@ class UserLoginPage extends Component {
               <PersonIcon className={classes.icon} />
             </Avatar>
             <Typography variant="h4">Log In</Typography>
-            <LoginForm history={history} />
+            <LoginForm history={history} loginUser={this.loginUser} />
           </Paper>
         </Grid>
         {/* <Grid item sm={3} md={3} lg>
@@ -63,4 +101,4 @@ class UserLoginPage extends Component {
     );
   }
 }
-export default withStyles(loginStyles)(UserLoginPage);
+export default withSnackbar(withStyles(loginStyles)(UserLoginPage));
