@@ -103,8 +103,8 @@ class SchedulePage extends Component {
           };
         });
 
-        this.setState((state) => {
-          const fetchedflights = [...state.flights, ...mappedFlights];
+        this.setState((prevState) => {
+          const fetchedflights = [...prevState.flights, ...mappedFlights];
           return { flights: fetchedflights };
         });
       })
@@ -126,7 +126,7 @@ class SchedulePage extends Component {
     const postData = {
       flightNo: flightNo,
       acReg: acReg,
-      dateTime: moment.utc(dateTime).format(), // String format: ISO 8601
+      dateTime: moment(dateTime).format(), // String format: ISO 8601
       from: from,
       to: to,
       company: company,
@@ -156,18 +156,44 @@ class SchedulePage extends Component {
   };
 
   // Edit Product
-  editFlight = (modalFormData, flightId) => {
-    // console.log(id);
-    // console.log({ ...modalFormData, updatedBy: AuthService.getUserEmail() });
-
+  editFlight = (modalFormData, flightId, resetForm) => {
     const putData = { ...modalFormData, updatedBy: AuthService.getUserEmail() };
 
     AuthSchedule.editFlight(putData, flightId)
       .then((res) => {
         this.snackbarSuccess(res.data.message);
-        this.getFlights(); // Fetch flights after creating flight was a success
-        // LAST WORKING PLACE - 08/10/2020
-        this.closeModal();
+
+        this.setState((prevState) => {
+          const updateFlights = prevState.flights.map((flight) => {
+            if (flightId === flight.id) {
+              // Only when the ID matches between the edited flight record and the flight in the state, updateFlightProps updates the respective properties of the flight object in the state.
+              const updateFlightProps = {
+                ...putData,
+                updatedAt: moment().format(), // Now() in ISO 8601 format
+              };
+
+              return {
+                ...flight,
+                ...updateFlightProps,
+              };
+            }
+            return flight; // Return rest of the flights
+          });
+
+          // Clear form after submit (Formik)
+          resetForm({
+            values: {
+              flightNo: "",
+              acReg: "",
+              dateTime: null,
+              from: "",
+              to: "",
+              company: "",
+            },
+          });
+
+          return { flights: updateFlights };
+        });
       })
       .catch((error) => {
         const resMessage =
@@ -179,23 +205,9 @@ class SchedulePage extends Component {
           this.snackbarFail(resMessage);
         }
       });
-
-    // const { flights } = this.state;
-
-    // const initialFlights = [...flights];
-
-    // const filterFlight = initialFlights.map((flight) => {
-    //   if (id === flight.id) {
-    //     // This object clones the product that satisfies the condition above and assigns the corresponding property values from 'editDetails'.
-    //     return {
-    //       ...flight,
-    //       ...modalFormData,
-    //     };
-    //   }
-    //   return flight;
-    // });
-
-    // this.setState({ flights: filterFlight });
+    // this.setState(state => {
+    //   const newFlights = state.flights.map((flight, i) =)
+    // })
   };
 
   deleteFlight = (id, e) => {

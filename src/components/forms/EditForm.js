@@ -56,24 +56,11 @@ function EditForm({ flightObj, editFlight, handleClose }) {
       onSubmit={(values, { resetForm, setSubmitting }) => {
         setSubmitting(true); // Makes async call and disables submit button
 
-        editFlight(values, flightObj.id); // Lift values to state
-        // Clear form after submit
-        resetForm({
-          values: {
-            flightNo: "",
-            acReg: "",
-            dateTime: null,
-            from: "",
-            to: "",
-            company: "",
-          },
-        });
-        setSubmitting(false); // Enables submit button once submitted
-        // handleClose(); // Closes Modal
+        editFlight(values, flightObj.id, resetForm); // Lift values to state
 
-        // // setTimeout to mimic fetch PUT data
-        // setTimeout(() => {
-        // }, 1500); // 3 secs timeout
+        setSubmitting(false); // Enables submit button once submitted
+
+        handleClose(); // Closes Modal
       }}
     >
       {(props) => (
