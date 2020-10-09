@@ -17,6 +17,12 @@ class AuthSchedule {
       headers: authHeader(),
     });
   }
+
+  deleteFlight(flightId) {
+    return axios.delete(API_URL + `/${flightId}`, {
+      headers: authHeader(),
+    });
+  }
 }
 
 export default new AuthSchedule();

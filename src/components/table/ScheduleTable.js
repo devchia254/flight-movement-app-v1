@@ -149,7 +149,7 @@ function ScheduleTable(props) {
             icon: () => <DeleteOutline />,
             tooltip: "Delete Flight",
             onClick: (evt, rowData) => {
-              deleteFlight(rowData.id, evt);
+              deleteFlight(rowData.id);
             },
             // disabled: rowData.birthYear < 2000,
           }),

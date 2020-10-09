@@ -210,14 +210,38 @@ class SchedulePage extends Component {
     // })
   };
 
-  deleteFlight = (id, e) => {
-    const { flights } = this.state;
-
-    const updateFlights = flights.filter((flight, i, arr) => flight.id !== id);
-
+  deleteFlight = (flightId, e) => {
     if (window.confirm("Are you sure?")) {
-      this.setState({ flights: updateFlights });
+      AuthSchedule.deleteFlight(flightId)
+        .then((res) => {
+          this.setState((prevState) => {
+            const filterFlight = prevState.flights.filter(
+              (flight, i, arr) => flight.id !== flightId
+            );
+            return { flights: filterFlight };
+          });
+
+          this.snackbarSuccess(res.data.message);
+        })
+        .catch((error) => {
+          const resMessage =
+            (error.response && error.response.data.message) ||
+            error.message ||
+            error.toString();
+
+          if (resMessage) {
+            this.snackbarFail(resMessage);
+          }
+        });
     }
+
+    // const filterFlight = this.state.flights.filter(
+    //   (flight, i, arr) => flight.id !== flightId
+    // );
+
+    // if (window.confirm("Are you sure?")) {
+    //   this.setState({ flights: filterFlight });
+    // }
   };
 
   // Modal functions below
