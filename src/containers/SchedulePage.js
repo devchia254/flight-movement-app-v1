@@ -130,7 +130,7 @@ class SchedulePage extends Component {
       from: from,
       to: to,
       company: company,
-      email: AuthService.getUserEmail(),
+      userEmail: AuthService.getUserEmail(),
     };
 
     // console.log("JS Date: ", dateTime);
@@ -140,7 +140,21 @@ class SchedulePage extends Component {
     AuthSchedule.createFlight(postData)
       .then((res) => {
         this.snackbarSuccess(res.data.message);
-        this.getFlights(); // Fetch flights after creating flight was a success
+        this.setState(prevState => {
+
+          const addFlight = {
+            ...postData,
+            userEmail: AuthService.getUserEmail(),
+            createdAt: moment().format(),
+            updatedAt: moment().format(),
+            updated_by: "",
+          };
+
+          return {
+            flights: [...prevState.flights, addFlight]
+          }
+        });
+        // console.log(createFlightProps)
         this.closeModal();
       })
       .catch((error) => {
@@ -171,7 +185,7 @@ class SchedulePage extends Component {
                 ...putData,
                 updatedAt: moment().format(), // Now() in ISO 8601 format
               };
-
+                            
               return {
                 ...flight,
                 ...updateFlightProps,
@@ -213,7 +227,7 @@ class SchedulePage extends Component {
   deleteFlight = (flightId, e) => {
     if (window.confirm("Are you sure?")) {
       AuthSchedule.deleteFlight(flightId)
-        .then((res) => {
+        .then((res) => { 
           this.setState((prevState) => {
             const filterFlight = prevState.flights.filter(
               (flight, i, arr) => flight.id !== flightId
