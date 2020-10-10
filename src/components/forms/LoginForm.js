@@ -1,12 +1,11 @@
 import React from "react";
 
-import AuthService from "../../services/auth/auth-service";
-
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import MyField from "../formik-fields/MyField.js";
 import * as yup from "yup";
+
 // import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
 
 const yupPwdRules = yup
@@ -43,9 +42,8 @@ const useStyles = makeStyles((theme) => ({
 
 function LoginForm(props) {
   const classes = useStyles();
-  const { history } = props;
+  const { loginUser } = props;
 
-  // console.log("History: ", history);
   return (
     <Formik
       initialValues={{
@@ -55,43 +53,7 @@ function LoginForm(props) {
       validationSchema={yupValidationSchema}
       onSubmit={(values, { resetForm, setSubmitting }) => {
         setSubmitting(true); // Makes async call and disables submit button
-
-        AuthService.login(values.email, values.password).then(
-          () => {
-            setSubmitting(false); // Enables submit button once submitted
-            history.push("/profile");
-            window.location.reload();
-          },
-          (error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-            if (resMessage) {
-              console.log(resMessage);
-            }
-            // this.setState({
-            //   loading: false,
-            //   message: resMessage,
-            // });
-          }
-        );
-
-        // // setTimeout to mimic fetch POST data
-        // setTimeout(() => {
-        //   alert(JSON.stringify(values));
-        //   // Clear form after submit
-        //   resetForm({
-        //     values: {
-        //       username: "",
-        //       password: "",
-        //     },
-        //   });
-        //   setSubmitting(false); // Enables submit button once submitted
-        // }, 1500); // 3 secs timeout
-
+        loginUser(values.email, values.password);
         setSubmitting(false);
       }}
     >

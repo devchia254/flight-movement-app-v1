@@ -10,7 +10,6 @@ import Check from "@material-ui/icons/Check";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import Clear from "@material-ui/icons/Clear";
-import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import Edit from "@material-ui/icons/Edit";
 import FilterList from "@material-ui/icons/FilterList";
 import FirstPage from "@material-ui/icons/FirstPage";
@@ -18,6 +17,9 @@ import LastPage from "@material-ui/icons/LastPage";
 import Remove from "@material-ui/icons/Remove";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
+
+// Action Column Icons
+import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
 
 // import { useTheme } from "@material-ui/core/styles";
@@ -69,12 +71,15 @@ function ScheduleTable(props) {
       from: flight.from,
       to: flight.to,
       company: flight.company,
+      createdAt: moment(flight.createdAt, true).format("DD/MM/YYYY HH:mm"),
+      updatedAt: moment(flight.updatedAt, true).format("DD/MM/YYYY HH:mm"),
     };
   });
 
   // Table columns
   const columns = [
-    { title: "ID", field: "id" },
+    // Flight ID commented out coz only used for assigning a unique ID for each row
+    // { title: "ID", field: "id" },
     { title: "Flight No.", field: "flightNo" },
     { title: "Aircraft Reg.", field: "acReg" },
     {
@@ -90,6 +95,27 @@ function ScheduleTable(props) {
     { title: "From", field: "from" },
     { title: "To", field: "to" },
     { title: "Company", field: "company" },
+    {
+      title: "Created At",
+      field: "createdAt",
+      customSort: (a, b) => {
+        // Sort dates based on the difference of moments
+        const momentA = moment(a.createdAt, "DD/MM/YYYY HH:mm");
+        const momentB = moment(b.createdAt, "DD/MM/YYYY HH:mm");
+        return momentA.diff(momentB);
+      },
+    },
+    {
+      title: "Updated At",
+      field: "updatedAt",
+      defaultSort: "desc",
+      customSort: (a, b) => {
+        // Sort dates based on the difference of moments
+        const momentA = moment(a.updatedAt, "DD/MM/YYYY HH:mm");
+        const momentB = moment(b.updatedAt, "DD/MM/YYYY HH:mm");
+        return momentA.diff(momentB);
+      },
+    },
   ];
 
   // React Hook: Open/Close Dialog
@@ -113,17 +139,17 @@ function ScheduleTable(props) {
           {
             icon: () => <EditIcon />,
             tooltip: "Edit Flight",
-            onClick: (e, rowData) => {
-              handleClickOpen();
+            onClick: (evt, rowData) => {
               setRowDetails(rowData);
+              handleClickOpen();
             },
             // onClick: (event, rowData) => alert("You saved " + rowData.name),
           },
           (rowData) => ({
             icon: () => <DeleteOutline />,
             tooltip: "Delete Flight",
-            onClick: (event, rowData) => {
-              deleteFlight(rowData.id, event);
+            onClick: (evt, rowData) => {
+              deleteFlight(rowData.id);
             },
             // disabled: rowData.birthYear < 2000,
           }),

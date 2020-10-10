@@ -1,6 +1,9 @@
 import React, { Component } from "react";
-import { generate } from "shortid";
-import makeData from "../test/makeData"; // Fake data generator
+// import { generate } from "shortid";
+import AuthService from "../services/auth/auth-service";
+import AuthSchedule from "../services/auth/auth-schedule";
+
+// import makeData from "../test/makeData"; // Fake data generator
 
 import ScheduleModal from "../components/modals/ScheduleModal.js";
 import ScheduleTable from "../components/table/ScheduleTable.js";
@@ -12,10 +15,12 @@ import Button from "@material-ui/core/Button";
 // import Typography from "@material-ui/core/Typography";
 import AddIcon from "@material-ui/icons/Add";
 
+import { withSnackbar } from "notistack";
+
 // Material-UI Date Pickers (Moment Library)
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"; // Requires a Date lib to be chosen
 import MomentUtils from "@date-io/moment";
-const moment = require("moment"); // require Moment library\
+const moment = require("moment"); // require Moment library
 
 // Example of 1 record
 // const sampleData = {
@@ -42,71 +47,215 @@ class SchedulePage extends Component {
   constructor() {
     super();
     this.state = {
-      flights: [
-        // sampleData,
-        ...makeData(20),
-      ],
-      open: false,
+      // flights: [
+      //   // ...makeData(20),
+      // ]
+      flights: [],
+      open: false, // Trigger Dialog(modal) to be visible
     };
   }
 
-  addFlight = (formData) => {
-    const storeInArr = [formData];
+  componentDidMount() {
+    this.getFlights();
+  }
 
-    const mappedData = storeInArr.map((field) => {
-      const { flightNo, acReg, dateTime, from, to, company } = field;
-
-      return {
-        id: generate(),
-        flightNo: flightNo,
-        acReg: acReg,
-        dateTime: moment(dateTime).format(), // String format: ISO 8601
-        from: from,
-        to: to,
-        company: company,
-      };
+  snackbarSuccess(msg) {
+    this.props.enqueueSnackbar(msg, {
+      variant: "success",
     });
+  }
 
-    // Note: Switch mappedData and this.state.flights if you want object added at an end of the state array
-    const flightData = [
-      // mappedData transforms from [{}] to {}
-      ...mappedData,
-      ...this.state.flights,
-    ];
-
-    this.setState({
-      flights: flightData,
+  snackbarFail(msg) {
+    this.props.enqueueSnackbar(msg, {
+      variant: "error",
     });
+  }
+
+  getFlights = () => {
+    AuthSchedule.allFlights()
+      .then((res) => {
+        const mappedFlights = res.data.flightData.map((flight) => {
+          const {
+            flight_id,
+            flight_no,
+            ac_reg,
+            date_time,
+            from,
+            to,
+            company,
+            user_email,
+            createdAt,
+            updatedAt,
+            updated_by,
+          } = flight;
+          return {
+            id: flight_id,
+            flightNo: flight_no,
+            acReg: ac_reg,
+            dateTime: date_time,
+            from: from,
+            to: to,
+            company: company,
+            userEmail: user_email,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            updated_by: updated_by,
+          };
+        });
+
+        this.setState((prevState) => {
+          const fetchedflights = [...prevState.flights, ...mappedFlights];
+          return { flights: fetchedflights };
+        });
+      })
+      .catch((error) => {
+        const resMessage =
+          (error.response && error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        if (resMessage) {
+          console.log("Error with fetching flights: ", resMessage);
+        }
+      });
+  };
+
+  createFlight = (formData) => {
+    const { flightNo, acReg, dateTime, from, to, company } = formData;
+
+    const postData = {
+      flightNo: flightNo,
+      acReg: acReg,
+      dateTime: moment(dateTime).format(), // String format: ISO 8601
+      from: from,
+      to: to,
+      company: company,
+      userEmail: AuthService.getUserEmail(),
+    };
+
+    // console.log("JS Date: ", dateTime);
+    // console.log("Moment with no UTC: ", moment(dateTime).format());
+    // console.log("Moment with UTC: ", moment.utc(dateTime).format());
+
+    AuthSchedule.createFlight(postData)
+      .then((res) => {
+        this.snackbarSuccess(res.data.message);
+        this.setState(prevState => {
+
+          const addFlight = {
+            ...postData,
+            userEmail: AuthService.getUserEmail(),
+            createdAt: moment().format(),
+            updatedAt: moment().format(),
+            updated_by: "",
+          };
+
+          return {
+            flights: [...prevState.flights, addFlight]
+          }
+        });
+        // console.log(createFlightProps)
+        this.closeModal();
+      })
+      .catch((error) => {
+        const resMessage =
+          (error.response && error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        if (resMessage) {
+          this.snackbarFail(resMessage);
+        }
+      });
   };
 
   // Edit Product
-  editFlight = (id, modalFormData) => {
-    const { flights } = this.state;
+  editFlight = (modalFormData, flightId, resetForm) => {
+    const putData = { ...modalFormData, updatedBy: AuthService.getUserEmail() };
 
-    const initialFlights = [...flights];
+    AuthSchedule.editFlight(putData, flightId)
+      .then((res) => {
+        this.snackbarSuccess(res.data.message);
 
-    const filterFlight = initialFlights.map((flight) => {
-      if (id === flight.id) {
-        // This object clones the product that satisfies the condition above and assigns the corresponding property values from 'editDetails'.
-        return {
-          ...flight,
-          ...modalFormData,
-        };
-      }
-      return flight;
-    });
+        this.setState((prevState) => {
+          const updateFlights = prevState.flights.map((flight) => {
+            if (flightId === flight.id) {
+              // Only when the ID matches between the edited flight record and the flight in the state, updateFlightProps updates the respective properties of the flight object in the state.
+              const updateFlightProps = {
+                ...putData,
+                updatedAt: moment().format(), // Now() in ISO 8601 format
+              };
+                            
+              return {
+                ...flight,
+                ...updateFlightProps,
+              };
+            }
+            return flight; // Return rest of the flights
+          });
 
-    this.setState({ flights: filterFlight });
+          // Clear form after submit (Formik)
+          resetForm({
+            values: {
+              flightNo: "",
+              acReg: "",
+              dateTime: null,
+              from: "",
+              to: "",
+              company: "",
+            },
+          });
+
+          return { flights: updateFlights };
+        });
+      })
+      .catch((error) => {
+        const resMessage =
+          (error.response && error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        if (resMessage) {
+          this.snackbarFail(resMessage);
+        }
+      });
+    // this.setState(state => {
+    //   const newFlights = state.flights.map((flight, i) =)
+    // })
   };
 
-  deleteFlight = (id, e) => {
-    const { flights } = this.state;
-
-    const updateFlights = flights.filter((flight, i, arr) => flight.id !== id);
-
+  deleteFlight = (flightId, e) => {
     if (window.confirm("Are you sure?")) {
-      this.setState({ flights: updateFlights });
+      AuthSchedule.deleteFlight(flightId)
+        .then((res) => { 
+          this.setState((prevState) => {
+            const filterFlight = prevState.flights.filter(
+              (flight, i, arr) => flight.id !== flightId
+            );
+            return { flights: filterFlight };
+          });
+
+          this.snackbarSuccess(res.data.message);
+        })
+        .catch((error) => {
+          const resMessage =
+            (error.response && error.response.data.message) ||
+            error.message ||
+            error.toString();
+
+          if (resMessage) {
+            this.snackbarFail(resMessage);
+          }
+        });
     }
+
+    // const filterFlight = this.state.flights.filter(
+    //   (flight, i, arr) => flight.id !== flightId
+    // );
+
+    // if (window.confirm("Are you sure?")) {
+    //   this.setState({ flights: filterFlight });
+    // }
   };
 
   // Modal functions below
@@ -141,7 +290,7 @@ class SchedulePage extends Component {
               {/* <Typography variant="h6">Schedule</Typography> */}
             </Button>
             <ScheduleModal
-              addFlight={this.addFlight}
+              createFlight={this.createFlight}
               open={this.state.open}
               closeModal={this.closeModal}
             />
@@ -157,4 +306,4 @@ class SchedulePage extends Component {
   }
 }
 
-export default withStyles(scheduleStyles)(SchedulePage);
+export default withSnackbar(withStyles(scheduleStyles)(SchedulePage));

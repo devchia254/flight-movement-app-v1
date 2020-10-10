@@ -39,7 +39,7 @@ const yupValidationSchema = yup.object().shape({
   company: yupStringRules,
 });
 
-function ScheduleForm({ addFlight, closeModal }) {
+function ScheduleForm({ createFlight }) {
   const classes = useStyles();
 
   return (
@@ -56,23 +56,21 @@ function ScheduleForm({ addFlight, closeModal }) {
       onSubmit={(values, { resetForm, setSubmitting }) => {
         setSubmitting(true); // Makes async call and disables submit button
 
-        // setTimeout to mimic fetch POST data
-        setTimeout(() => {
-          addFlight(values); // add flight values by lifting to state
-          // Clear form after submit
-          resetForm({
-            values: {
-              flightNo: "",
-              acReg: "",
-              dateTime: null,
-              from: "",
-              to: "",
-              company: "",
-            },
-          });
-          setSubmitting(false); // Enables submit button once submitted
-          closeModal(); // Closes Modal
-        }, 1500); // 3 secs timeout
+        createFlight(values); // add flight values by lifting to state
+        // Clear form after submit
+        resetForm({
+          values: {
+            flightNo: "",
+            acReg: "",
+            dateTime: null,
+            from: "",
+            to: "",
+            company: "",
+          },
+        });
+        setSubmitting(false); // Enables submit button once submitted
+        // // setTimeout to mimic fetch POST data
+        // setTimeout(() => {}, 1500); // 3 secs timeout
       }}
     >
       {(props) => (

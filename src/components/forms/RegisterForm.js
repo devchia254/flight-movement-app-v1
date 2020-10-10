@@ -7,6 +7,7 @@ import { Button } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import MyField from "../formik-fields/MyField.js";
 import * as yup from "yup";
+import { useSnackbar } from "notistack";
 // import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
 
 const yupEmailRules = yup
@@ -53,8 +54,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function RegisterForm() {
+function RegisterForm(props) {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const regError = (msg) => {
+    enqueueSnackbar(msg, {
+      variant: "error",
+    });
+  };
+
+  const regSuccess = (msg) => {
+    enqueueSnackbar(msg, {
+      variant: "success",
+    });
+  };
 
   return (
     <Formik
@@ -76,7 +90,9 @@ function RegisterForm() {
           values.password,
           "user"
         )
-          .then(() => {
+          .then((res) => {
+            // console.log(res.data);
+            regSuccess(res.data.message);
             resetForm({
               values: {
                 firstName: "",
@@ -87,8 +103,6 @@ function RegisterForm() {
               },
             });
             setSubmitting(false); // Enables submit button once submitted
-            // history.push("/profile");
-            // window.location.reload();
           })
           .catch((error) => {
             const resMessage =
@@ -97,32 +111,18 @@ function RegisterForm() {
                 error.response.data.message) ||
               error.message ||
               error.toString();
-            if (resMessage) {
-              console.log(resMessage);
-            }
-            setSubmitting(false); // Enables submit button once submitted
 
+            if (resMessage) {
+              // console.log(resMessage);
+              regError(resMessage);
+            }
+
+            setSubmitting(false); // Enables submit button once submitted
             // this.setState({
             //   loading: false,
             //   message: resMessage,
             // });
           });
-
-        // // setTimeout to mimic fetch POST data
-        // setTimeout(() => {
-        //   alert(JSON.stringify(values));
-        //   // Clear form after submit
-        //   resetForm({
-        //     values: {
-        //       firstName: "",
-        //       lastName: "",
-        //       email: "",
-        //       password: "",
-        //       passwordVerify: "",
-        //     },
-        //   });
-        //   setSubmitting(false); // Enables submit button once submitted
-        // }, 1500); // 3 secs timeout
       }}
     >
       {(props) => (

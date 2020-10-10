@@ -43,6 +43,14 @@ class AuthService {
     return JSON.parse(localStorage.getItem("user"));
   }
 
+  getUserEmail() {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (user && user.email) {
+      return user.email;
+    } else return null;
+  }
+
   // getStandardUser() {
   //   return {
   //     accessToken: "encrypted123",
