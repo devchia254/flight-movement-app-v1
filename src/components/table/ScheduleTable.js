@@ -71,10 +71,17 @@ function ScheduleTable(props) {
       from: flight.from,
       to: flight.to,
       company: flight.company,
-      createdAt: moment(flight.createdAt, true).format("DD/MM/YYYY HH:mm"),
+      // createdAt: moment(flight.createdAt, true).format("DD/MM/YYYY HH:mm"),
       updatedAt: moment(flight.updatedAt, true).format("DD/MM/YYYY HH:mm"),
     };
   });
+
+  const sortDateFn = (a, b) => {
+    // Sort dates based on the difference of moments
+    const momentA = moment(a.dateTime, "DD/MM/YYYY HH:mm");
+    const momentB = moment(b.dateTime, "DD/MM/YYYY HH:mm");
+    return momentA.diff(momentB);
+  };
 
   // Table columns
   const columns = [
@@ -86,34 +93,28 @@ function ScheduleTable(props) {
       title: "Date & Time",
       field: "dateTime",
       customSort: (a, b) => {
-        // Sort dates based on the difference of moments
-        const momentA = moment(a.dateTime, "DD/MM/YYYY HH:mm");
-        const momentB = moment(b.dateTime, "DD/MM/YYYY HH:mm");
-        return momentA.diff(momentB);
+        sortDateFn(a, b);
       },
     },
     { title: "From", field: "from" },
     { title: "To", field: "to" },
     { title: "Company", field: "company" },
+    // {
+    //   title: "Created At",
+    //   field: "createdAt",
+    //   customSort: (a, b) => {
+    //     // Sort dates based on the difference of moments
+    //     const momentA = moment(a.createdAt, "DD/MM/YYYY HH:mm");
+    //     const momentB = moment(b.createdAt, "DD/MM/YYYY HH:mm");
+    //     return momentA.diff(momentB);
+    //   },
+    // },
     {
-      title: "Created At",
-      field: "createdAt",
-      customSort: (a, b) => {
-        // Sort dates based on the difference of moments
-        const momentA = moment(a.createdAt, "DD/MM/YYYY HH:mm");
-        const momentB = moment(b.createdAt, "DD/MM/YYYY HH:mm");
-        return momentA.diff(momentB);
-      },
-    },
-    {
-      title: "Updated At",
+      title: "Last Modified",
       field: "updatedAt",
       defaultSort: "desc",
       customSort: (a, b) => {
-        // Sort dates based on the difference of moments
-        const momentA = moment(a.updatedAt, "DD/MM/YYYY HH:mm");
-        const momentB = moment(b.updatedAt, "DD/MM/YYYY HH:mm");
-        return momentA.diff(momentB);
+        sortDateFn(a, b);
       },
     },
   ];
