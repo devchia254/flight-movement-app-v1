@@ -8,8 +8,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
-const moment = require("moment"); // require Moment library
-
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.primary.main,
@@ -39,6 +37,8 @@ const useStyles = makeStyles({
 export default function CustomizedTables({ flights }) {
   const classes = useStyles();
 
+  // const [record, setRecord] = React.useState(flights);
+
   // Table Rows
   const tableFlights = flights.map((flight) => {
     return {
@@ -46,13 +46,15 @@ export default function CustomizedTables({ flights }) {
       flightNo: flight.flightNo,
       acReg: flight.acReg,
       // dateTime: moment(flight.dateTime, true).format("DD/MM/YYYY HH:mm"), // Strict mode: ISO 8601 (Before conversion to readable format)
-      date: moment(flight.dateTime, true).format("DD/MM/YYYY"),
-      time: moment(flight.dateTime, true).format("HH:mm"),
+      date: flight.date,
+      time: flight.time,
       from: flight.from,
       to: flight.to,
       company: flight.company,
     };
   });
+
+  // console.log(record);
 
   return (
     <TableContainer component={Paper}>
