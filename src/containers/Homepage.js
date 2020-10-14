@@ -31,12 +31,12 @@ class Homepage extends Component {
     super();
     this.state = {
       flights: [],
-      date: moment().format("DD-MM-YYYY", true),
+      date: moment().format("YYYY-MM-DD"),
       minDays: -3,
       maxDays: 3,
       clicks: 0,
       disablePrevBtn: false,
-      disableNextBtn: false,
+      disableFollowingBtn: false,
     };
   }
 
@@ -45,14 +45,20 @@ class Homepage extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    this.filterFlights();
+    if (this.state.flights) {
+      this.flightsByDate();
+    }
   }
 
-  filterFlights = () => {
+  flightsByDate = () => {
     const filteredFlights = this.state.flights.filter((flight) => {
       return flight.date === this.state.date;
     });
     return filteredFlights;
+
+    // if (filteredFlights.length === 0) {
+    //   return null;
+    // } else return filteredFlights;
   };
 
   fetchPublicFlights() {
@@ -68,11 +74,14 @@ class Homepage extends Component {
             to,
             company,
           } = flight;
+
+          // console.log(moment(date_time));
+
           return {
             id: flight_id,
             flightNo: flight_no,
             acReg: ac_reg,
-            date: moment(date_time, true).format("DD-MM-YYYY"),
+            date: moment(date_time, true).format("YYYY-MM-DD"), // Accepted ISO 8601 string for Calendar Date
             time: moment(date_time, true).format("HH:mm"),
             from: from,
             to: to,
@@ -97,17 +106,7 @@ class Homepage extends Component {
       });
   }
 
-  // showFlight = (date) => {
-  //   if (this.state.flights) {
-  //     const filteredFlights = this.state.flights.filter((flight) => {
-  //       return flight.date === date;
-  //     });
-  //     // return filteredFlights;
-  //     this.setState({ tableFlights: filteredFlights });
-  //   }
-  // };
-
-  daysBefore = () => {
+  previousDates = () => {
     const { clicks, minDays } = this.state;
     if (clicks > minDays) {
       this.setState((prevState) => {
@@ -115,8 +114,8 @@ class Homepage extends Component {
           clicks: prevState.clicks - 1,
           date: moment()
             .add(prevState.clicks - 1, "d")
-            .format("DD-MM-YYYY", true),
-          disableNextBtn: false,
+            .format("YYYY-MM-DD", true),
+          disableFollowingBtn: false,
         };
       });
     } else {
@@ -124,7 +123,7 @@ class Homepage extends Component {
     }
   };
 
-  daysAfter = () => {
+  followingDates = () => {
     const { clicks, maxDays } = this.state;
 
     if (clicks < maxDays) {
@@ -133,12 +132,12 @@ class Homepage extends Component {
           clicks: prevState.clicks + 1,
           date: moment()
             .add(prevState.clicks + 1, "d")
-            .format("DD-MM-YYYY", true),
+            .format("YYYY-MM-DD", true),
           disablePrevBtn: false,
         };
       });
     } else {
-      this.setState({ disableNextBtn: true });
+      this.setState({ disableFollowingBtn: true });
     }
   };
 
@@ -146,44 +145,48 @@ class Homepage extends Component {
     const { classes } = this.props;
 
     // const today = moment().format("DD/MM/YYYY");
+    // console.log(moment()._d);
+    // console.log(moment().add(3, "d")._d);
 
-    // this.showFlight(today);
-
-    const displayState = {
-      date: this.state.date,
-      minDays: this.state.minDays,
-      maxDays: this.state.maxDays,
-      clicks: this.state.clicks,
-      disable: this.state.disable,
-    };
-    // console.log(this.filterFlights);
+    // const displayState = {
+    //   date: this.state.date,
+    //   minDays: this.state.minDays,
+    //   maxDays: this.state.maxDays,
+    //   clicks: this.state.clicks,
+    //   disable: this.state.disable,
+    // };
+    console.log(this.flightsByDate());
     return (
       <Container maxWidth="lg">
         <Grid container spacing={3} className={classes.container}>
           <Grid item xs={12} sm={8}>
-            <pre>{JSON.stringify(displayState, null, 2)}</pre>
+            {/* <pre>{JSON.stringify(displayState, null, 2)}</pre> */}
             <div className={classes.title}>
               <Button
                 variant="outlined"
                 color="primary"
                 name="minusOneDay"
-                onClick={this.daysBefore}
+                onClick={this.previousDates}
                 disabled={this.state.disablePrevBtn}
               >
                 Previous Date
               </Button>
-              <Typography variant="h5">{this.state.date}</Typography>
+              <Typography variant="h5">
+                {/* Full Date format */}
+                {moment(this.state.date).format("dddd Do MMMM YYYY")}
+              </Typography>
               <Button
                 variant="outlined"
                 color="primary"
                 name="plusOneDay"
-                onClick={this.daysAfter}
-                disabled={this.state.disableNextBtn}
+                onClick={this.followingDates}
+                disabled={this.state.disableFollowingBtn}
               >
                 Following Date
               </Button>
             </div>
-            <HomeTable flights={this.filterFlights()} />
+            <HomeTable tableFlights={this.flightsByDate()} />
+            {/* <HomeTable tableFlights={this.state.flights} /> */}
           </Grid>
           <Grid item xs={12} sm={4}>
             <Paper elevation={10}>
