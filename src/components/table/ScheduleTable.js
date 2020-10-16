@@ -76,12 +76,12 @@ function ScheduleTable(props) {
     };
   });
 
-  const sortDateFn = (a, b) => {
-    // Sort dates based on the difference of moments
-    const momentA = moment(a.dateTime, "DD/MM/YYYY HH:mm");
-    const momentB = moment(b.dateTime, "DD/MM/YYYY HH:mm");
-    return momentA.diff(momentB);
-  };
+  // const sortDateFn = (a, b) => {
+  //   // Sort dates based on the difference of moments
+  //   const momentA = moment(a.dateTime, "DD/MM/YYYY HH:mm");
+  //   const momentB = moment(b.dateTime, "DD/MM/YYYY HH:mm");
+  //   return momentA.diff(momentB);
+  // };
 
   // Table columns
   const columns = [
@@ -92,9 +92,9 @@ function ScheduleTable(props) {
     {
       title: "Date & Time",
       field: "dateTime",
-      customSort: (a, b) => {
-        sortDateFn(a, b);
-      },
+      // customSort: (a, b) => {
+      //   sortDateFn(a, b);
+      // },
     },
     { title: "From", field: "from" },
     { title: "To", field: "to" },
@@ -113,9 +113,11 @@ function ScheduleTable(props) {
       title: "Last Modified",
       field: "updatedAt",
       defaultSort: "desc",
-      customSort: (a, b) => {
-        sortDateFn(a, b);
-      },
+      // customSort: (a, b) => {
+      //   const momentA = moment(a.dateTime, "DD/MM/YYYY HH:mm");
+      //   const momentB = moment(b.dateTime, "DD/MM/YYYY HH:mm");
+      //   return momentA.diff(momentB);
+      // },
     },
   ];
 

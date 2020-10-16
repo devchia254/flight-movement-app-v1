@@ -19,10 +19,21 @@ const useStyles = (theme) => ({
   container: {
     marginTop: theme.spacing(3),
   },
-  title: {
+  homepageLeft: {
+    padding: theme.spacing(1),
+    // Height: "800px",
+    // display: "grid",
+    // gridTemplateRows: "1fr 2fr",
+  },
+  dateNav: {
+    // height: "200px",
     display: "flex",
     justifyContent: "space-between",
+    margin: "2em 0 2em",
     // flexDirection: "column",
+  },
+  homeTable: {
+    height: "100%",
   },
 });
 
@@ -155,13 +166,19 @@ class Homepage extends Component {
     //   clicks: this.state.clicks,
     //   disable: this.state.disable,
     // };
-    console.log(this.flightsByDate());
+    // console.log(this.flightsByDate());
     return (
       <Container maxWidth="lg">
-        <Grid container spacing={3} className={classes.container}>
-          <Grid item xs={12} sm={8}>
+        <Grid container spacing={2} className={classes.container}>
+          <Grid
+            item
+            // spacing={2}
+            xs={12}
+            sm={8}
+            className={classes.homepageLeft}
+          >
             {/* <pre>{JSON.stringify(displayState, null, 2)}</pre> */}
-            <div className={classes.title}>
+            <div className={classes.dateNav}>
               <Button
                 variant="outlined"
                 color="primary"
@@ -171,7 +188,7 @@ class Homepage extends Component {
               >
                 Previous Date
               </Button>
-              <Typography variant="h5">
+              <Typography variant="h5" style={{ textAlign: "center" }}>
                 {/* Full Date format */}
                 {moment(this.state.date).format("dddd Do MMMM YYYY")}
               </Typography>
@@ -185,7 +202,9 @@ class Homepage extends Component {
                 Following Date
               </Button>
             </div>
-            <HomeTable tableFlights={this.flightsByDate()} />
+            <div className={classes.homeTable}>
+              <HomeTable tableFlights={this.flightsByDate()} />
+            </div>
             {/* <HomeTable tableFlights={this.state.flights} /> */}
           </Grid>
           <Grid item xs={12} sm={4}>
