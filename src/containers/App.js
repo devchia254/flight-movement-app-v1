@@ -24,6 +24,7 @@ class App extends Component {
     return (
       <div className="App">
         <CssBaseline />
+        {/* Perhaps test the user token status here to try and prevent windows.reload() for route changes */}
         <Navbar>Flight Movement App</Navbar>
         <div className="content"></div>
         {/* Link is at Drawer */}
