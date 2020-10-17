@@ -64,15 +64,17 @@ function ScheduleTable(props) {
     return {
       id: flight.id,
       flightNo: flight.flightNo,
-      acReg: flight.acReg,
-      dateTime: moment(flight.dateTime, true).format("DD/MM/YYYY HH:mm"), // Strict mode: ISO 8601 (Before conversion to readable format)
-      // date: moment(flight.dateTime, true).format("DD/MM/YYYY"),
-      // time: moment(flight.dateTime, true).format("HH:mm"),
-      from: flight.from,
-      to: flight.to,
       company: flight.company,
+      acReg: flight.acReg,
+      destination: flight.destination,
+      checkIn: moment(flight.checkIn, true).format("DD/MM/YYYY HH:mm"), // Strict mode: ISO 8601 (Before conversion to readable format)
+      etd: moment(flight.etd, true).format("DD/MM/YYYY HH:mm"),
+      eta: moment(flight.eta, true).format("DD/MM/YYYY HH:mm"),
+      status: flight.status,
+      // userEmail: flight.userEmail,
       // createdAt: moment(flight.createdAt, true).format("DD/MM/YYYY HH:mm"),
       updatedAt: moment(flight.updatedAt, true).format("DD/MM/YYYY HH:mm"),
+      // updatedBy: flight.updatedBy,
     };
   });
 
@@ -89,26 +91,20 @@ function ScheduleTable(props) {
     // { title: "ID", field: "id" },
     { title: "Flight No.", field: "flightNo" },
     { title: "Aircraft Reg.", field: "acReg" },
-    {
-      title: "Date & Time",
-      field: "dateTime",
-      // customSort: (a, b) => {
-      //   sortDateFn(a, b);
-      // },
-    },
-    { title: "From", field: "from" },
-    { title: "To", field: "to" },
     { title: "Company", field: "company" },
-    // {
-    //   title: "Created At",
-    //   field: "createdAt",
-    //   customSort: (a, b) => {
-    //     // Sort dates based on the difference of moments
-    //     const momentA = moment(a.createdAt, "DD/MM/YYYY HH:mm");
-    //     const momentB = moment(b.createdAt, "DD/MM/YYYY HH:mm");
-    //     return momentA.diff(momentB);
-    //   },
-    // },
+    {
+      title: "Check In",
+      field: "checkIn",
+    },
+    {
+      title: "ETD",
+      field: "etd",
+    },
+    {
+      title: "ETA",
+      field: "eta",
+    },
+    { title: "Status", field: "status" },
     {
       title: "Last Modified",
       field: "updatedAt",

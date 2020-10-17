@@ -78,11 +78,13 @@ class SchedulePage extends Component {
           const {
             flight_id,
             flight_no,
-            ac_reg,
-            date_time,
-            from,
-            to,
             company,
+            ac_reg,
+            destination,
+            check_in,
+            etd,
+            eta,
+            status,
             user_email,
             createdAt,
             updatedAt,
@@ -91,15 +93,17 @@ class SchedulePage extends Component {
           return {
             id: flight_id,
             flightNo: flight_no,
-            acReg: ac_reg,
-            dateTime: date_time,
-            from: from,
-            to: to,
             company: company,
+            acReg: ac_reg,
+            destination: destination,
+            checkIn: check_in,
+            etd: etd,
+            eta: eta,
+            status: status,
             userEmail: user_email,
             createdAt: createdAt,
             updatedAt: updatedAt,
-            updated_by: updated_by,
+            updatedBy: updated_by,
           };
         });
 
@@ -140,8 +144,7 @@ class SchedulePage extends Component {
     AuthSchedule.createFlight(postData)
       .then((res) => {
         this.snackbarSuccess(res.data.message);
-        this.setState(prevState => {
-
+        this.setState((prevState) => {
           const addFlight = {
             ...postData,
             userEmail: AuthService.getUserEmail(),
@@ -151,8 +154,8 @@ class SchedulePage extends Component {
           };
 
           return {
-            flights: [...prevState.flights, addFlight]
-          }
+            flights: [...prevState.flights, addFlight],
+          };
         });
         // console.log(createFlightProps)
         this.closeModal();
@@ -185,7 +188,7 @@ class SchedulePage extends Component {
                 ...putData,
                 updatedAt: moment().format(), // Now() in ISO 8601 format
               };
-                            
+
               return {
                 ...flight,
                 ...updateFlightProps,
@@ -227,7 +230,7 @@ class SchedulePage extends Component {
   deleteFlight = (flightId, e) => {
     if (window.confirm("Are you sure?")) {
       AuthSchedule.deleteFlight(flightId)
-        .then((res) => { 
+        .then((res) => {
           this.setState((prevState) => {
             const filterFlight = prevState.flights.filter(
               (flight, i, arr) => flight.id !== flightId
