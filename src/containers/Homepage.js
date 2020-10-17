@@ -63,7 +63,7 @@ class Homepage extends Component {
 
   flightsByDate = () => {
     const filteredFlights = this.state.flights.filter((flight) => {
-      return flight.date === this.state.date;
+      return flight.flightDate === this.state.date;
     });
     return filteredFlights;
 
@@ -79,11 +79,13 @@ class Homepage extends Component {
           const {
             flight_id,
             flight_no,
-            ac_reg,
-            date_time,
-            from,
-            to,
             company,
+            ac_reg,
+            destination,
+            check_in,
+            etd,
+            eta,
+            status,
           } = flight;
 
           // console.log(moment(date_time));
@@ -91,12 +93,14 @@ class Homepage extends Component {
           return {
             id: flight_id,
             flightNo: flight_no,
-            acReg: ac_reg,
-            date: moment(date_time, true).format("YYYY-MM-DD"), // Accepted ISO 8601 string for Calendar Date
-            time: moment(date_time, true).format("HH:mm"),
-            from: from,
-            to: to,
             company: company,
+            acReg: ac_reg,
+            destination: destination,
+            flightDate: moment(check_in, true).format("YYYY-MM-DD"), // Accepted ISO 8601 string for Calendar Date and new field to manipulate date in homepage
+            checkIn: moment(check_in, true).format("HH:mm"),
+            etd: moment(etd, true).format("HH:mm"),
+            eta: moment(eta, true).format("HH:mm"),
+            status: status,
           };
         });
 

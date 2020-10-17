@@ -84,27 +84,33 @@ export default function CustomizedTables({ tableFlights }) {
       <Table size="medium" aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Flight No.</StyledTableCell>
-            <StyledTableCell align="right">Aircraft Reg.</StyledTableCell>
-            <StyledTableCell align="right">Date</StyledTableCell>
-            <StyledTableCell align="right">Time</StyledTableCell>
-            <StyledTableCell align="right">From</StyledTableCell>
-            <StyledTableCell align="right">To</StyledTableCell>
-            <StyledTableCell align="right">Company</StyledTableCell>
+            {/* <StyledTableCell>Flight No.</StyledTableCell> */}
+            <StyledTableCell>Company</StyledTableCell>
+            <StyledTableCell align="right">Aircraft</StyledTableCell>
+            <StyledTableCell align="right">Destination</StyledTableCell>
+            {/* <StyledTableCell align="right">Date</StyledTableCell> */}
+            <StyledTableCell align="right">Check In</StyledTableCell>
+            <StyledTableCell align="right">ETD</StyledTableCell>
+            <StyledTableCell align="right">ETA</StyledTableCell>
+            <StyledTableCell align="right">Status</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {tableFlights.map((row) => (
             <StyledTableRow key={row.id}>
-              <StyledTableCell component="th" scope="row">
+              {/* <StyledTableCell component="th" scope="row">
                 {row.flightNo}
+              </StyledTableCell> */}
+              <StyledTableCell component="th" scope="row">
+                {row.company}
               </StyledTableCell>
               <StyledTableCell align="right">{row.acReg}</StyledTableCell>
-              <StyledTableCell align="right">{row.date}</StyledTableCell>
-              <StyledTableCell align="right">{row.time}</StyledTableCell>
-              <StyledTableCell align="right">{row.from}</StyledTableCell>
-              <StyledTableCell align="right">{row.to}</StyledTableCell>
-              <StyledTableCell align="right">{row.company}</StyledTableCell>
+              <StyledTableCell align="right">{row.destination}</StyledTableCell>
+              <StyledTableCell align="right">{row.checkIn}</StyledTableCell>
+              <StyledTableCell align="right">{row.etd}</StyledTableCell>
+              <StyledTableCell align="right">{row.eta}</StyledTableCell>
+              <StyledTableCell align="right">{row.status}</StyledTableCell>
+              <StyledTableCell align="right">{row.flightDate}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
