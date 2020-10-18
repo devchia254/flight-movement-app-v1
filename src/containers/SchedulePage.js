@@ -125,17 +125,30 @@ class SchedulePage extends Component {
   };
 
   createFlight = (formData) => {
-    const { flightNo, acReg, dateTime, from, to, company } = formData;
+    const {
+      flightNo,
+      company,
+      acReg,
+      destination,
+      checkIn,
+      etd,
+      eta,
+      status,
+    } = formData;
 
     const postData = {
       flightNo: flightNo,
-      acReg: acReg,
-      dateTime: moment(dateTime).format(), // String format: ISO 8601
-      from: from,
-      to: to,
       company: company,
+      acReg: acReg,
+      destination: destination,
+      checkIn: moment(checkIn).format(),
+      etd: moment(etd).format(),
+      eta: moment(eta).format(),
+      status: status,
       userEmail: AuthService.getUserEmail(),
     };
+
+    console.log(postData);
 
     // console.log("JS Date: ", dateTime);
     // console.log("Moment with no UTC: ", moment(dateTime).format());
@@ -144,10 +157,11 @@ class SchedulePage extends Component {
     AuthSchedule.createFlight(postData)
       .then((res) => {
         this.snackbarSuccess(res.data.message);
+
+        // Optimistic UI Update: Create flight
         this.setState((prevState) => {
           const addFlight = {
             ...postData,
-            userEmail: AuthService.getUserEmail(),
             createdAt: moment().format(),
             updatedAt: moment().format(),
             updated_by: "",

@@ -5,7 +5,9 @@ import MyField from "../formik-fields/MyField.js";
 import MyKBDateTimePicker from "../formik-fields/MyKBDateTimePicker.js";
 import * as yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
-// import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
+// import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";\
+
+const moment = require("moment"); // require Moment library
 
 // Modal Styling
 const useStyles = makeStyles((theme) => ({
@@ -31,12 +33,14 @@ const yupStringRules = yup
 
 // Yup Configurations
 const yupValidationSchema = yup.object().shape({
-  dateTime: yup.date().nullable().required("Required"),
   flightNo: yupStringRules,
-  acReg: yupStringRules,
-  from: yupStringRules,
-  to: yupStringRules,
   company: yupStringRules,
+  acReg: yupStringRules,
+  destination: yupStringRules,
+  checkIn: yup.date().nullable().required("Required"),
+  etd: yup.date().nullable().required("Required"),
+  eta: yup.date().nullable().required("Required"),
+  status: yupStringRules,
 });
 
 function ScheduleForm({ createFlight }) {
@@ -46,28 +50,34 @@ function ScheduleForm({ createFlight }) {
     <Formik
       initialValues={{
         flightNo: "",
-        acReg: "",
-        dateTime: new Date(),
-        from: "",
-        to: "",
         company: "",
+        acReg: "",
+        destination: "",
+        checkIn: moment(),
+        etd: moment(),
+        eta: moment(),
+        status: "",
       }}
       validationSchema={yupValidationSchema}
       onSubmit={(values, { resetForm, setSubmitting }) => {
         setSubmitting(true); // Makes async call and disables submit button
 
         createFlight(values); // add flight values by lifting to state
+
         // Clear form after submit
         resetForm({
           values: {
             flightNo: "",
-            acReg: "",
-            dateTime: null,
-            from: "",
-            to: "",
             company: "",
+            acReg: "",
+            destination: "",
+            checkIn: null,
+            etd: null,
+            eta: null,
+            status: "",
           },
         });
+
         setSubmitting(false); // Enables submit button once submitted
         // // setTimeout to mimic fetch POST data
         // setTimeout(() => {}, 1500); // 3 secs timeout
@@ -75,16 +85,26 @@ function ScheduleForm({ createFlight }) {
     >
       {(props) => (
         <Form className={classes.form}>
+          <MyField label="Flight No." name="flightNo" />
+          <MyField label="Company" name="company" />
+          <MyField label="Aircraft Reg." name="acReg" />
+          <MyField label="Destination" name="destination" />
           <Field
-            label="Date & Time (24h)"
-            name="dateTime"
+            label="Check In (24hr)"
+            name="checkIn"
             component={MyKBDateTimePicker}
           />
-          <MyField label="Flight No." name="flightNo" />
-          <MyField label="Aircraft Reg." name="acReg" />
-          <MyField label="From" name="from" />
-          <MyField label="To" name="to" />
-          <MyField label="Company" name="company" />
+          <Field
+            label="Estimated Time Departure (24hr)"
+            name="etd"
+            component={MyKBDateTimePicker}
+          />
+          <Field
+            label="Estimated Time Arrival (24hr)"
+            name="eta"
+            component={MyKBDateTimePicker}
+          />
+          <MyField label="Status" name="status" />
           <Button
             disabled={props.isSubmitting}
             type="submit"
