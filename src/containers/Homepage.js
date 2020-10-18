@@ -91,7 +91,7 @@ class Homepage extends Component {
           // console.log(moment(date_time));
 
           return {
-            id: flight_id,
+            flightId: flight_id,
             flightNo: flight_no,
             company: company,
             acReg: ac_reg,

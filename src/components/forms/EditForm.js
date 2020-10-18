@@ -68,7 +68,7 @@ function EditForm({ flightObj, editFlight, handleClose }) {
       onSubmit={(values, { resetForm, setSubmitting }) => {
         setSubmitting(true); // Makes async call and disables submit button
 
-        editFlight(values, flightObj.id, resetForm); // Lift values to state
+        editFlight(values, flightObj.flightId, resetForm); // Lift values to state
 
         setSubmitting(false); // Enables submit button once submitted
 

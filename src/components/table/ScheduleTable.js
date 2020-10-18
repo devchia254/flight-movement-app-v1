@@ -62,7 +62,7 @@ function ScheduleTable(props) {
   // Table Rows
   const tableFlights = flights.map((flight) => {
     return {
-      id: flight.id,
+      flightId: flight.flightId,
       flightNo: flight.flightNo,
       company: flight.company,
       acReg: flight.acReg,
@@ -148,7 +148,7 @@ function ScheduleTable(props) {
             icon: () => <DeleteOutline />,
             tooltip: "Delete Flight",
             onClick: (evt, rowData) => {
-              deleteFlight(rowData.id);
+              deleteFlight(rowData.flightId);
             },
             // disabled: rowData.birthYear < 2000,
           }),

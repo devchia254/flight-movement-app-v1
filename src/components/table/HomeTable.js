@@ -97,7 +97,7 @@ export default function CustomizedTables({ tableFlights }) {
         </TableHead>
         <TableBody>
           {tableFlights.map((row) => (
-            <StyledTableRow key={row.id}>
+            <StyledTableRow key={row.flightId}>
               {/* <StyledTableCell component="th" scope="row">
                 {row.flightNo}
               </StyledTableCell> */}

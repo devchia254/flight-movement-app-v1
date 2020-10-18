@@ -24,7 +24,7 @@ const moment = require("moment"); // require Moment library
 
 // Example of 1 record
 // const sampleData = {
-//   id: "knd26GHI87",
+//   flightId: "knd26GHI87",
 //   flightNo: "AN234",
 //   acReg: "9M-SBO",
 //   dateTime: "09/12/2020 10:00",
@@ -91,7 +91,7 @@ class SchedulePage extends Component {
             updated_by,
           } = flight;
           return {
-            id: flight_id,
+            flightId: flight_id,
             flightNo: flight_no,
             company: company,
             acReg: ac_reg,
@@ -140,7 +140,7 @@ class SchedulePage extends Component {
         // Optimistic UI Update: Create flight
         this.setState((prevState) => {
           const addFlight = {
-            id: res.data.flight_id,
+            flightId: res.data.flight_id,
             ...postData,
             createdAt: moment().format(),
             updatedAt: moment().format(),
@@ -184,7 +184,7 @@ class SchedulePage extends Component {
 
         this.setState((prevState) => {
           const updateFlights = prevState.flights.map((flight) => {
-            if (flightId === flight.id) {
+            if (flightId === flight.flightId) {
               // Only when the ID matches between the edited flight record and the flight in the state, updateFlightProps updates the respective properties of the flight object in the state.
               const updateFlightProps = {
                 ...putData,
@@ -237,7 +237,7 @@ class SchedulePage extends Component {
         .then((res) => {
           this.setState((prevState) => {
             const filterFlight = prevState.flights.filter(
-              (flight, i, arr) => flight.id !== flightId
+              (flight, i, arr) => flight.flightId !== flightId
             );
             return { flights: filterFlight };
           });
@@ -257,7 +257,7 @@ class SchedulePage extends Component {
     }
 
     // const filterFlight = this.state.flights.filter(
-    //   (flight, i, arr) => flight.id !== flightId
+    //   (flight, i, arr) => flight.flightId !== flightId
     // );
 
     // if (window.confirm("Are you sure?")) {
@@ -277,6 +277,8 @@ class SchedulePage extends Component {
   render() {
     const { flights } = this.state;
     const { classes } = this.props;
+
+    console.log(flights);
 
     return (
       <React.Fragment>
