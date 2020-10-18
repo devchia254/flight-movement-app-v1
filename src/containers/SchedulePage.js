@@ -125,6 +125,7 @@ class SchedulePage extends Component {
   };
 
   createFlight = (formData) => {
+    // console.log("formData: ", { ...formData });
     const {
       flightNo,
       company,
@@ -148,7 +149,7 @@ class SchedulePage extends Component {
       userEmail: AuthService.getUserEmail(),
     };
 
-    console.log(postData);
+    // console.log("postData: ", postData);
 
     // console.log("JS Date: ", dateTime);
     // console.log("Moment with no UTC: ", moment(dateTime).format());
@@ -156,6 +157,7 @@ class SchedulePage extends Component {
 
     AuthSchedule.createFlight(postData)
       .then((res) => {
+        // console.log(res.data);
         this.snackbarSuccess(res.data.message);
 
         // Optimistic UI Update: Create flight
@@ -190,9 +192,14 @@ class SchedulePage extends Component {
   editFlight = (modalFormData, flightId, resetForm) => {
     const putData = { ...modalFormData, updatedBy: AuthService.getUserEmail() };
 
+    console.log("putData: ", putData);
+
     AuthSchedule.editFlight(putData, flightId)
       .then((res) => {
-        this.snackbarSuccess(res.data.message);
+        // console.log(res);
+        if (res.status === 200) {
+          this.snackbarSuccess(res.data.message);
+        }
 
         this.setState((prevState) => {
           const updateFlights = prevState.flights.map((flight) => {
@@ -215,11 +222,13 @@ class SchedulePage extends Component {
           resetForm({
             values: {
               flightNo: "",
-              acReg: "",
-              dateTime: null,
-              from: "",
-              to: "",
               company: "",
+              acReg: "",
+              destination: "",
+              checkIn: null,
+              etd: null,
+              eta: null,
+              status: "",
             },
           });
 

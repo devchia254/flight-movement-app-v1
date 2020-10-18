@@ -32,25 +32,37 @@ const yupStringRules = yup
 
 // Yup Configurations
 const yupValidationSchema = yup.object().shape({
-  dateTime: yup.date().nullable().required("Required"),
   flightNo: yupStringRules,
-  acReg: yupStringRules,
-  from: yupStringRules,
-  to: yupStringRules,
   company: yupStringRules,
+  acReg: yupStringRules,
+  destination: yupStringRules,
+  checkIn: yup.date().nullable().required("Required"),
+  etd: yup.date().nullable().required("Required"),
+  eta: yup.date().nullable().required("Required"),
+  status: yupStringRules,
 });
 
 function EditForm({ flightObj, editFlight, handleClose }) {
   const classes = useStyles();
   return (
     <Formik
+      // initialValues={{
+      //   flightNo: flightObj.flightNo,
+      //   acReg: flightObj.acReg,
+      //   dateTime: moment(flightObj.dateTime, "DD/MM/YYYY HH:mm", true).format(), // Converts "DD/MM/YYYY HH:mm" back to ISO 8601
+      //   from: flightObj.from,
+      //   to: flightObj.to,
+      //   company: flightObj.company,
+      // }}
       initialValues={{
         flightNo: flightObj.flightNo,
-        acReg: flightObj.acReg,
-        dateTime: moment(flightObj.dateTime, "DD/MM/YYYY HH:mm", true).format(), // Converts "DD/MM/YYYY HH:mm" back to ISO 8601
-        from: flightObj.from,
-        to: flightObj.to,
         company: flightObj.company,
+        acReg: flightObj.acReg,
+        destination: flightObj.destination,
+        checkIn: moment(flightObj.checkIn, "DD/MM/YYYY HH:mm", true).format(), // Converts "DD/MM/YYYY HH:mm" back to ISO 8601
+        etd: moment(flightObj.etd, "DD/MM/YYYY HH:mm", true).format(), // Converts "DD/MM/YYYY HH:mm" back to ISO 8601
+        eta: moment(flightObj.eta, "DD/MM/YYYY HH:mm", true).format(), // Converts "DD/MM/YYYY HH:mm" back to ISO 8601
+        status: flightObj.status,
       }}
       validationSchema={yupValidationSchema}
       onSubmit={(values, { resetForm, setSubmitting }) => {
@@ -65,16 +77,26 @@ function EditForm({ flightObj, editFlight, handleClose }) {
     >
       {(props) => (
         <Form className={classes.form}>
+          <MyField label="Flight No." name="flightNo" />
+          <MyField label="Company" name="company" />
+          <MyField label="Aircraft Reg." name="acReg" />
+          <MyField label="Destination" name="destination" />
           <Field
-            label="Date & Time"
-            name="dateTime"
+            label="Check In (24hr)"
+            name="checkIn"
             component={MyKBDateTimePicker}
           />
-          <MyField label="Flight No." name="flightNo" />
-          <MyField label="Aircraft Reg." name="acReg" />
-          <MyField label="From" name="from" />
-          <MyField label="To" name="to" />
-          <MyField label="Company" name="company" />
+          <Field
+            label="Estimated Time Departure (24hr)"
+            name="etd"
+            component={MyKBDateTimePicker}
+          />
+          <Field
+            label="Estimated Time Arrival (24hr)"
+            name="eta"
+            component={MyKBDateTimePicker}
+          />
+          <MyField label="Status" name="status" />
           <Button
             disabled={props.isSubmitting}
             type="submit"
