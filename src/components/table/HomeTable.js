@@ -66,6 +66,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CustomizedTables({ tableFlights }) {
+  const sortFlights = tableFlights.sort((a, b) => {
+    return a.checkIn.localeCompare(b.checkIn);
+  });
+
   const classes = useStyles();
 
   return !tableFlights.length ? (
@@ -96,7 +100,7 @@ export default function CustomizedTables({ tableFlights }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {tableFlights.map((row) => (
+          {sortFlights.map((row) => (
             <StyledTableRow key={row.flightId}>
               {/* <StyledTableCell component="th" scope="row">
                 {row.flightNo}

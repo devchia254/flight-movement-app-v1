@@ -78,13 +78,6 @@ function ScheduleTable(props) {
     };
   });
 
-  // const sortDateFn = (a, b) => {
-  //   // Sort dates based on the difference of moments
-  //   const momentA = moment(a.dateTime, "DD/MM/YYYY HH:mm");
-  //   const momentB = moment(b.dateTime, "DD/MM/YYYY HH:mm");
-  //   return momentA.diff(momentB);
-  // };
-
   // Table columns
   const columns = [
     // Flight ID commented out coz only used for assigning a unique ID for each row
@@ -92,6 +85,10 @@ function ScheduleTable(props) {
     { title: "Flight No.", field: "flightNo" },
     { title: "Company", field: "company" },
     { title: "Aircraft Reg.", field: "acReg" },
+    {
+      title: "Destination",
+      field: "destination",
+    },
     {
       title: "Check In",
       field: "checkIn",
@@ -144,14 +141,14 @@ function ScheduleTable(props) {
             },
             // onClick: (event, rowData) => alert("You saved " + rowData.name),
           },
-          (rowData) => ({
+          {
             icon: () => <DeleteOutline />,
             tooltip: "Delete Flight",
             onClick: (evt, rowData) => {
               deleteFlight(rowData.flightId);
             },
             // disabled: rowData.birthYear < 2000,
-          }),
+          },
         ]}
         options={{
           actionsColumnIndex: -1,

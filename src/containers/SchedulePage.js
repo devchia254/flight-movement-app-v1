@@ -278,8 +278,6 @@ class SchedulePage extends Component {
     const { flights } = this.state;
     const { classes } = this.props;
 
-    console.log(flights);
-
     return (
       <React.Fragment>
         <Container fixed>
