@@ -90,8 +90,8 @@ function ScheduleTable(props) {
     // Flight ID commented out coz only used for assigning a unique ID for each row
     // { title: "ID", field: "id" },
     { title: "Flight No.", field: "flightNo" },
-    { title: "Aircraft Reg.", field: "acReg" },
     { title: "Company", field: "company" },
+    { title: "Aircraft Reg.", field: "acReg" },
     {
       title: "Check In",
       field: "checkIn",

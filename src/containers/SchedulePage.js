@@ -167,15 +167,15 @@ class SchedulePage extends Component {
   };
 
   // Edit Product
-  editFlight = (editscheduleFormData, flightId, resetForm) => {
+  editFlight = (editFormData, putDataId, resetForm) => {
     const putData = {
-      ...editscheduleFormData,
+      ...editFormData,
       updatedBy: AuthService.getUserEmail(),
     };
 
     console.log("putData: ", putData);
 
-    AuthSchedule.editFlight(putData, flightId)
+    AuthSchedule.editFlight(putData, putDataId)
       .then((res) => {
         // console.log(res);
         if (res.status === 200) {
@@ -184,7 +184,7 @@ class SchedulePage extends Component {
 
         this.setState((prevState) => {
           const updateFlights = prevState.flights.map((flight) => {
-            if (flightId === flight.flightId) {
+            if (putDataId === flight.flightId) {
               // Only when the ID matches between the edited flight record and the flight in the state, updateFlightProps updates the respective properties of the flight object in the state.
               const updateFlightProps = {
                 ...putData,
@@ -231,13 +231,13 @@ class SchedulePage extends Component {
     // })
   };
 
-  deleteFlight = (flightId, e) => {
+  deleteFlight = (deleteDataId, e) => {
     if (window.confirm("Are you sure?")) {
-      AuthSchedule.deleteFlight(flightId)
+      AuthSchedule.deleteFlight(deleteDataId)
         .then((res) => {
           this.setState((prevState) => {
             const filterFlight = prevState.flights.filter(
-              (flight, i, arr) => flight.flightId !== flightId
+              (flight, i, arr) => flight.flightId !== deleteDataId
             );
             return { flights: filterFlight };
           });
