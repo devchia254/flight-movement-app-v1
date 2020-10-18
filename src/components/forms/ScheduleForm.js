@@ -53,9 +53,9 @@ function ScheduleForm({ createFlight }) {
         company: "",
         acReg: "",
         destination: "",
-        checkIn: moment(),
-        etd: moment(),
-        eta: moment(),
+        checkIn: moment().format(), // Converts date to ISO 8601 for POST data
+        etd: moment().format(),
+        eta: moment().format(),
         status: "",
       }}
       validationSchema={yupValidationSchema}

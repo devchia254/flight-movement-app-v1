@@ -124,36 +124,13 @@ class SchedulePage extends Component {
       });
   };
 
-  createFlight = (formData) => {
-    // console.log("formData: ", { ...formData });
-    const {
-      flightNo,
-      company,
-      acReg,
-      destination,
-      checkIn,
-      etd,
-      eta,
-      status,
-    } = formData;
-
+  createFlight = (scheduleformData) => {
     const postData = {
-      flightNo: flightNo,
-      company: company,
-      acReg: acReg,
-      destination: destination,
-      checkIn: moment(checkIn).format(),
-      etd: moment(etd).format(),
-      eta: moment(eta).format(),
-      status: status,
+      ...scheduleformData,
       userEmail: AuthService.getUserEmail(),
     };
 
-    // console.log("postData: ", postData);
-
-    // console.log("JS Date: ", dateTime);
-    // console.log("Moment with no UTC: ", moment(dateTime).format());
-    // console.log("Moment with UTC: ", moment.utc(dateTime).format());
+    console.log("postData: ", postData);
 
     AuthSchedule.createFlight(postData)
       .then((res) => {
@@ -163,10 +140,11 @@ class SchedulePage extends Component {
         // Optimistic UI Update: Create flight
         this.setState((prevState) => {
           const addFlight = {
+            id: res.data.flight_id,
             ...postData,
             createdAt: moment().format(),
             updatedAt: moment().format(),
-            updated_by: "",
+            updatedBy: "",
           };
 
           return {
@@ -189,8 +167,11 @@ class SchedulePage extends Component {
   };
 
   // Edit Product
-  editFlight = (modalFormData, flightId, resetForm) => {
-    const putData = { ...modalFormData, updatedBy: AuthService.getUserEmail() };
+  editFlight = (editscheduleFormData, flightId, resetForm) => {
+    const putData = {
+      ...editscheduleFormData,
+      updatedBy: AuthService.getUserEmail(),
+    };
 
     console.log("putData: ", putData);
 
