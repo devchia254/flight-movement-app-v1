@@ -6,7 +6,7 @@ import MyKBDateTimePicker from "../formik-fields/MyKBDateTimePicker.js";
 import MySelect from "../formik-fields/MySelect.js";
 import * as yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
-import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
+// import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
 const moment = require("moment"); // require Moment library
 
 // Modal Styling
@@ -106,9 +106,7 @@ function EditForm({ flightObj, editFlight, handleClose }) {
             submit
           </Button>
           {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
-          <div>
-            <DisplayFormikProps {...props} />
-          </div>
+          {/* <DisplayFormikProps {...props} /> */}
         </Form>
       )}
     </Formik>

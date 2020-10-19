@@ -62,7 +62,6 @@ const customTooltip = makeStyles((theme) => ({
   },
 }));
 
-// Can be used for String / Passwords (specify type from form page)
 const CustomSelect = ({ label, type, ...props }) => {
   const classes = useStyles();
 

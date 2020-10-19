@@ -2,11 +2,10 @@ import React, { Component } from "react";
 // import { generate } from "shortid";
 import AuthService from "../services/auth/auth-service";
 import AuthSchedule from "../services/auth/auth-schedule";
-
-// import makeData from "../test/makeData"; // Fake data generator
-
 import ScheduleModal from "../components/modals/ScheduleModal.js";
 import ScheduleTable from "../components/table/ScheduleTable.js";
+
+// import makeData from "../test/makeData"; // Fake data generator
 
 // Material UI
 import { Container } from "@material-ui/core";
@@ -15,23 +14,13 @@ import Button from "@material-ui/core/Button";
 // import Typography from "@material-ui/core/Typography";
 import AddIcon from "@material-ui/icons/Add";
 
+// Notistack SnackBars
 import { withSnackbar } from "notistack";
 
 // Material-UI Date Pickers (Moment Library)
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"; // Requires a Date lib to be chosen
 import MomentUtils from "@date-io/moment";
 const moment = require("moment"); // require Moment library
-
-// Example of 1 record
-// const sampleData = {
-//   flightId: "knd26GHI87",
-//   flightNo: "AN234",
-//   acReg: "9M-SBO",
-//   dateTime: "09/12/2020 10:00",
-//   from: "Terminal 2",
-//   to: "Petronas Base 3",
-//   company: "Sazma",
-// };
 
 const scheduleStyles = (theme) => ({
   header: {
@@ -130,7 +119,7 @@ class SchedulePage extends Component {
       userEmail: AuthService.getUserEmail(),
     };
 
-    console.log("postData: ", postData);
+    // console.log("postData: ", postData);
 
     AuthSchedule.createFlight(postData)
       .then((res) => {
@@ -173,7 +162,7 @@ class SchedulePage extends Component {
       updatedBy: AuthService.getUserEmail(),
     };
 
-    console.log("putData: ", putData);
+    // console.log("putData: ", putData);
 
     AuthSchedule.editFlight(putData, putDataId)
       .then((res) => {
