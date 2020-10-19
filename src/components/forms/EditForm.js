@@ -3,9 +3,10 @@ import { Button } from "@material-ui/core";
 import { Formik, Form, Field } from "formik";
 import MyField from "../formik-fields/MyField.js";
 import MyKBDateTimePicker from "../formik-fields/MyKBDateTimePicker.js";
+import MySelect from "../formik-fields/MySelect.js";
 import * as yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
-// import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
+import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
 const moment = require("moment"); // require Moment library
 
 // Modal Styling
@@ -46,14 +47,6 @@ function EditForm({ flightObj, editFlight, handleClose }) {
   const classes = useStyles();
   return (
     <Formik
-      // initialValues={{
-      //   flightNo: flightObj.flightNo,
-      //   acReg: flightObj.acReg,
-      //   dateTime: moment(flightObj.dateTime, "DD/MM/YYYY HH:mm", true).format(), // Converts "DD/MM/YYYY HH:mm" back to ISO 8601
-      //   from: flightObj.from,
-      //   to: flightObj.to,
-      //   company: flightObj.company,
-      // }}
       initialValues={{
         flightNo: flightObj.flightNo,
         company: flightObj.company,
@@ -96,7 +89,12 @@ function EditForm({ flightObj, editFlight, handleClose }) {
             name="eta"
             component={MyKBDateTimePicker}
           />
-          <MyField label="Status" name="status" />
+          {/* <MyField label="Status" name="status" /> */}
+          <MySelect
+            label="Status"
+            name="status"
+            // value={props.initialValues.status}
+          />
           <Button
             disabled={props.isSubmitting}
             type="submit"
@@ -108,9 +106,9 @@ function EditForm({ flightObj, editFlight, handleClose }) {
             submit
           </Button>
           {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
-          {/* <div>
+          <div>
             <DisplayFormikProps {...props} />
-          </div> */}
+          </div>
         </Form>
       )}
     </Formik>
