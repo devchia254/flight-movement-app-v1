@@ -3,6 +3,7 @@ import { Button } from "@material-ui/core";
 import { Formik, Form, Field } from "formik";
 import MyField from "../formik-fields/MyField.js";
 import MyKBDateTimePicker from "../formik-fields/MyKBDateTimePicker.js";
+import MySelect from "../formik-fields/MySelect.js";
 import * as yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
 // import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
@@ -32,12 +33,14 @@ const yupStringRules = yup
 
 // Yup Configurations
 const yupValidationSchema = yup.object().shape({
-  dateTime: yup.date().nullable().required("Required"),
   flightNo: yupStringRules,
-  acReg: yupStringRules,
-  from: yupStringRules,
-  to: yupStringRules,
   company: yupStringRules,
+  acReg: yupStringRules,
+  destination: yupStringRules,
+  checkIn: yup.date().nullable().required("Required"),
+  etd: yup.date().nullable().required("Required"),
+  eta: yup.date().nullable().required("Required"),
+  status: yupStringRules,
 });
 
 function EditForm({ flightObj, editFlight, handleClose }) {
@@ -46,17 +49,19 @@ function EditForm({ flightObj, editFlight, handleClose }) {
     <Formik
       initialValues={{
         flightNo: flightObj.flightNo,
-        acReg: flightObj.acReg,
-        dateTime: moment(flightObj.dateTime, "DD/MM/YYYY HH:mm", true).format(), // Converts "DD/MM/YYYY HH:mm" back to ISO 8601
-        from: flightObj.from,
-        to: flightObj.to,
         company: flightObj.company,
+        acReg: flightObj.acReg,
+        destination: flightObj.destination,
+        checkIn: moment(flightObj.checkIn, "DD/MM/YYYY HH:mm", true).format(), // Converts "DD/MM/YYYY HH:mm" back to ISO 8601
+        etd: moment(flightObj.etd, "DD/MM/YYYY HH:mm", true).format(), // Converts "DD/MM/YYYY HH:mm" back to ISO 8601
+        eta: moment(flightObj.eta, "DD/MM/YYYY HH:mm", true).format(), // Converts "DD/MM/YYYY HH:mm" back to ISO 8601
+        status: flightObj.status,
       }}
       validationSchema={yupValidationSchema}
       onSubmit={(values, { resetForm, setSubmitting }) => {
         setSubmitting(true); // Makes async call and disables submit button
 
-        editFlight(values, flightObj.id, resetForm); // Lift values to state
+        editFlight(values, flightObj.flightId, resetForm); // Lift values to state
 
         setSubmitting(false); // Enables submit button once submitted
 
@@ -65,16 +70,31 @@ function EditForm({ flightObj, editFlight, handleClose }) {
     >
       {(props) => (
         <Form className={classes.form}>
+          <MyField label="Flight No." name="flightNo" />
+          <MyField label="Company" name="company" />
+          <MyField label="Aircraft Reg." name="acReg" />
+          <MyField label="Destination" name="destination" />
           <Field
-            label="Date & Time"
-            name="dateTime"
+            label="Check In (24hr)"
+            name="checkIn"
             component={MyKBDateTimePicker}
           />
-          <MyField label="Flight No." name="flightNo" />
-          <MyField label="Aircraft Reg." name="acReg" />
-          <MyField label="From" name="from" />
-          <MyField label="To" name="to" />
-          <MyField label="Company" name="company" />
+          <Field
+            label="Estimated Time Departure (24hr)"
+            name="etd"
+            component={MyKBDateTimePicker}
+          />
+          <Field
+            label="Estimated Time Arrival (24hr)"
+            name="eta"
+            component={MyKBDateTimePicker}
+          />
+          {/* <MyField label="Status" name="status" /> */}
+          <MySelect
+            label="Status"
+            name="status"
+            // value={props.initialValues.status}
+          />
           <Button
             disabled={props.isSubmitting}
             type="submit"
@@ -86,9 +106,7 @@ function EditForm({ flightObj, editFlight, handleClose }) {
             submit
           </Button>
           {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
-          {/* <div>
-            <DisplayFormikProps {...props} />
-          </div> */}
+          {/* <DisplayFormikProps {...props} /> */}
         </Form>
       )}
     </Formik>

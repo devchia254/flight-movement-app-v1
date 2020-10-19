@@ -2,11 +2,10 @@ import React, { Component } from "react";
 // import { generate } from "shortid";
 import AuthService from "../services/auth/auth-service";
 import AuthSchedule from "../services/auth/auth-schedule";
-
-// import makeData from "../test/makeData"; // Fake data generator
-
 import ScheduleModal from "../components/modals/ScheduleModal.js";
 import ScheduleTable from "../components/table/ScheduleTable.js";
+
+// import makeData from "../test/makeData"; // Fake data generator
 
 // Material UI
 import { Container } from "@material-ui/core";
@@ -15,23 +14,13 @@ import Button from "@material-ui/core/Button";
 // import Typography from "@material-ui/core/Typography";
 import AddIcon from "@material-ui/icons/Add";
 
+// Notistack SnackBars
 import { withSnackbar } from "notistack";
 
 // Material-UI Date Pickers (Moment Library)
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"; // Requires a Date lib to be chosen
 import MomentUtils from "@date-io/moment";
 const moment = require("moment"); // require Moment library
-
-// Example of 1 record
-// const sampleData = {
-//   id: "knd26GHI87",
-//   flightNo: "AN234",
-//   acReg: "9M-SBO",
-//   dateTime: "09/12/2020 10:00",
-//   from: "Terminal 2",
-//   to: "Petronas Base 3",
-//   company: "Sazma",
-// };
 
 const scheduleStyles = (theme) => ({
   header: {
@@ -78,28 +67,32 @@ class SchedulePage extends Component {
           const {
             flight_id,
             flight_no,
-            ac_reg,
-            date_time,
-            from,
-            to,
             company,
+            ac_reg,
+            destination,
+            check_in,
+            etd,
+            eta,
+            status,
             user_email,
             createdAt,
             updatedAt,
             updated_by,
           } = flight;
           return {
-            id: flight_id,
+            flightId: flight_id,
             flightNo: flight_no,
-            acReg: ac_reg,
-            dateTime: date_time,
-            from: from,
-            to: to,
             company: company,
+            acReg: ac_reg,
+            destination: destination,
+            checkIn: check_in,
+            etd: etd,
+            eta: eta,
+            status: status,
             userEmail: user_email,
             createdAt: createdAt,
             updatedAt: updatedAt,
-            updated_by: updated_by,
+            updatedBy: updated_by,
           };
         });
 
@@ -120,39 +113,32 @@ class SchedulePage extends Component {
       });
   };
 
-  createFlight = (formData) => {
-    const { flightNo, acReg, dateTime, from, to, company } = formData;
-
+  createFlight = (scheduleformData) => {
     const postData = {
-      flightNo: flightNo,
-      acReg: acReg,
-      dateTime: moment(dateTime).format(), // String format: ISO 8601
-      from: from,
-      to: to,
-      company: company,
+      ...scheduleformData,
       userEmail: AuthService.getUserEmail(),
     };
 
-    // console.log("JS Date: ", dateTime);
-    // console.log("Moment with no UTC: ", moment(dateTime).format());
-    // console.log("Moment with UTC: ", moment.utc(dateTime).format());
+    // console.log("postData: ", postData);
 
     AuthSchedule.createFlight(postData)
       .then((res) => {
+        // console.log(res.data);
         this.snackbarSuccess(res.data.message);
-        this.setState(prevState => {
 
+        // Optimistic UI Update: Create flight
+        this.setState((prevState) => {
           const addFlight = {
+            flightId: res.data.flight_id,
             ...postData,
-            userEmail: AuthService.getUserEmail(),
             createdAt: moment().format(),
             updatedAt: moment().format(),
-            updated_by: "",
+            updatedBy: "",
           };
 
           return {
-            flights: [...prevState.flights, addFlight]
-          }
+            flights: [...prevState.flights, addFlight],
+          };
         });
         // console.log(createFlightProps)
         this.closeModal();
@@ -170,22 +156,30 @@ class SchedulePage extends Component {
   };
 
   // Edit Product
-  editFlight = (modalFormData, flightId, resetForm) => {
-    const putData = { ...modalFormData, updatedBy: AuthService.getUserEmail() };
+  editFlight = (editFormData, putDataId, resetForm) => {
+    const putData = {
+      ...editFormData,
+      updatedBy: AuthService.getUserEmail(),
+    };
 
-    AuthSchedule.editFlight(putData, flightId)
+    // console.log("putData: ", putData);
+
+    AuthSchedule.editFlight(putData, putDataId)
       .then((res) => {
-        this.snackbarSuccess(res.data.message);
+        // console.log(res);
+        if (res.status === 200) {
+          this.snackbarSuccess(res.data.message);
+        }
 
         this.setState((prevState) => {
           const updateFlights = prevState.flights.map((flight) => {
-            if (flightId === flight.id) {
+            if (putDataId === flight.flightId) {
               // Only when the ID matches between the edited flight record and the flight in the state, updateFlightProps updates the respective properties of the flight object in the state.
               const updateFlightProps = {
                 ...putData,
                 updatedAt: moment().format(), // Now() in ISO 8601 format
               };
-                            
+
               return {
                 ...flight,
                 ...updateFlightProps,
@@ -198,11 +192,13 @@ class SchedulePage extends Component {
           resetForm({
             values: {
               flightNo: "",
-              acReg: "",
-              dateTime: null,
-              from: "",
-              to: "",
               company: "",
+              acReg: "",
+              destination: "",
+              checkIn: null,
+              etd: null,
+              eta: null,
+              status: "",
             },
           });
 
@@ -224,13 +220,13 @@ class SchedulePage extends Component {
     // })
   };
 
-  deleteFlight = (flightId, e) => {
+  deleteFlight = (deleteDataId, e) => {
     if (window.confirm("Are you sure?")) {
-      AuthSchedule.deleteFlight(flightId)
-        .then((res) => { 
+      AuthSchedule.deleteFlight(deleteDataId)
+        .then((res) => {
           this.setState((prevState) => {
             const filterFlight = prevState.flights.filter(
-              (flight, i, arr) => flight.id !== flightId
+              (flight, i, arr) => flight.flightId !== deleteDataId
             );
             return { flights: filterFlight };
           });
@@ -250,7 +246,7 @@ class SchedulePage extends Component {
     }
 
     // const filterFlight = this.state.flights.filter(
-    //   (flight, i, arr) => flight.id !== flightId
+    //   (flight, i, arr) => flight.flightId !== flightId
     // );
 
     // if (window.confirm("Are you sure?")) {
