@@ -51,8 +51,6 @@ class App extends Component {
   }
 
   logoutFromState() {
-    // console.log("logoutFromState function");
-    // this.setState({ currentUser: AuthService.getNoUser() });
     const { history } = this.props;
     AuthService.logout();
 
@@ -71,7 +69,7 @@ class App extends Component {
     return (
       <div className="App">
         <CssBaseline />
-        {/* Perhaps test the user token status here to try and prevent windows.reload() for route changes */}
+        {/* Navbar handles the state of links relative to the type of user*/}
         <Navbar
           currentUser={this.state.currentUser}
           showRegister={this.state.showRegister}
