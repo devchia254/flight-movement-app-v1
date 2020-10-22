@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 // import CardContent from "@material-ui/core/CardContent";
 
 import { withSnackbar } from "notistack";
+import { Button } from "@material-ui/core";
 
 const loginStyles = (theme) => ({
   root: {
@@ -75,6 +76,8 @@ class UserLoginPage extends Component {
 
   render() {
     const { classes, history } = this.props;
+    // console.log(history);
+
     return (
       <Grid
         container
@@ -94,6 +97,7 @@ class UserLoginPage extends Component {
             <LoginForm history={history} loginUser={this.loginUser} />
           </Paper>
         </Grid>
+        <Button onClick={this.props.testClick}>Click</Button>
         {/* <Grid item sm={3} md={3} lg>
           <Paper className={classes.paper}>xs</Paper>
         </Grid> */}

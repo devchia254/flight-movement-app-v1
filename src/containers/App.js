@@ -20,6 +20,10 @@ class App extends Component {
     this.state = {};
   }
 
+  testClick() {
+    alert("It works");
+  }
+
   render() {
     return (
       <div className="App">
@@ -30,7 +34,12 @@ class App extends Component {
         {/* Link is at Drawer */}
         <Switch>
           <Route exact path="/" component={Homepage} />
-          <RedirectUserRoute path="/login" component={UserLoginPage} />
+          <RedirectUserRoute
+            path="/login"
+            render={(props) => (
+              <UserLoginPage {...props} testClick={this.testClick} />
+            )}
+          />
           <ProtectedRoute path="/schedule" component={SchedulePage} />
           <ProtectedRoute path="/profile" component={UserProfilePage} />
           <AdminRoute path="/register" component={UserRegisterPage} />

@@ -2,7 +2,8 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import auth from "../auth/auth-service";
 
-export const RedirectUserRoute = ({ component: Component, ...rest }) => {
+export const RedirectUserRoute = ({ render: Component, ...rest }) => {
+  console.log({ ...rest });
   return (
     <Route
       {...rest}
@@ -21,7 +22,7 @@ export const RedirectUserRoute = ({ component: Component, ...rest }) => {
             />
           );
         } else {
-          return <Component {...props} />;
+          return <Route {...rest} render={Component} />;
         }
       }}
     />
