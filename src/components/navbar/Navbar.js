@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link as RouterLink, withRouter } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -10,7 +10,6 @@ import PersonIcon from "@material-ui/icons/Person";
 import Button from "@material-ui/core/Button";
 
 import DrawerButton from "./Drawer";
-import AuthService from "../../services/auth/auth-service";
 
 const navStyle = (theme) => ({
   root: {
@@ -49,22 +48,13 @@ class Navbar extends Component {
     this.state = {};
   }
 
-  testLogout = () => {
-    // console.log("testLogout function");
-    // this.setState({ currentUser: AuthService.getNoUser() });
-    const { history } = this.props;
-    AuthService.logout();
-    history.push("/login");
-    window.location.reload();
-  };
-
   // Custom Link
   ProfileLink = React.forwardRef((props, ref) => (
     <RouterLink ref={ref} to="/profile" {...props} />
   ));
 
   render() {
-    const { classes, showRegister, currentUser } = this.props;
+    const { classes, showRegister, currentUser, logoutFromState } = this.props;
 
     // if (!AuthService.getCurrentUser()) {
     //   return <Redirect to="/login" />;
@@ -78,7 +68,7 @@ class Navbar extends Component {
             <DrawerButton
               showRegister={showRegister}
               currentUser={currentUser}
-              testLogout={this.testLogout}
+              logoutFromState={logoutFromState}
             />
             <Typography variant="h6" className={classes.title}>
               {this.props.children}
@@ -100,4 +90,4 @@ class Navbar extends Component {
     );
   }
 }
-export default withRouter(withStyles(navStyle)(Navbar));
+export default withStyles(navStyle)(Navbar);

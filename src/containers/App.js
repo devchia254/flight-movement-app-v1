@@ -16,21 +16,22 @@ import UserProfilePage from "./UserProfilePage";
 import FourOhFour from "./FourOhFour";
 import Navbar from "../components/navbar/Navbar";
 
+import { withRouter } from "react-router-dom";
+
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       currentUser: undefined,
       showRegister: false,
     };
 
     this.loginCurrentUserState = this.loginCurrentUserState.bind(this);
+    this.logoutFromState = this.logoutFromState.bind(this);
   }
 
   componentDidMount() {
-    // const user = ToggleUser();
     const user = AuthService.getCurrentUser();
-    // console.log(user);
 
     if (user) {
       this.setState({
@@ -49,6 +50,22 @@ class App extends Component {
     }
   }
 
+  logoutFromState() {
+    // console.log("logoutFromState function");
+    // this.setState({ currentUser: AuthService.getNoUser() });
+    const { history } = this.props;
+    AuthService.logout();
+
+    this.setState((state) => {
+      return {
+        currentUser: undefined,
+        showRegister: !state.showRegister,
+      };
+    });
+
+    history.push("/login");
+  }
+
   render() {
     console.log(this.state);
     return (
@@ -58,6 +75,7 @@ class App extends Component {
         <Navbar
           currentUser={this.state.currentUser}
           showRegister={this.state.showRegister}
+          logoutFromState={this.logoutFromState}
         >
           Flight Movement App
         </Navbar>
@@ -84,4 +102,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);

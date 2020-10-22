@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 // Custom RouterLink item - without prop forwarding
 function ListItemLink(props) {
   const classes = useStyles();
-  const { icon, primary, to, name, testLogout } = props;
+  const { icon, primary, to, name, logoutFromState } = props;
 
   const renderLink = React.useMemo(
     () =>
@@ -61,7 +61,7 @@ function ListItemLink(props) {
         component={renderLink}
         name={name}
         // onClick={(evt) => console.log(evt.currentTarget.name)}
-        onClick={testLogout}
+        onClick={logoutFromState}
       >
         {icon ? (
           <ListItemIcon className={classes.listIcon}>{icon}</ListItemIcon>
@@ -73,7 +73,7 @@ function ListItemLink(props) {
 }
 
 export default function DrawerButton(props) {
-  const { showRegister, currentUser, testLogout } = props;
+  const { showRegister, currentUser, logoutFromState } = props;
   const classes = useStyles();
   const [state, setState] = React.useState({
     left: false,
@@ -89,7 +89,7 @@ export default function DrawerButton(props) {
     setState({ ...state, left: open });
   };
 
-  // const testLogout = () => console.log("Testing Log Out!");
+  // const logoutFromState = () => console.log("Testing Log Out!");
 
   const list = (anchor) => (
     <div
@@ -145,7 +145,7 @@ export default function DrawerButton(props) {
               primary="Log Out"
               name="logout"
               icon={<LogOutIcon color="primary" />}
-              testLogout={testLogout}
+              logoutFromState={logoutFromState}
             />
           )}
         </div>
