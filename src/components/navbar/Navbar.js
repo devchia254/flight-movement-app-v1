@@ -46,32 +46,7 @@ const navStyle = (theme) => ({
 class Navbar extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      // currentUser: ToggleUser(),
-      currentUser: undefined,
-      showRegister: false,
-    };
-  }
-
-  componentDidMount() {
-    // const user = ToggleUser();
-    const user = AuthService.getCurrentUser();
-    // console.log(user);
-
-    if (user) {
-      this.setState({
-        currentUser: user,
-        showRegister: user.role.includes("ROLE_ADMIN"), // Only admin can register user
-        // showProfile:
-        //   user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
-        // showSchedule:
-        //   user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
-        // showLogin:
-        //   user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
-        // showLogout:
-        //   user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
-      });
-    }
+    this.state = {};
   }
 
   testLogout = () => {
@@ -89,8 +64,7 @@ class Navbar extends Component {
   ));
 
   render() {
-    const { showRegister, currentUser } = this.state;
-    const { classes } = this.props;
+    const { classes, showRegister, currentUser } = this.props;
 
     // if (!AuthService.getCurrentUser()) {
     //   return <Redirect to="/login" />;

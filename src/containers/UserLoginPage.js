@@ -13,7 +13,6 @@ import Typography from "@material-ui/core/Typography";
 // import CardContent from "@material-ui/core/CardContent";
 
 import { withSnackbar } from "notistack";
-import { Button } from "@material-ui/core";
 
 const loginStyles = (theme) => ({
   root: {
@@ -39,8 +38,8 @@ const loginStyles = (theme) => ({
 });
 
 class UserLoginPage extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {};
   }
 
@@ -53,8 +52,12 @@ class UserLoginPage extends Component {
   loginUser = (email, password) => {
     AuthService.login(email, password)
       .then(() => {
-        this.props.history.push("/schedule");
-        window.location.reload();
+        const { loginCurrentUserState } = this.props;
+        const user = AuthService.getCurrentUser();
+
+        loginCurrentUserState(user);
+        // FIGURE OUT THE "Warning: Can't perform a React state update..." later
+        // this.history.push("/schedule");
       })
       .catch((error) => {
         // console.log(error.response);
@@ -97,7 +100,6 @@ class UserLoginPage extends Component {
             <LoginForm history={history} loginUser={this.loginUser} />
           </Paper>
         </Grid>
-        <Button onClick={this.props.testClick}>Click</Button>
         {/* <Grid item sm={3} md={3} lg>
           <Paper className={classes.paper}>xs</Paper>
         </Grid> */}
