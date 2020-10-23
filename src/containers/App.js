@@ -51,21 +51,18 @@ class App extends Component {
   }
 
   logoutFromState() {
-    const { history } = this.props;
     AuthService.logout();
-
+    // Redirect after logout is at Drawer
     this.setState((state) => {
       return {
         currentUser: undefined,
         showRegister: !state.showRegister,
       };
     });
-
-    history.push("/login");
   }
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     return (
       <div className="App">
         <CssBaseline />

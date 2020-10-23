@@ -140,8 +140,8 @@ export default function DrawerButton(props) {
         <div className={classes.bottomSection}>
           {currentUser && (
             <ListItemLink
-              // Maybe add if statement in "to" to trigger only when access token is deleted
-              to="/login"
+              // Redirect after logout
+              to="/"
               primary="Log Out"
               name="logout"
               icon={<LogOutIcon color="primary" />}

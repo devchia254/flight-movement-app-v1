@@ -57,7 +57,7 @@ class UserLoginPage extends Component {
 
         loginCurrentUserState(user);
         // FIGURE OUT THE "Warning: Can't perform a React state update..." later
-        // this.history.push("/schedule");
+        // this.props.history.push("/schedule");
       })
       .catch((error) => {
         // console.log(error.response);

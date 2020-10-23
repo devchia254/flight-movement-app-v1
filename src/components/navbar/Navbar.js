@@ -56,11 +56,6 @@ class Navbar extends Component {
   render() {
     const { classes, showRegister, currentUser, logoutFromState } = this.props;
 
-    // if (!AuthService.getCurrentUser()) {
-    //   return <Redirect to="/login" />;
-    //   // console.log("No user logged in!");
-    // }
-
     return (
       <div className={classes.root}>
         <AppBar position="static">
