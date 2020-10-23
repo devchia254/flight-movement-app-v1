@@ -9,7 +9,7 @@ export const AdminRoute = ({ component: Component, ...rest }) => {
       render={(props) => {
         // console.log("admin-route: ", props.location);
         const user = auth.getCurrentUser();
-        if (user.role.includes("ROLE_ADMIN")) {
+        if (user && user.role.includes("ROLE_ADMIN")) {
           return <Component {...props} />;
         } else {
           return (

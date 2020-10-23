@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link as RouterLink, withRouter } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -10,7 +10,6 @@ import PersonIcon from "@material-ui/icons/Person";
 import Button from "@material-ui/core/Button";
 
 import DrawerButton from "./Drawer";
-import AuthService from "../../services/auth/auth-service";
 
 const navStyle = (theme) => ({
   root: {
@@ -46,42 +45,8 @@ const navStyle = (theme) => ({
 class Navbar extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      // currentUser: ToggleUser(),
-      currentUser: undefined,
-      showRegister: false,
-    };
+    this.state = {};
   }
-
-  componentDidMount() {
-    // const user = ToggleUser();
-    const user = AuthService.getCurrentUser();
-    // console.log(user);
-
-    if (user) {
-      this.setState({
-        currentUser: user,
-        showRegister: user.role.includes("ROLE_ADMIN"), // Only admin can register user
-        // showProfile:
-        //   user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
-        // showSchedule:
-        //   user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
-        // showLogin:
-        //   user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
-        // showLogout:
-        //   user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_ADMIN"),
-      });
-    }
-  }
-
-  testLogout = () => {
-    // console.log("testLogout function");
-    // this.setState({ currentUser: AuthService.getNoUser() });
-    const { history } = this.props;
-    AuthService.logout();
-    history.push("/login");
-    window.location.reload();
-  };
 
   // Custom Link
   ProfileLink = React.forwardRef((props, ref) => (
@@ -89,13 +54,7 @@ class Navbar extends Component {
   ));
 
   render() {
-    const { showRegister, currentUser } = this.state;
-    const { classes } = this.props;
-
-    // if (!AuthService.getCurrentUser()) {
-    //   return <Redirect to="/login" />;
-    //   // console.log("No user logged in!");
-    // }
+    const { classes, showRegister, currentUser, logoutFromState } = this.props;
 
     return (
       <div className={classes.root}>
@@ -104,7 +63,7 @@ class Navbar extends Component {
             <DrawerButton
               showRegister={showRegister}
               currentUser={currentUser}
-              testLogout={this.testLogout}
+              logoutFromState={logoutFromState}
             />
             <Typography variant="h6" className={classes.title}>
               {this.props.children}
@@ -126,4 +85,4 @@ class Navbar extends Component {
     );
   }
 }
-export default withRouter(withStyles(navStyle)(Navbar));
+export default withStyles(navStyle)(Navbar);

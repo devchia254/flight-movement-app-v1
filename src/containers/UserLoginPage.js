@@ -38,8 +38,8 @@ const loginStyles = (theme) => ({
 });
 
 class UserLoginPage extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {};
   }
 
@@ -52,8 +52,12 @@ class UserLoginPage extends Component {
   loginUser = (email, password) => {
     AuthService.login(email, password)
       .then(() => {
-        this.props.history.push("/schedule");
-        window.location.reload();
+        const { loginCurrentUserState } = this.props;
+        const user = AuthService.getCurrentUser();
+
+        loginCurrentUserState(user);
+        // FIGURE OUT THE "Warning: Can't perform a React state update..." later
+        // this.props.history.push("/schedule");
       })
       .catch((error) => {
         // console.log(error.response);
@@ -75,6 +79,8 @@ class UserLoginPage extends Component {
 
   render() {
     const { classes, history } = this.props;
+    // console.log(history);
+
     return (
       <Grid
         container
