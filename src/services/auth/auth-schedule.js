@@ -25,9 +25,10 @@ class AuthSchedule {
     });
   }
 
-  deleteFlight(flightId) {
+  deleteFlight(flightId, cancelToken) {
     return axios.delete(API_URL + `/${flightId}`, {
       headers: authHeader(),
+      cancelToken: cancelToken.token,
     });
   }
 }

@@ -169,6 +169,7 @@ class SchedulePage extends Component {
     };
 
     try {
+      // Fetch response from API
       const response = await AuthSchedule.editFlight(
         putData,
         putDataId,
@@ -228,38 +229,38 @@ class SchedulePage extends Component {
     }
   };
 
-  deleteFlight = (deleteDataId, e) => {
+  deleteFlight = async (deleteDataId) => {
+    // Warning dialog before deleting flight
     if (window.confirm("Are you sure?")) {
-      AuthSchedule.deleteFlight(deleteDataId)
-        .then((res) => {
-          this.setState((prevState) => {
-            const filterFlight = prevState.flights.filter(
-              (flight, i, arr) => flight.flightId !== deleteDataId
-            );
-            return { flights: filterFlight };
-          });
+      try {
+        // Fetch response from API
+        const response = await AuthSchedule.deleteFlight(
+          deleteDataId,
+          this.cancelToken
+        );
 
-          this.snackbarSuccess(res.data.message);
-        })
-        .catch((error) => {
-          const resMessage =
-            (error.response && error.response.data.message) ||
-            error.message ||
-            error.toString();
-
-          if (resMessage) {
-            this.snackbarFail(resMessage);
-          }
+        // Optimistic UI update: Delete Flight
+        this.setState((prevState) => {
+          const filterFlight = prevState.flights.filter(
+            (flight, i, arr) => flight.flightId !== deleteDataId // Return flights where the flight ID from state does not match with the flight ID from the Schedule table
+          );
+          return { flights: filterFlight };
         });
+
+        this.snackbarSuccess(response.data.message);
+      } catch (error) {
+        const resMessage =
+          (error.response && error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        if (axios.isCancel(error)) {
+          console.log("Axios: ", error.message);
+        } else if (resMessage) {
+          this.snackbarFail(resMessage);
+        }
+      }
     }
-
-    // const filterFlight = this.state.flights.filter(
-    //   (flight, i, arr) => flight.flightId !== flightId
-    // );
-
-    // if (window.confirm("Are you sure?")) {
-    //   this.setState({ flights: filterFlight });
-    // }
   };
 
   snackbarSuccess(msg) {
