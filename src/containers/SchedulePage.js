@@ -6,6 +6,7 @@ import ScheduleModal from "../components/modals/ScheduleModal.js";
 import ScheduleTable from "../components/table/ScheduleTable.js";
 
 // import makeData from "../test/makeData"; // Fake data generator
+import axios from "axios";
 
 // Material UI
 import { Container } from "@material-ui/core";
@@ -33,6 +34,8 @@ const scheduleStyles = (theme) => ({
 });
 
 class SchedulePage extends Component {
+  cancelToken = axios.CancelToken.source();
+
   constructor() {
     super();
     this.state = {
@@ -45,72 +48,67 @@ class SchedulePage extends Component {
   }
 
   componentDidMount() {
-    this.getFlights();
+    this.loadAllFlights();
   }
 
-  snackbarSuccess(msg) {
-    this.props.enqueueSnackbar(msg, {
-      variant: "success",
-    });
+  componentWillUnmount() {
+    this.cancelToken.cancel("API request was cancelled");
   }
 
-  snackbarFail(msg) {
-    this.props.enqueueSnackbar(msg, {
-      variant: "error",
-    });
-  }
-
-  getFlights = () => {
-    AuthSchedule.allFlights()
-      .then((res) => {
-        const mappedFlights = res.data.flightData.map((flight) => {
-          const {
-            flight_id,
-            flight_no,
-            company,
-            ac_reg,
-            destination,
-            check_in,
-            etd,
-            eta,
-            status,
-            user_email,
-            createdAt,
-            updatedAt,
-            updated_by,
-          } = flight;
-          return {
-            flightId: flight_id,
-            flightNo: flight_no,
-            company: company,
-            acReg: ac_reg,
-            destination: destination,
-            checkIn: check_in,
-            etd: etd,
-            eta: eta,
-            status: status,
-            userEmail: user_email,
-            createdAt: createdAt,
-            updatedAt: updatedAt,
-            updatedBy: updated_by,
-          };
-        });
-
-        this.setState((prevState) => {
-          const fetchedflights = [...prevState.flights, ...mappedFlights];
-          return { flights: fetchedflights };
-        });
-      })
-      .catch((error) => {
-        const resMessage =
-          (error.response && error.response.data.message) ||
-          error.message ||
-          error.toString();
-
-        if (resMessage) {
-          console.log("Error with fetching flights: ", resMessage);
-        }
+  loadAllFlights = async () => {
+    try {
+      // Fetch response from API
+      const response = await AuthSchedule.allFlights(this.cancelToken);
+      // Manipulate response to useful data
+      const data = await response.data.flightData.map((flight) => {
+        const {
+          flight_id,
+          flight_no,
+          company,
+          ac_reg,
+          destination,
+          check_in,
+          etd,
+          eta,
+          status,
+          user_email,
+          createdAt,
+          updatedAt,
+          updated_by,
+        } = flight;
+        return {
+          flightId: flight_id,
+          flightNo: flight_no,
+          company: company,
+          acReg: ac_reg,
+          destination: destination,
+          checkIn: check_in,
+          etd: etd,
+          eta: eta,
+          status: status,
+          userEmail: user_email,
+          createdAt: createdAt,
+          updatedAt: updatedAt,
+          updatedBy: updated_by,
+        };
       });
+      // Set useful data to the State
+      this.setState((prevState) => {
+        const fetchedflights = [...prevState.flights, ...data];
+        return { flights: fetchedflights };
+      });
+    } catch (error) {
+      const resMessage =
+        (error.response && error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      if (axios.isCancel(error)) {
+        console.log("Axios: ", error.message);
+      } else if (resMessage) {
+        console.log("Error with fetching flights: ", resMessage);
+      }
+    }
   };
 
   createFlight = (scheduleformData) => {
@@ -254,6 +252,18 @@ class SchedulePage extends Component {
     // }
   };
 
+  snackbarSuccess(msg) {
+    this.props.enqueueSnackbar(msg, {
+      variant: "success",
+    });
+  }
+
+  snackbarFail(msg) {
+    this.props.enqueueSnackbar(msg, {
+      variant: "error",
+    });
+  }
+
   // Modal functions below
   openModal = () => {
     this.setState({ open: true });
@@ -266,6 +276,8 @@ class SchedulePage extends Component {
   render() {
     const { flights } = this.state;
     const { classes } = this.props;
+
+    console.log(this.cancelToken);
 
     return (
       <React.Fragment>

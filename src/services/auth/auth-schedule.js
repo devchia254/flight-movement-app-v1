@@ -4,8 +4,11 @@ import authHeader from "./auth-header";
 const API_URL = "http://localhost:3030/api/user/flights";
 
 class AuthSchedule {
-  allFlights() {
-    return axios.get(API_URL, { headers: authHeader() });
+  allFlights(cancelToken) {
+    return axios.get(API_URL, {
+      headers: authHeader(),
+      cancelToken: cancelToken.token,
+    });
   }
 
   createFlight(data) {
