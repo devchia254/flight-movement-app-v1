@@ -34,6 +34,7 @@ const scheduleStyles = (theme) => ({
 });
 
 class SchedulePage extends Component {
+  // Cancel XHR Requests (axios) when component unmounts abruptly
   cancelToken = axios.CancelToken.source();
 
   constructor() {
@@ -59,7 +60,7 @@ class SchedulePage extends Component {
     try {
       // Fetch response from API
       const response = await AuthSchedule.allFlights(this.cancelToken);
-      // Manipulate response to useful data
+      // Manipulate response data to useful data
       const data = await response.data.flightData.map((flight) => {
         const {
           flight_id,
@@ -111,46 +112,52 @@ class SchedulePage extends Component {
     }
   };
 
-  createFlight = (scheduleformData) => {
+  createFlight = async (scheduleformData) => {
+    // Combine form data and user email for POST data
     const postData = {
       ...scheduleformData,
       userEmail: AuthService.getUserEmail(),
     };
 
-    // console.log("postData: ", postData);
+    try {
+      // Fetch response from API
+      const response = await AuthSchedule.createFlight(
+        postData,
+        this.cancelToken
+      );
 
-    AuthSchedule.createFlight(postData)
-      .then((res) => {
-        // console.log(res.data);
-        this.snackbarSuccess(res.data.message);
+      // Response data deliver success message
+      this.snackbarSuccess(response.data.message);
 
-        // Optimistic UI Update: Create flight
-        this.setState((prevState) => {
-          const addFlight = {
-            flightId: res.data.flight_id,
-            ...postData,
-            createdAt: moment().format(),
-            updatedAt: moment().format(),
-            updatedBy: "",
-          };
+      // Optimistic UI Update: Create flight
+      this.setState((prevState) => {
+        const addFlight = {
+          flightId: response.data.flight_id,
+          ...postData,
+          createdAt: moment().format(),
+          updatedAt: moment().format(),
+          updatedBy: "",
+        };
 
-          return {
-            flights: [...prevState.flights, addFlight],
-          };
-        });
-        // console.log(createFlightProps)
-        this.closeModal();
-      })
-      .catch((error) => {
-        const resMessage =
-          (error.response && error.response.data.message) ||
-          error.message ||
-          error.toString();
-
-        if (resMessage) {
-          this.snackbarFail(resMessage);
-        }
+        return {
+          flights: [...prevState.flights, addFlight],
+        };
       });
+
+      // Finally close modal
+      this.closeModal();
+    } catch (error) {
+      const resMessage =
+        (error.response && error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      if (axios.isCancel(error)) {
+        console.log("Axios: ", error.message);
+      } else if (resMessage) {
+        this.snackbarFail(resMessage);
+      }
+    }
   };
 
   // Edit Product
@@ -162,7 +169,7 @@ class SchedulePage extends Component {
 
     // console.log("putData: ", putData);
 
-    AuthSchedule.editFlight(putData, putDataId)
+    AuthSchedule.editFlight(putData, putDataId, this.cancelToken)
       .then((res) => {
         // console.log(res);
         if (res.status === 200) {
@@ -276,8 +283,6 @@ class SchedulePage extends Component {
   render() {
     const { flights } = this.state;
     const { classes } = this.props;
-
-    console.log(this.cancelToken);
 
     return (
       <React.Fragment>

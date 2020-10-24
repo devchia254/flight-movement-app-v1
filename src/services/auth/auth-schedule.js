@@ -11,13 +11,17 @@ class AuthSchedule {
     });
   }
 
-  createFlight(data) {
-    return axios.post(API_URL, data, { headers: authHeader() });
+  createFlight(data, cancelToken) {
+    return axios.post(API_URL, data, {
+      headers: authHeader(),
+      cancelToken: cancelToken.token,
+    });
   }
 
-  editFlight(data, flightId) {
+  editFlight(data, flightId, cancelToken) {
     return axios.put(API_URL + `/${flightId}`, data, {
       headers: authHeader(),
+      cancelToken: cancelToken.token,
     });
   }
 
