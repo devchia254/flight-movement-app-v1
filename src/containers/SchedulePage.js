@@ -113,7 +113,7 @@ class SchedulePage extends Component {
   };
 
   createFlight = async (scheduleformData) => {
-    // Combine form data and user email for POST data
+    // Combine form data and user email for POST request
     const postData = {
       ...scheduleformData,
       userEmail: AuthService.getUserEmail(),
@@ -161,68 +161,71 @@ class SchedulePage extends Component {
   };
 
   // Edit Product
-  editFlight = (editFormData, putDataId, resetForm) => {
+  editFlight = async (editFormData, putDataId, resetForm) => {
+    // Combine edited form data and user email for PUT request
     const putData = {
       ...editFormData,
       updatedBy: AuthService.getUserEmail(),
     };
 
-    // console.log("putData: ", putData);
+    try {
+      const response = await AuthSchedule.editFlight(
+        putData,
+        putDataId,
+        this.cancelToken
+      );
 
-    AuthSchedule.editFlight(putData, putDataId, this.cancelToken)
-      .then((res) => {
-        // console.log(res);
-        if (res.status === 200) {
-          this.snackbarSuccess(res.data.message);
-        }
-
-        this.setState((prevState) => {
-          const updateFlights = prevState.flights.map((flight) => {
-            if (putDataId === flight.flightId) {
-              // Only when the ID matches between the edited flight record and the flight in the state, updateFlightProps updates the respective properties of the flight object in the state.
-              const updateFlightProps = {
-                ...putData,
-                updatedAt: moment().format(), // Now() in ISO 8601 format
-              };
-
-              return {
-                ...flight,
-                ...updateFlightProps,
-              };
-            }
-            return flight; // Return rest of the flights
-          });
-
-          // Clear form after submit (Formik)
-          resetForm({
-            values: {
-              flightNo: "",
-              company: "",
-              acReg: "",
-              destination: "",
-              checkIn: null,
-              etd: null,
-              eta: null,
-              status: "",
-            },
-          });
-
-          return { flights: updateFlights };
+      if (response.status === 200) {
+        this.snackbarSuccess(response.data.message);
+        // Clear form after submit (Formik)
+        resetForm({
+          values: {
+            flightNo: "",
+            company: "",
+            acReg: "",
+            destination: "",
+            checkIn: null,
+            etd: null,
+            eta: null,
+            status: "",
+          },
         });
-      })
-      .catch((error) => {
-        const resMessage =
-          (error.response && error.response.data.message) ||
-          error.message ||
-          error.toString();
+      }
 
-        if (resMessage) {
-          this.snackbarFail(resMessage);
-        }
+      // Optimistic UI Update: Edit Flight
+      this.setState((prevState) => {
+        const updateFlights = prevState.flights.map((flight) => {
+          // Match the IDs between the flight edited from form (putData) with the flight stored in the state
+          if (putDataId === flight.flightId) {
+            // Manipulated putData to be added into state
+            const updateFlightProps = {
+              ...putData,
+              updatedAt: moment().format(), // Now() in ISO 8601 format
+            };
+
+            return {
+              ...flight, // Flight from state with matched ID
+              ...updateFlightProps, // Assign new putData values with the matched flight from state
+            };
+          }
+          return flight; // Return rest of the flights
+        });
+
+        // Return the updated flights into the state
+        return { flights: updateFlights };
       });
-    // this.setState(state => {
-    //   const newFlights = state.flights.map((flight, i) =)
-    // })
+    } catch (error) {
+      const resMessage =
+        (error.response && error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      if (axios.isCancel(error)) {
+        console.log("Axios: ", error.message);
+      } else if (resMessage) {
+        this.snackbarFail(resMessage);
+      }
+    }
   };
 
   deleteFlight = (deleteDataId, e) => {
@@ -268,6 +271,7 @@ class SchedulePage extends Component {
   snackbarFail(msg) {
     this.props.enqueueSnackbar(msg, {
       variant: "error",
+      autoHideDuration: 5000,
     });
   }
 
