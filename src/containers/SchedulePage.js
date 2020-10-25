@@ -53,7 +53,7 @@ class SchedulePage extends Component {
   }
 
   componentWillUnmount() {
-    this.cancelToken.cancel("API request was cancelled");
+    this.cancelToken.cancel("API request was interrupted and cancelled");
   }
 
   loadAllFlights = async () => {
