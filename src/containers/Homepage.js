@@ -225,7 +225,6 @@ class Homepage extends Component {
             <div className={classes.homeTable}>
               <HomeTable tableFlights={filteredFlights} />
             </div>
-            {/* <HomeTable tableFlights={this.state.flights} /> */}
           </Grid>
           <Grid item xs={12} sm={4}>
             <Paper elevation={10}>
