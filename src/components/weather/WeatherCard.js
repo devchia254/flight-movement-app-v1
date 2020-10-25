@@ -112,14 +112,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// OpenWeatherAPI city IDs
-const cityId = {
-  kotaKinabalu: "1733432",
-  sandakan: "1734052",
-  kualaLumpur: "1733046",
-};
-
 function WeatherCard() {
+  // OpenWeatherAPI city IDs
+  const cityId = {
+    kotaKinabalu: "1733432",
+    sandakan: "1734052",
+    kualaLumpur: "1733046",
+  };
+
   const [location, setLocation] = useState(cityId.kotaKinabalu);
   const [weather, setWeather] = useState({});
 
@@ -135,6 +135,7 @@ function WeatherCard() {
     fetchData();
   }, [location]);
 
+  // Get City ID based on onClick Event
   const getCityId = (e) => {
     setLocation(e.currentTarget.name);
   };
@@ -144,51 +145,9 @@ function WeatherCard() {
     return link;
   };
 
-  // const capitaliseDesc = (string) => {}
-
-  const dateBuilder = (d) => {
-    let months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-
-    let date = d.getDate();
-    let month = months[d.getMonth()];
-    let year = d.getFullYear();
-
-    return `${date} ${month} ${year}`;
-  };
-
-  const dayHeader = (d) => {
-    let days = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-
-    let day = days[d.getDay()];
-    return `${day}`;
-  };
-
   const capitalise = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
-
-  const classes = useStyles();
 
   const changeBg = (name) => {
     switch (name) {
@@ -202,6 +161,9 @@ function WeatherCard() {
         return null;
     }
   };
+
+  const classes = useStyles();
+  const moment = require("moment"); // require Moment library
 
   return (
     <div
@@ -217,9 +179,13 @@ function WeatherCard() {
             <div className={classes.headerBox}>
               <div className={classes.headerBoxDate}>
                 <Typography variant="h5" style={{ fontWeight: 700 }}>
-                  {dayHeader(new Date())}
+                  {/* {dayHeader(new Date())} */}
+                  {moment().format("dddd")}
                 </Typography>
-                <Typography variant="h6">{dateBuilder(new Date())}</Typography>
+                <Typography variant="h6">
+                  {/* {dateBuilder(new Date())} */}
+                  {moment().format("D MMM YYYY")}
+                </Typography>
                 <Typography variant="body1">
                   <LocationOnIcon
                     style={{ fontSize: "1em", marginRight: "0.2em" }}
