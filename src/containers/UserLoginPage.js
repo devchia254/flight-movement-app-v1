@@ -11,6 +11,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import Typography from "@material-ui/core/Typography";
 // import Card from "@material-ui/core/Card";
 // import CardContent from "@material-ui/core/CardContent";
+import axios from "axios";
 
 import { withSnackbar } from "notistack";
 
@@ -38,9 +39,16 @@ const loginStyles = (theme) => ({
 });
 
 class UserLoginPage extends Component {
+  // Cancel XHR Requests (axios) when component unmounts abruptly
+  cancelToken = axios.CancelToken.source();
+
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  componentWillUnmount() {
+    this.cancelToken.cancel("API request was interrupted and cancelled");
   }
 
   snackbarFail = (msg) => {
@@ -50,14 +58,12 @@ class UserLoginPage extends Component {
   };
 
   loginUser = (email, password) => {
-    AuthService.login(email, password)
-      .then(() => {
+    AuthService.login(email, password, this.cancelToken)
+      .then((userData) => {
         const { loginCurrentUserState } = this.props;
-        const user = AuthService.getCurrentUser();
 
-        loginCurrentUserState(user);
-        // FIGURE OUT THE "Warning: Can't perform a React state update..." later
-        // this.props.history.push("/schedule");
+        // Pass props of user details to App
+        loginCurrentUserState(userData);
       })
       .catch((error) => {
         // console.log(error.response);
@@ -67,8 +73,9 @@ class UserLoginPage extends Component {
           error.toString();
 
         if (resMessage) {
-          // console.log(resMessage);
           this.snackbarFail(resMessage);
+        } else if (axios.isCancel(error)) {
+          console.log("Axios: ", error.message);
         }
         // this.setState({
         //   loading: false,
@@ -79,8 +86,6 @@ class UserLoginPage extends Component {
 
   render() {
     const { classes, history } = this.props;
-    // console.log(history);
-
     return (
       <Grid
         container

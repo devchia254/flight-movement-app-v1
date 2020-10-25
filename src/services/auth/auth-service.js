@@ -4,12 +4,16 @@ import authHeader from "./auth-header";
 const API_URL = "http://localhost:3030/api/auth/";
 
 class AuthService {
-  login(email, password) {
+  login(email, password, cancelToken) {
     return axios
-      .post(API_URL + "signin", {
-        email,
-        password,
-      })
+      .post(
+        API_URL + "signin",
+        {
+          email,
+          password,
+        },
+        { cancelToken: cancelToken.token }
+      )
       .then((response) => {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
