@@ -54,6 +54,7 @@ class Homepage extends Component {
       clicks: 0,
       disablePrevBtn: false,
       disableFollowingBtn: false,
+      minutes: 0, // Testing interval only
     };
   }
 
@@ -62,6 +63,12 @@ class Homepage extends Component {
     this.fetchPublicFlights();
     // Trigger same fetch every 5 minutes
     this.fetchFlightsTimer = setInterval(() => {
+      this.setState((prevState) => {
+        return { minutes: prevState.minutes + 5 };
+      });
+      console.log(`Fetches: ${this.state.minutes / 5}`);
+      console.log(`Minutes passed: ${this.state.minutes}`);
+      // Only below i important, above is for testing only
       this.fetchPublicFlights();
     }, 300000);
   }
