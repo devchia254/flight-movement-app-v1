@@ -40,6 +40,7 @@ const useStyles = (theme) => ({
 });
 
 class Homepage extends Component {
+  // Cancel XHR Requests (axios) when component unmounts abruptly
   cancelToken = axios.CancelToken.source();
 
   constructor() {
@@ -57,13 +58,17 @@ class Homepage extends Component {
   }
 
   componentDidMount() {
-    // console.log("componentDidMount");
-    // console.log("---------------------------");
-    // APPLY SETINTERVAL HERE THEN DO THE SAME AT WEATHER CARD
+    // Fetch flights after the first mount of Homepage component
     this.fetchPublicFlights();
+    // Trigger same fetch every 5 minutes
+    this.fetchFlightsTimer = setInterval(() => {
+      this.fetchPublicFlights();
+    }, 300000);
   }
 
   componentWillUnmount() {
+    // Clear timer for every fetch interval
+    clearInterval(this.fetchFlightsTimer);
     this.cancelToken.cancel("API request was interrupted and cancelled");
   }
 
@@ -82,8 +87,9 @@ class Homepage extends Component {
 
   fetchPublicFlights = async () => {
     try {
+      // Fetch response from API
       const response = await AuthPublic.publicFlights(this.cancelToken);
-
+      // Map response into useful data
       const data = await response.data.flightData.map((flight) => {
         const {
           flight_id,
@@ -96,8 +102,6 @@ class Homepage extends Component {
           eta,
           status,
         } = flight;
-
-        // console.log(moment(date_time));
 
         return {
           flightId: flight_id,
@@ -113,10 +117,8 @@ class Homepage extends Component {
         };
       });
 
-      this.setState((prevState) => {
-        const fetchedflights = [...prevState.flights, ...data];
-        return { flights: fetchedflights };
-      });
+      // Set data into flights from the state
+      this.setState({ flights: [...data] });
     } catch (error) {
       const resMessage =
         (error.response && error.response.data.message) ||
@@ -173,8 +175,6 @@ class Homepage extends Component {
     const filteredFlights = this.state.flights.filter((flight) => {
       return flight.flightDate === this.state.date;
     });
-
-    // console.log("Render", this.state.flights);
 
     // const today = moment().format("DD/MM/YYYY");
     // console.log(moment()._d);
