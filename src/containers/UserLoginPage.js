@@ -57,31 +57,37 @@ class UserLoginPage extends Component {
     });
   };
 
-  loginUser = (email, password) => {
-    AuthService.login(email, password, this.cancelToken)
-      .then((userData) => {
-        const { loginCurrentUserState } = this.props;
+  loginUser = async (loginFormData) => {
+    // Login form data for POST request
+    const postData = {
+      email: loginFormData.email,
+      password: loginFormData.password,
+    };
 
-        // Pass props of user details to App
-        loginCurrentUserState(userData);
-      })
-      .catch((error) => {
-        // console.log(error.response);
-        const resMessage =
-          (error.response && error.response.data.message) ||
-          error.message ||
-          error.toString();
+    try {
+      // Fetch response from API
+      const response = await AuthService.login(postData, this.cancelToken);
 
-        if (resMessage) {
-          this.snackbarFail(resMessage);
-        } else if (axios.isCancel(error)) {
-          console.log("Axios: ", error.message);
-        }
-        // this.setState({
-        //   loading: false,
-        //   message: resMessage,
-        // });
-      });
+      const { loginCurrentUserState } = this.props;
+
+      // Pass props of response (user details) to App and update view for type of user
+      await loginCurrentUserState(response);
+    } catch (error) {
+      const resMessage =
+        (error.response && error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      if (resMessage) {
+        this.snackbarFail(resMessage);
+      } else if (axios.isCancel(error)) {
+        console.log("Axios: ", error.message);
+      }
+      // this.setState({
+      //   loading: false,
+      //   message: resMessage,
+      // });
+    }
   };
 
   render() {

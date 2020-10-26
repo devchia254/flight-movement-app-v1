@@ -59,6 +59,7 @@ class Homepage extends Component {
   componentDidMount() {
     // console.log("componentDidMount");
     // console.log("---------------------------");
+    // APPLY SETINTERVAL HERE THEN DO THE SAME AT WEATHER CARD
     this.fetchPublicFlights();
   }
 
