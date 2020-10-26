@@ -61,21 +61,26 @@ class Homepage extends Component {
   componentDidMount() {
     // Fetch flights after the first mount of Homepage component
     this.fetchPublicFlights();
-    // Trigger same fetch every 5 minutes
-    this.fetchFlightsTimer = setInterval(() => {
+
+    // Set interval to fetch public flights every 5 minutes
+    this.flightsTimer = setInterval(() => {
       this.setState((prevState) => {
         return { minutes: prevState.minutes + 5 };
       });
-      console.log(`Fetches: ${this.state.minutes / 5}`);
-      console.log(`Minutes passed: ${this.state.minutes}`);
-      // Only below i important, above is for testing only
+      console.log(
+        `Fetches: ${this.state.minutes / 5}, Minutes passed: ${
+          this.state.minutes
+        }`
+      );
+
+      // Only below is important, above is for testing only
       this.fetchPublicFlights();
     }, 300000);
   }
 
   componentWillUnmount() {
-    // Clear timer for every fetch interval
-    clearInterval(this.fetchFlightsTimer);
+    // Clear timer when removed from DOM
+    clearInterval(this.flightsTimer);
     this.cancelToken.cancel("API request was interrupted and cancelled");
   }
 

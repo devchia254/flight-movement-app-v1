@@ -159,8 +159,16 @@ function WeatherCard() {
     // Call Fetch function
     fetchWeatherApi();
 
+    // Set interval for fetching weather
+    const weatherTimer = setInterval(() => {
+      console.log("Fetch Weather");
+      fetchWeatherApi();
+    }, 300000);
+
     // Clean up UseEffect Hook
     return () => {
+      // Clear timer when removed from DOM
+      clearInterval(weatherTimer);
       abortController.abort();
     };
   }, [location]);
