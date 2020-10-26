@@ -16,18 +16,8 @@ class AuthService {
       });
   }
 
-  register(firstName, lastName, email, password, role) {
-    return axios.post(
-      API_URL + "signup",
-      {
-        firstName,
-        lastName,
-        email,
-        password,
-        role,
-      },
-      { headers: authHeader() }
-    );
+  register(data) {
+    return axios.post(API_URL + "signup", data, { headers: authHeader() });
   }
 
   // LAST WORKING HERE: 20/09/20

@@ -56,6 +56,29 @@ class SchedulePage extends Component {
     this.cancelToken.cancel("API request was interrupted and cancelled");
   }
 
+  // Snackbar Success Messages
+  snackbarSuccess(msg) {
+    this.props.enqueueSnackbar(msg, {
+      variant: "success",
+    });
+  }
+  // Snackbar Fail Messages
+  snackbarFail(msg) {
+    this.props.enqueueSnackbar(msg, {
+      variant: "error",
+      autoHideDuration: 5000,
+    });
+  }
+
+  // Schedule Modal Button functions below
+  openModal = () => {
+    this.setState({ open: true });
+  };
+
+  closeModal = () => {
+    this.setState({ open: false });
+  };
+
   loadAllFlights = async () => {
     try {
       // Fetch response from API
@@ -261,28 +284,6 @@ class SchedulePage extends Component {
         }
       }
     }
-  };
-
-  snackbarSuccess(msg) {
-    this.props.enqueueSnackbar(msg, {
-      variant: "success",
-    });
-  }
-
-  snackbarFail(msg) {
-    this.props.enqueueSnackbar(msg, {
-      variant: "error",
-      autoHideDuration: 5000,
-    });
-  }
-
-  // Modal functions below
-  openModal = () => {
-    this.setState({ open: true });
-  };
-
-  closeModal = () => {
-    this.setState({ open: false });
   };
 
   render() {

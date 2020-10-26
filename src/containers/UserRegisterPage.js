@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 
+import AuthService from "../services/auth/auth-service";
 import RegisterForm from "../components/forms/RegisterForm";
+
+// Notistack SnackBars
+import { withSnackbar } from "notistack";
 
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -33,6 +37,71 @@ const registerStyles = (theme) => ({
 });
 
 class UserRegisterPage extends Component {
+  constructor() {
+    super();
+    this.state = {};
+
+    this.registerUser = this.registerUser.bind(this);
+  }
+
+  snackbarSuccess(msg) {
+    this.props.enqueueSnackbar(msg, {
+      variant: "success",
+    });
+  }
+  // Snackbar Fail Messages
+  snackbarFail(msg) {
+    this.props.enqueueSnackbar(msg, {
+      variant: "error",
+      autoHideDuration: 5000,
+    });
+  }
+
+  // Register User
+  async registerUser(registerFormData, resetForm) {
+    // Register form data for POST request
+    const postData = {
+      firstName: registerFormData.firstName,
+      lastName: registerFormData.lastName,
+      email: registerFormData.email,
+      password: registerFormData.password,
+      role: "user",
+    };
+
+    try {
+      // Fetch reponse from API
+      const response = await AuthService.register(postData);
+      this.snackbarSuccess(response.data.message);
+
+      // Formik reset function
+      resetForm({
+        values: {
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          passwordVerify: "",
+        },
+      });
+    } catch (error) {
+      const resMessage =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      if (resMessage) {
+        this.snackbarFail(resMessage);
+      }
+
+      // this.setState({
+      //   loading: false,
+      //   message: resMessage,
+      // });
+    }
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -48,11 +117,11 @@ class UserRegisterPage extends Component {
               <PersonAddIcon className={classes.icon} />
             </Avatar>
             <Typography variant="h4">Register</Typography>
-            <RegisterForm />
+            <RegisterForm registerUser={this.registerUser} />
           </Paper>
         </Grid>
       </Grid>
     );
   }
 }
-export default withStyles(registerStyles)(UserRegisterPage);
+export default withSnackbar(withStyles(registerStyles)(UserRegisterPage));

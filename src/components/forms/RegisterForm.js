@@ -1,13 +1,11 @@
 import React from "react";
 
-import AuthService from "../../services/auth/auth-service";
-
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import MyField from "../formik-fields/MyField.js";
 import * as yup from "yup";
-import { useSnackbar } from "notistack";
+// import { useSnackbar } from "notistack";
 // import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
 
 const yupEmailRules = yup
@@ -55,20 +53,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function RegisterForm(props) {
+  const { registerUser } = props;
   const classes = useStyles();
-  const { enqueueSnackbar } = useSnackbar();
+  // const { enqueueSnackbar } = useSnackbar();
 
-  const regError = (msg) => {
-    enqueueSnackbar(msg, {
-      variant: "error",
-    });
-  };
+  // const regError = (msg) => {
+  //   enqueueSnackbar(msg, {
+  //     variant: "error",
+  //   });
+  // };
 
-  const regSuccess = (msg) => {
-    enqueueSnackbar(msg, {
-      variant: "success",
-    });
-  };
+  // const regSuccess = (msg) => {
+  //   enqueueSnackbar(msg, {
+  //     variant: "success",
+  //   });
+  // };
 
   return (
     <Formik
@@ -83,46 +82,9 @@ function RegisterForm(props) {
       onSubmit={(values, { resetForm, setSubmitting }) => {
         setSubmitting(true); // Makes async call and disables submit button
 
-        AuthService.register(
-          values.firstName,
-          values.lastName,
-          values.email,
-          values.password,
-          "user"
-        )
-          .then((res) => {
-            // console.log(res.data);
-            regSuccess(res.data.message);
-            resetForm({
-              values: {
-                firstName: "",
-                lastName: "",
-                email: "",
-                password: "",
-                passwordVerify: "",
-              },
-            });
-            setSubmitting(false); // Enables submit button once submitted
-          })
-          .catch((error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
+        registerUser(values, resetForm);
 
-            if (resMessage) {
-              // console.log(resMessage);
-              regError(resMessage);
-            }
-
-            setSubmitting(false); // Enables submit button once submitted
-            // this.setState({
-            //   loading: false,
-            //   message: resMessage,
-            // });
-          });
+        setSubmitting(false); // Enables submit button once submitted
       }}
     >
       {(props) => (
