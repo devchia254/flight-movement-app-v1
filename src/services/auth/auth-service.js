@@ -16,8 +16,11 @@ class AuthService {
       });
   }
 
-  register(data) {
-    return axios.post(API_URL + "signup", data, { headers: authHeader() });
+  register(data, cancelToken) {
+    return axios.post(API_URL + "signup", data, {
+      headers: authHeader(),
+      cancelToken: cancelToken.token,
+    });
   }
 
   // LAST WORKING HERE: 20/09/20

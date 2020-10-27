@@ -6,6 +6,8 @@ import RegisterForm from "../components/forms/RegisterForm";
 // Notistack SnackBars
 import { withSnackbar } from "notistack";
 
+import axios from "axios";
+
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
@@ -37,11 +39,18 @@ const registerStyles = (theme) => ({
 });
 
 class UserRegisterPage extends Component {
+  // Cancel XHR Requests (axios) when component unmounts abruptly
+  cancelToken = axios.CancelToken.source();
+
   constructor() {
     super();
     this.state = {};
 
     this.registerUser = this.registerUser.bind(this);
+  }
+
+  componentWillUnmount() {
+    this.cancelToken.cancel("API request was interrupted and cancelled");
   }
 
   snackbarSuccess(msg) {
@@ -70,7 +79,7 @@ class UserRegisterPage extends Component {
 
     try {
       // Fetch reponse from API
-      const response = await AuthService.register(postData);
+      const response = await AuthService.register(postData, this.cancelToken);
       this.snackbarSuccess(response.data.message);
 
       // Formik reset function
