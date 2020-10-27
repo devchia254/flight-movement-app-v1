@@ -9,6 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { Avatar, Typography } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -39,10 +40,19 @@ const useStyles = makeStyles((theme) => ({
     // minWidth: "500px",
     width: "100%",
     height: "80%",
+    maxHeight: "70vh",
     display: "flex",
     justifyContent: "center",
     marginTop: theme.spacing(2),
     // alignItems: "center",
+  },
+  loadingBox: {
+    // background: "salmon",
+    // paddingTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   },
   msgBox: {
     background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
@@ -65,14 +75,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CustomizedTables({ tableFlights }) {
+export default function CustomizedTables({ tableFlights, isLoading }) {
   const sortFlights = tableFlights.sort((a, b) => {
     return a.checkIn.localeCompare(b.checkIn);
   });
 
   const classes = useStyles();
 
-  return !tableFlights.length ? (
+  return isLoading ? (
+    <div className={classes.noFltBox}>
+      <div className={classes.loadingBox}>
+        <CircularProgress style={{ marginBottom: "1em" }} />
+        <Typography variant="h6">Loading Flights</Typography>
+      </div>
+    </div>
+  ) : !tableFlights.length ? (
     <div className={classes.noFltBox}>
       <Paper elevation={5} className={classes.msgBox}>
         <Avatar className={classes.avatar}>

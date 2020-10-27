@@ -207,153 +207,153 @@ function WeatherCard() {
   const classes = useStyles();
   const moment = require("moment"); // require Moment library
 
-  const displayState = {
-    LOCATION: location,
-    WEATHER: weather,
-  };
+  // const displayState = {
+  //   LOCATION: location,
+  //   WEATHER: weather,
+  // };
   return (
-    <React.Fragment>
-      <div
-        className={
-          typeof weather.main != "undefined"
-            ? `${classes.mainBg} ${changeBg(weather.name)}`
-            : `${classes.mainBg}`
-        }
-      >
-        <div className={classes.cardBox}>
-          {typeof weather.main != "undefined" ? (
-            <div className={classes.contentBox}>
-              <div className={classes.headerBox}>
-                <div className={classes.headerBoxDate}>
-                  <Typography variant="h5" style={{ fontWeight: 700 }}>
-                    {/* {dayHeader(new Date())} */}
-                    {moment().format("dddd")}
-                  </Typography>
-                  <Typography variant="h6">
-                    {/* {dateBuilder(new Date())} */}
-                    {moment().format("D MMM YYYY")}
-                  </Typography>
-                  <Typography variant="body1">
-                    <LocationOnIcon
-                      style={{ fontSize: "1em", marginRight: "0.2em" }}
-                    />
-                    {weather.name}
-                  </Typography>
-                </div>
-                <div className={classes.headerBoxTemp}>
-                  <Typography variant="h3">
-                    {Math.round(weather.main.temp)}°C
-                  </Typography>
-                </div>
-              </div>
-              <div className={classes.weatherBox}>
-                <div className={classes.weatherIcon}>
-                  <img
-                    alt={weather.weather[0].main}
-                    src={getWeatherIcon(weather.weather[0].icon)}
-                    width="100"
-                    height="100"
-                  />
-                </div>
-                <div className={classes.weatherDesc}>
-                  <Typography variant="h5" style={{ fontWeight: 700 }}>
-                    {capitalise(weather.weather[0].description)}
-                  </Typography>
-                </div>
-              </div>
-              <div className={classes.footerBoxGrid2}>
-                <Typography className={classes.footerItems} variant="body1">
-                  Wind: {weather.wind.speed}m/s
-                  <br></br>
-                  Cloudiness: {weather.clouds.all}%
+    // <React.Fragment>
+    <div
+      className={
+        typeof weather.main != "undefined"
+          ? `${classes.mainBg} ${changeBg(weather.name)}`
+          : `${classes.mainBg}`
+      }
+    >
+      <div className={classes.cardBox}>
+        {typeof weather.main != "undefined" ? (
+          <div className={classes.contentBox}>
+            <div className={classes.headerBox}>
+              <div className={classes.headerBoxDate}>
+                <Typography variant="h5" style={{ fontWeight: 700 }}>
+                  {/* {dayHeader(new Date())} */}
+                  {moment().format("dddd")}
                 </Typography>
-                <Typography className={classes.footerItems} variant="body1">
-                  Humidity: {weather.main.humidity}%<br></br>
-                  Visibility: {weather.visibility}m
+                <Typography variant="h6">
+                  {/* {dateBuilder(new Date())} */}
+                  {moment().format("D MMM YYYY")}
+                </Typography>
+                <Typography variant="body1">
+                  <LocationOnIcon
+                    style={{ fontSize: "1em", marginRight: "0.2em" }}
+                  />
+                  {weather.name}
+                </Typography>
+              </div>
+              <div className={classes.headerBoxTemp}>
+                <Typography variant="h3">
+                  {Math.round(weather.main.temp)}°C
                 </Typography>
               </div>
             </div>
-          ) : (
-            // Show something if fetching fails
-            <div className={classes.contentBox}>
-              <div className={classes.headerBox}>
-                <div className={classes.headerBoxDate}>
-                  <Typography variant="h5" style={{ fontWeight: 700 }}>
-                    Day is here
-                  </Typography>
-                  <Typography variant="h6">Date is here</Typography>
-                  <Typography variant="body1">
-                    <LocationOnIcon
-                      style={{ fontSize: "1em", marginRight: "0.2em" }}
-                    />
-                    Location is here
-                  </Typography>
-                </div>
-                <div className={classes.headerBoxTemp}>
-                  <Typography variant="h3">- °C</Typography>
-                </div>
+            <div className={classes.weatherBox}>
+              <div className={classes.weatherIcon}>
+                <img
+                  alt={weather.weather[0].main}
+                  src={getWeatherIcon(weather.weather[0].icon)}
+                  width="100"
+                  height="100"
+                />
               </div>
-              <div className={classes.weatherBox}>
-                <div className={classes.weatherIcon}>
-                  <img
-                    alt="Icon is here"
-                    // src={getWeatherIcon(weather.weather[0].icon)}
-                    width="100"
-                    height="100"
-                  />
-                </div>
-                <div className={classes.weatherDesc}>
-                  <Typography variant="h5" style={{ fontWeight: 700 }}>
-                    Description is here
-                  </Typography>
-                </div>
-              </div>
-              <div className={classes.footerBoxGrid2}>
-                <Typography className={classes.footerItems} variant="body1">
-                  Wind: - m/s
-                  <br></br>
-                  Cloudiness: - %
-                </Typography>
-                <Typography className={classes.footerItems} variant="body1">
-                  Humidity: - %<br></br>
-                  Visibility: - m
+              <div className={classes.weatherDesc}>
+                <Typography variant="h5" style={{ fontWeight: 700 }}>
+                  {capitalise(weather.weather[0].description)}
                 </Typography>
               </div>
             </div>
-          )}
-          <div className={classes.locationBox}>
-            <Button
-              variant="contained"
-              size="large"
-              className={classes.locationBtn}
-              name={cityId.kotaKinabalu}
-              onClick={getCityId}
-            >
-              KK
-            </Button>
-            <Button
-              variant="contained"
-              size="large"
-              className={classes.locationBtn}
-              name={cityId.sandakan}
-              onClick={getCityId}
-            >
-              SDK
-            </Button>
-            <Button
-              variant="contained"
-              size="large"
-              className={classes.locationBtn}
-              name={cityId.kualaLumpur}
-              onClick={getCityId}
-            >
-              KUL
-            </Button>
+            <div className={classes.footerBoxGrid2}>
+              <Typography className={classes.footerItems} variant="body1">
+                Wind: {weather.wind.speed}m/s
+                <br></br>
+                Cloudiness: {weather.clouds.all}%
+              </Typography>
+              <Typography className={classes.footerItems} variant="body1">
+                Humidity: {weather.main.humidity}%<br></br>
+                Visibility: {weather.visibility}m
+              </Typography>
+            </div>
           </div>
+        ) : (
+          // Show something if fetching fails
+          <div className={classes.contentBox}>
+            <div className={classes.headerBox}>
+              <div className={classes.headerBoxDate}>
+                <Typography variant="h5" style={{ fontWeight: 700 }}>
+                  Day is here
+                </Typography>
+                <Typography variant="h6">Date is here</Typography>
+                <Typography variant="body1">
+                  <LocationOnIcon
+                    style={{ fontSize: "1em", marginRight: "0.2em" }}
+                  />
+                  Location is here
+                </Typography>
+              </div>
+              <div className={classes.headerBoxTemp}>
+                <Typography variant="h3">- °C</Typography>
+              </div>
+            </div>
+            <div className={classes.weatherBox}>
+              <div className={classes.weatherIcon}>
+                <img
+                  alt="Icon is here"
+                  // src={getWeatherIcon(weather.weather[0].icon)}
+                  width="100"
+                  height="100"
+                />
+              </div>
+              <div className={classes.weatherDesc}>
+                <Typography variant="h5" style={{ fontWeight: 700 }}>
+                  Description is here
+                </Typography>
+              </div>
+            </div>
+            <div className={classes.footerBoxGrid2}>
+              <Typography className={classes.footerItems} variant="body1">
+                Wind: - m/s
+                <br></br>
+                Cloudiness: - %
+              </Typography>
+              <Typography className={classes.footerItems} variant="body1">
+                Humidity: - %<br></br>
+                Visibility: - m
+              </Typography>
+            </div>
+          </div>
+        )}
+        <div className={classes.locationBox}>
+          <Button
+            variant="contained"
+            size="large"
+            className={classes.locationBtn}
+            name={cityId.kotaKinabalu}
+            onClick={getCityId}
+          >
+            KK
+          </Button>
+          <Button
+            variant="contained"
+            size="large"
+            className={classes.locationBtn}
+            name={cityId.sandakan}
+            onClick={getCityId}
+          >
+            SDK
+          </Button>
+          <Button
+            variant="contained"
+            size="large"
+            className={classes.locationBtn}
+            name={cityId.kualaLumpur}
+            onClick={getCityId}
+          >
+            KUL
+          </Button>
         </div>
       </div>
-      <pre>{JSON.stringify(displayState, null, 2)}</pre>
-    </React.Fragment>
+    </div>
+    // <pre>{JSON.stringify(displayState, null, 2)}</pre>
+    // </React.Fragment>
   );
 }
 
