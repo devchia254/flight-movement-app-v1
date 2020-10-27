@@ -36,6 +36,7 @@ const useStyles = (theme) => ({
   },
   homeTable: {
     height: "100%",
+    // marginBottom: theme.spacing(2),
   },
 });
 
@@ -54,11 +55,13 @@ class Homepage extends Component {
       clicks: 0,
       disablePrevBtn: false,
       disableFollowingBtn: false,
+      isLoading: false,
       minutes: 0, // Testing interval only
     };
   }
 
   componentDidMount() {
+    this.setState({ isLoading: true });
     // Fetch flights after the first mount of Homepage component
     this.fetchPublicFlights();
 
@@ -122,7 +125,7 @@ class Homepage extends Component {
       });
 
       // Set data into flights from the state
-      this.setState({ flights: [...data] });
+      this.setState({ flights: [...data], isLoading: false });
     } catch (error) {
       const resMessage =
         (error.response && error.response.data.message) ||
@@ -228,7 +231,10 @@ class Homepage extends Component {
               </Button>
             </div>
             <div className={classes.homeTable}>
-              <HomeTable tableFlights={filteredFlights} />
+              <HomeTable
+                tableFlights={filteredFlights}
+                isLoading={this.state.isLoading}
+              />
             </div>
           </Grid>
           <Grid item xs={12} sm={4}>
