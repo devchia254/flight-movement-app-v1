@@ -156,14 +156,17 @@ function WeatherCard() {
       }
     };
 
-    // Call Fetch function
+    // Call Fetch function after first mount
     fetchWeatherApi();
 
-    // Set interval for fetching weather
+    // Set interval for fetching weather every 15 minutes
     const weatherTimer = setInterval(() => {
-      console.log("Fetch Weather");
+      // REMOVE AT PRODUCTION
+      console.log(`Weather fetched after 15 minutes`);
+      console.log(`---------------------------------`);
+      // Only below is important, above is for testing only
       fetchWeatherApi();
-    }, 300000);
+    }, 900000);
 
     // Clean up UseEffect Hook
     return () => {

@@ -64,38 +64,30 @@ class Homepage extends Component {
 
     // Set interval to fetch public flights every 5 minutes
     this.flightsTimer = setInterval(() => {
-      this.setState((prevState) => {
-        return { minutes: prevState.minutes + 5 };
-      });
-      console.log(
-        `Fetches: ${this.state.minutes / 5}, Minutes passed: ${
-          this.state.minutes
-        }`
-      );
+      this.testingInterval(); // REMOVE AT PRODUCTION
 
       // Only below is important, above is for testing only
       this.fetchPublicFlights();
     }, 300000);
   }
 
+  // Testing only
+  testingInterval = () => {
+    this.setState((prevState) => {
+      return { minutes: prevState.minutes + 5 };
+    });
+    console.log(
+      `Flight fetches: ${this.state.minutes / 5}, Minutes passed: ${
+        this.state.minutes
+      }`
+    );
+  };
+
   componentWillUnmount() {
     // Clear timer when removed from DOM
     clearInterval(this.flightsTimer);
     this.cancelToken.cancel("API request was interrupted and cancelled");
   }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (this.state.flights) {
-  //     this.flightsByDate();
-  //   }
-  // }
-
-  // flightsByDate = () => {
-  //   const filteredFlights = this.state.flights.filter((flight) => {
-  //     return flight.flightDate === this.state.date;
-  //   });
-  //   return filteredFlights;
-  // };
 
   fetchPublicFlights = async () => {
     try {
