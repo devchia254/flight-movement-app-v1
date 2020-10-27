@@ -4,12 +4,9 @@ import authHeader from "./auth-header";
 const API_URL = "http://localhost:3030/api/auth/";
 
 class AuthService {
-  login(email, password) {
+  login(data, cancelToken) {
     return axios
-      .post(API_URL + "signin", {
-        email,
-        password,
-      })
+      .post(API_URL + "signin", data, { cancelToken: cancelToken.token })
       .then((response) => {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
@@ -19,18 +16,11 @@ class AuthService {
       });
   }
 
-  register(firstName, lastName, email, password, role) {
-    return axios.post(
-      API_URL + "signup",
-      {
-        firstName,
-        lastName,
-        email,
-        password,
-        role,
-      },
-      { headers: authHeader() }
-    );
+  register(data, cancelToken) {
+    return axios.post(API_URL + "signup", data, {
+      headers: authHeader(),
+      cancelToken: cancelToken.token,
+    });
   }
 
   // LAST WORKING HERE: 20/09/20

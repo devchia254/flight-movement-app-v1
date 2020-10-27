@@ -41,22 +41,24 @@ class App extends Component {
     }
   }
 
-  loginCurrentUserState(user) {
-    if (user) {
+  loginCurrentUserState(userForState) {
+    if (userForState) {
       this.setState({
-        currentUser: user,
-        showRegister: user.role.includes("ROLE_ADMIN"),
+        currentUser: userForState,
+        showRegister: userForState.role.includes("ROLE_ADMIN"),
       });
     }
   }
 
   logoutFromState() {
+    const user = AuthService.getCurrentUser();
+
     AuthService.logout();
     // Redirect after logout is at Drawer
     this.setState((state) => {
       return {
         currentUser: undefined,
-        showRegister: !state.showRegister,
+        showRegister: user.role.includes("ROLE_ADMIN") && !state.showRegister,
       };
     });
   }

@@ -53,7 +53,7 @@ function LoginForm(props) {
       validationSchema={yupValidationSchema}
       onSubmit={(values, { resetForm, setSubmitting }) => {
         setSubmitting(true); // Makes async call and disables submit button
-        loginUser(values.email, values.password);
+        loginUser(values);
         setSubmitting(false);
       }}
     >

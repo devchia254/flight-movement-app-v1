@@ -6,6 +6,7 @@ import ScheduleModal from "../components/modals/ScheduleModal.js";
 import ScheduleTable from "../components/table/ScheduleTable.js";
 
 // import makeData from "../test/makeData"; // Fake data generator
+import axios from "axios";
 
 // Material UI
 import { Container } from "@material-ui/core";
@@ -33,6 +34,9 @@ const scheduleStyles = (theme) => ({
 });
 
 class SchedulePage extends Component {
+  // Cancel XHR Requests (axios) when component unmounts abruptly
+  cancelToken = axios.CancelToken.source();
+
   constructor() {
     super();
     this.state = {
@@ -45,222 +49,241 @@ class SchedulePage extends Component {
   }
 
   componentDidMount() {
-    this.getFlights();
+    this.loadAllFlights();
   }
 
+  componentWillUnmount() {
+    this.cancelToken.cancel("API request was interrupted and cancelled");
+  }
+
+  // Snackbar Success Messages
   snackbarSuccess(msg) {
     this.props.enqueueSnackbar(msg, {
       variant: "success",
     });
   }
-
+  // Snackbar Fail Messages
   snackbarFail(msg) {
     this.props.enqueueSnackbar(msg, {
       variant: "error",
+      autoHideDuration: 5000,
     });
   }
 
-  getFlights = () => {
-    AuthSchedule.allFlights()
-      .then((res) => {
-        const mappedFlights = res.data.flightData.map((flight) => {
-          const {
-            flight_id,
-            flight_no,
-            company,
-            ac_reg,
-            destination,
-            check_in,
-            etd,
-            eta,
-            status,
-            user_email,
-            createdAt,
-            updatedAt,
-            updated_by,
-          } = flight;
-          return {
-            flightId: flight_id,
-            flightNo: flight_no,
-            company: company,
-            acReg: ac_reg,
-            destination: destination,
-            checkIn: check_in,
-            etd: etd,
-            eta: eta,
-            status: status,
-            userEmail: user_email,
-            createdAt: createdAt,
-            updatedAt: updatedAt,
-            updatedBy: updated_by,
-          };
-        });
-
-        this.setState((prevState) => {
-          const fetchedflights = [...prevState.flights, ...mappedFlights];
-          return { flights: fetchedflights };
-        });
-      })
-      .catch((error) => {
-        const resMessage =
-          (error.response && error.response.data.message) ||
-          error.message ||
-          error.toString();
-
-        if (resMessage) {
-          console.log("Error with fetching flights: ", resMessage);
-        }
-      });
-  };
-
-  createFlight = (scheduleformData) => {
-    const postData = {
-      ...scheduleformData,
-      userEmail: AuthService.getUserEmail(),
-    };
-
-    // console.log("postData: ", postData);
-
-    AuthSchedule.createFlight(postData)
-      .then((res) => {
-        // console.log(res.data);
-        this.snackbarSuccess(res.data.message);
-
-        // Optimistic UI Update: Create flight
-        this.setState((prevState) => {
-          const addFlight = {
-            flightId: res.data.flight_id,
-            ...postData,
-            createdAt: moment().format(),
-            updatedAt: moment().format(),
-            updatedBy: "",
-          };
-
-          return {
-            flights: [...prevState.flights, addFlight],
-          };
-        });
-        // console.log(createFlightProps)
-        this.closeModal();
-      })
-      .catch((error) => {
-        const resMessage =
-          (error.response && error.response.data.message) ||
-          error.message ||
-          error.toString();
-
-        if (resMessage) {
-          this.snackbarFail(resMessage);
-        }
-      });
-  };
-
-  // Edit Product
-  editFlight = (editFormData, putDataId, resetForm) => {
-    const putData = {
-      ...editFormData,
-      updatedBy: AuthService.getUserEmail(),
-    };
-
-    // console.log("putData: ", putData);
-
-    AuthSchedule.editFlight(putData, putDataId)
-      .then((res) => {
-        // console.log(res);
-        if (res.status === 200) {
-          this.snackbarSuccess(res.data.message);
-        }
-
-        this.setState((prevState) => {
-          const updateFlights = prevState.flights.map((flight) => {
-            if (putDataId === flight.flightId) {
-              // Only when the ID matches between the edited flight record and the flight in the state, updateFlightProps updates the respective properties of the flight object in the state.
-              const updateFlightProps = {
-                ...putData,
-                updatedAt: moment().format(), // Now() in ISO 8601 format
-              };
-
-              return {
-                ...flight,
-                ...updateFlightProps,
-              };
-            }
-            return flight; // Return rest of the flights
-          });
-
-          // Clear form after submit (Formik)
-          resetForm({
-            values: {
-              flightNo: "",
-              company: "",
-              acReg: "",
-              destination: "",
-              checkIn: null,
-              etd: null,
-              eta: null,
-              status: "",
-            },
-          });
-
-          return { flights: updateFlights };
-        });
-      })
-      .catch((error) => {
-        const resMessage =
-          (error.response && error.response.data.message) ||
-          error.message ||
-          error.toString();
-
-        if (resMessage) {
-          this.snackbarFail(resMessage);
-        }
-      });
-    // this.setState(state => {
-    //   const newFlights = state.flights.map((flight, i) =)
-    // })
-  };
-
-  deleteFlight = (deleteDataId, e) => {
-    if (window.confirm("Are you sure?")) {
-      AuthSchedule.deleteFlight(deleteDataId)
-        .then((res) => {
-          this.setState((prevState) => {
-            const filterFlight = prevState.flights.filter(
-              (flight, i, arr) => flight.flightId !== deleteDataId
-            );
-            return { flights: filterFlight };
-          });
-
-          this.snackbarSuccess(res.data.message);
-        })
-        .catch((error) => {
-          const resMessage =
-            (error.response && error.response.data.message) ||
-            error.message ||
-            error.toString();
-
-          if (resMessage) {
-            this.snackbarFail(resMessage);
-          }
-        });
-    }
-
-    // const filterFlight = this.state.flights.filter(
-    //   (flight, i, arr) => flight.flightId !== flightId
-    // );
-
-    // if (window.confirm("Are you sure?")) {
-    //   this.setState({ flights: filterFlight });
-    // }
-  };
-
-  // Modal functions below
+  // Schedule Modal Button functions below
   openModal = () => {
     this.setState({ open: true });
   };
 
   closeModal = () => {
     this.setState({ open: false });
+  };
+
+  loadAllFlights = async () => {
+    try {
+      // Fetch response from API
+      const response = await AuthSchedule.allFlights(this.cancelToken);
+      // Manipulate response data to useful data
+      const data = await response.data.flightData.map((flight) => {
+        const {
+          flight_id,
+          flight_no,
+          company,
+          ac_reg,
+          destination,
+          check_in,
+          etd,
+          eta,
+          status,
+          user_email,
+          createdAt,
+          updatedAt,
+          updated_by,
+        } = flight;
+        return {
+          flightId: flight_id,
+          flightNo: flight_no,
+          company: company,
+          acReg: ac_reg,
+          destination: destination,
+          checkIn: check_in,
+          etd: etd,
+          eta: eta,
+          status: status,
+          userEmail: user_email,
+          createdAt: createdAt,
+          updatedAt: updatedAt,
+          updatedBy: updated_by,
+        };
+      });
+      // Set useful data to the State
+      this.setState((prevState) => {
+        const fetchedflights = [...prevState.flights, ...data];
+        return { flights: fetchedflights };
+      });
+    } catch (error) {
+      const resMessage =
+        (error.response && error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      if (axios.isCancel(error)) {
+        console.log("Axios: ", error.message);
+      } else if (resMessage) {
+        console.log("Error with fetching flights: ", resMessage);
+      }
+    }
+  };
+
+  createFlight = async (scheduleformData) => {
+    // Combine form data and user email for POST request
+    const postData = {
+      ...scheduleformData,
+      userEmail: AuthService.getUserEmail(),
+    };
+
+    try {
+      // Fetch response from API
+      const response = await AuthSchedule.createFlight(
+        postData,
+        this.cancelToken
+      );
+
+      // Response data deliver success message
+      this.snackbarSuccess(response.data.message);
+
+      // Optimistic UI Update: Create flight
+      this.setState((prevState) => {
+        const addFlight = {
+          flightId: response.data.flight_id,
+          ...postData,
+          createdAt: moment().format(),
+          updatedAt: moment().format(),
+          updatedBy: "",
+        };
+
+        return {
+          flights: [...prevState.flights, addFlight],
+        };
+      });
+
+      // Finally close modal
+      this.closeModal();
+    } catch (error) {
+      const resMessage =
+        (error.response && error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      if (axios.isCancel(error)) {
+        console.log("Axios: ", error.message);
+      } else if (resMessage) {
+        this.snackbarFail(resMessage);
+      }
+    }
+  };
+
+  // Edit Product
+  editFlight = async (editFormData, putDataId, resetForm) => {
+    // Combine edited form data and user email for PUT request
+    const putData = {
+      ...editFormData,
+      updatedBy: AuthService.getUserEmail(),
+    };
+
+    try {
+      // Fetch response from API
+      const response = await AuthSchedule.editFlight(
+        putData,
+        putDataId,
+        this.cancelToken
+      );
+
+      if (response.status === 200) {
+        this.snackbarSuccess(response.data.message);
+        // Clear form after submit (Formik)
+        resetForm({
+          values: {
+            flightNo: "",
+            company: "",
+            acReg: "",
+            destination: "",
+            checkIn: null,
+            etd: null,
+            eta: null,
+            status: "",
+          },
+        });
+      }
+
+      // Optimistic UI Update: Edit Flight
+      this.setState((prevState) => {
+        const updateFlights = prevState.flights.map((flight) => {
+          // Match the IDs between the flight edited from form (putData) with the flight stored in the state
+          if (putDataId === flight.flightId) {
+            // Manipulated putData to be added into state
+            const updateFlightProps = {
+              ...putData,
+              updatedAt: moment().format(), // Now() in ISO 8601 format
+            };
+
+            return {
+              ...flight, // Flight from state with matched ID
+              ...updateFlightProps, // Assign new putData values with the matched flight from state
+            };
+          }
+          return flight; // Return rest of the flights
+        });
+
+        // Return the updated flights into the state
+        return { flights: updateFlights };
+      });
+    } catch (error) {
+      const resMessage =
+        (error.response && error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      if (axios.isCancel(error)) {
+        console.log("Axios: ", error.message);
+      } else if (resMessage) {
+        this.snackbarFail(resMessage);
+      }
+    }
+  };
+
+  deleteFlight = async (deleteDataId) => {
+    // Warning dialog before deleting flight
+    if (window.confirm("Are you sure?")) {
+      try {
+        // Fetch response from API
+        const response = await AuthSchedule.deleteFlight(
+          deleteDataId,
+          this.cancelToken
+        );
+
+        // Optimistic UI update: Delete Flight
+        this.setState((prevState) => {
+          const filterFlight = prevState.flights.filter(
+            (flight, i, arr) => flight.flightId !== deleteDataId // Return flights where the flight ID from state does not match with the flight ID from the Schedule table
+          );
+          return { flights: filterFlight };
+        });
+
+        this.snackbarSuccess(response.data.message);
+      } catch (error) {
+        const resMessage =
+          (error.response && error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        if (axios.isCancel(error)) {
+          console.log("Axios: ", error.message);
+        } else if (resMessage) {
+          this.snackbarFail(resMessage);
+        }
+      }
+    }
   };
 
   render() {

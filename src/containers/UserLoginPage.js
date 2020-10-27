@@ -11,6 +11,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import Typography from "@material-ui/core/Typography";
 // import Card from "@material-ui/core/Card";
 // import CardContent from "@material-ui/core/CardContent";
+import axios from "axios";
 
 import { withSnackbar } from "notistack";
 
@@ -38,9 +39,16 @@ const loginStyles = (theme) => ({
 });
 
 class UserLoginPage extends Component {
+  // Cancel XHR Requests (axios) when component unmounts abruptly
+  cancelToken = axios.CancelToken.source();
+
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  componentWillUnmount() {
+    this.cancelToken.cancel("API request was interrupted and cancelled");
   }
 
   snackbarFail = (msg) => {
@@ -49,38 +57,41 @@ class UserLoginPage extends Component {
     });
   };
 
-  loginUser = (email, password) => {
-    AuthService.login(email, password)
-      .then(() => {
-        const { loginCurrentUserState } = this.props;
-        const user = AuthService.getCurrentUser();
+  loginUser = async (loginFormData) => {
+    // Login form data for POST request
+    const postData = {
+      email: loginFormData.email,
+      password: loginFormData.password,
+    };
 
-        loginCurrentUserState(user);
-        // FIGURE OUT THE "Warning: Can't perform a React state update..." later
-        // this.props.history.push("/schedule");
-      })
-      .catch((error) => {
-        // console.log(error.response);
-        const resMessage =
-          (error.response && error.response.data.message) ||
-          error.message ||
-          error.toString();
+    try {
+      // Fetch response from API
+      const response = await AuthService.login(postData, this.cancelToken);
 
-        if (resMessage) {
-          // console.log(resMessage);
-          this.snackbarFail(resMessage);
-        }
-        // this.setState({
-        //   loading: false,
-        //   message: resMessage,
-        // });
-      });
+      const { loginCurrentUserState } = this.props;
+
+      // Pass props of response (user details) to App and update view for type of user
+      await loginCurrentUserState(response);
+    } catch (error) {
+      const resMessage =
+        (error.response && error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      if (resMessage) {
+        this.snackbarFail(resMessage);
+      } else if (axios.isCancel(error)) {
+        console.log("Axios: ", error.message);
+      }
+      // this.setState({
+      //   loading: false,
+      //   message: resMessage,
+      // });
+    }
   };
 
   render() {
     const { classes, history } = this.props;
-    // console.log(history);
-
     return (
       <Grid
         container
