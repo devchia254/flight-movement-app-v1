@@ -86,6 +86,15 @@ class Homepage extends Component {
     );
   };
 
+  // componentDidUpdate(prevProps, prevState) {
+  //   // This can disable the button 1 step faster but I donot like the logic of it
+  //   if (prevState.clicks - 1 === this.state.minDays) {
+  //     this.setState({ disablePrevBtn: true });
+  //   } else if (prevState.clicks + 1 === this.state.maxDays) {
+  //     this.setState({ disableFollowingBtn: true });
+  //   }
+  // }
+
   componentWillUnmount() {
     // Clear timer when removed from DOM
     clearInterval(this.flightsTimer);
@@ -144,16 +153,21 @@ class Homepage extends Component {
     const { clicks, minDays } = this.state;
     if (clicks > minDays) {
       this.setState((prevState) => {
+        console.log({
+          clicks: prevState.clicks - 1,
+          disablePrevBtn: prevState.disablePrevBtn,
+          disableFollowingBtn: prevState.disableFollowingBtn,
+        });
         return {
           clicks: prevState.clicks - 1,
           date: moment()
             .add(prevState.clicks - 1, "d")
             .format("YYYY-MM-DD", true),
           disableFollowingBtn: false,
+          disablePrevBtn:
+            prevState.clicks - 1 === prevState.minDays ? true : false,
         };
       });
-    } else {
-      return this.setState({ disablePrevBtn: true });
     }
   };
 
@@ -162,16 +176,21 @@ class Homepage extends Component {
 
     if (clicks < maxDays) {
       this.setState((prevState) => {
+        console.log({
+          clicks: prevState.clicks + 1,
+          disablePrevBtn: prevState.disablePrevBtn,
+          disableFollowingBtn: prevState.disableFollowingBtn,
+        });
         return {
           clicks: prevState.clicks + 1,
           date: moment()
             .add(prevState.clicks + 1, "d")
             .format("YYYY-MM-DD", true),
           disablePrevBtn: false,
+          disableFollowingBtn:
+            prevState.clicks + 1 === prevState.maxDays ? true : false,
         };
       });
-    } else {
-      this.setState({ disableFollowingBtn: true });
     }
   };
 
@@ -187,13 +206,14 @@ class Homepage extends Component {
     // console.log(moment()._d);
     // console.log(moment().add(3, "d")._d);
 
-    // const displayState = {
-    //   date: this.state.date,
-    //   minDays: this.state.minDays,
-    //   maxDays: this.state.maxDays,
-    //   clicks: this.state.clicks,
-    //   disable: this.state.disable,
-    // };
+    const displayState = {
+      date: this.state.date,
+      minDays: this.state.minDays,
+      maxDays: this.state.maxDays,
+      clicks: this.state.clicks,
+      disablePrevBtn: this.state.disablePrevBtn,
+      disableFollowingBtn: this.state.disableFollowingBtn,
+    };
 
     return (
       <Container maxWidth="lg">
@@ -205,7 +225,7 @@ class Homepage extends Component {
             sm={8}
             className={classes.homepageLeft}
           >
-            {/* <pre>{JSON.stringify(displayState, null, 2)}</pre> */}
+            <pre>{JSON.stringify(displayState, null, 2)}</pre>
             <div className={classes.dateNav}>
               <Button
                 variant="outlined"
