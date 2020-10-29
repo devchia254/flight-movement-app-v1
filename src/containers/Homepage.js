@@ -2,15 +2,18 @@ import React, { Component } from "react";
 
 import HomepageTable from "../components/table/HomepageTable";
 import WeatherCard from "../components/weather/WeatherCard";
+import CarouselSlide from "../components/carousel/CarouselSlide";
+import Arrow from "../components/carousel/Arrow";
 
 import { Container } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import Slide from "@material-ui/core/Slide";
 
-const useStyles = (theme) => ({
+const homepageStyles = (theme) => ({
   container: {
-    marginTop: theme.spacing(3),
+    // marginTop: theme.spacing(3),
   },
   homepageLeft: {
     padding: theme.spacing(1),
@@ -27,21 +30,115 @@ const useStyles = (theme) => ({
   },
   flightsTable: {
     height: "100%",
+    // alignItems: "",
     // marginBottom: theme.spacing(2),
   },
+  carouselBox: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  carousel: {
+    width: "100%",
+  },
 });
+
+const SLIDE_INFO = [
+  { backgroundColor: "#ff7c7c", title: <HomepageTable /> },
+  { backgroundColor: "#ffb6b9", title: "Slide 2" },
+  { backgroundColor: "#8deaff", title: "Slide 3" },
+  { backgroundColor: "#ffe084", title: "Slide 4" },
+  { backgroundColor: "#d9d9d9", title: "Slide 5" },
+];
 
 class Homepage extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      index: 0,
+      slideIn: true,
+      slideDirection: "down",
+    };
   }
+
+  componentDidMount() {
+    // this.carouselTimer = setInterval(() => this.onArrowClick("right"), 10000);
+  }
+
+  componentWillUnmount() {
+    // clearInterval(this.carouselTimer);
+  }
+
+  // Slide No.
+  setIndex = (newIndex) => {
+    this.setState({ index: newIndex });
+  };
+
+  // Slide appear/exit
+  setSlideIn = (bool) => {
+    this.setState({ slideIn: bool });
+  };
+
+  // Direction of Slide movement
+  setSlideDirection = (i) => {
+    this.setState({ slideDirection: i });
+  };
+
+  onArrowClick = (direction) => {
+    const numSlides = SLIDE_INFO.length;
+
+    const increment = direction === "left" ? -1 : 1;
+    const newIndex = (this.state.index + increment + numSlides) % numSlides; // Does not exceed numSlides - 1
+
+    // console.log(
+    //   ` (${this.state.index} + ${increment} + ${numSlides}) % ${numSlides} = ${newIndex}`
+    // );
+
+    // Handles the exit of the slide
+    this.setSlideDirection(direction);
+    this.setSlideIn(false);
+
+    // Handles the appearance (the opposite direction from exit) of a new slide (newIndex)
+    const oppDirection = direction === "left" ? "right" : "left";
+    setTimeout(() => {
+      this.setIndex(newIndex);
+      this.setSlideDirection(oppDirection);
+      this.setSlideIn(true);
+    }, 500);
+  };
 
   render() {
     const { classes } = this.props;
+
+    const content = SLIDE_INFO[this.state.index];
+
     return (
       <Container maxWidth="lg">
         <Grid container spacing={2} className={classes.container}>
+          {/* <pre>{JSON.stringify(this.state, null, 2)}</pre> */}
+          <Grid item xs={12}>
+            <div className={classes.carouselBox}>
+              <Arrow
+                direction="left"
+                clickFunction={() => this.onArrowClick("left")}
+              />
+              <Slide
+                in={this.state.slideIn}
+                direction={this.state.slideDirection}
+                // timeout={{ appear: 5000 }}
+                mountOnEnter
+                // unmountOnExit
+              >
+                <div className={classes.carousel}>
+                  <CarouselSlide content={content} />
+                </div>
+              </Slide>
+              <Arrow
+                direction="right"
+                clickFunction={() => this.onArrowClick("right")}
+              />
+            </div>
+          </Grid>
           <Grid
             item
             // spacing={2}
@@ -49,7 +146,7 @@ class Homepage extends Component {
             sm={8}
             className={classes.homepageLeft}
           >
-            <HomepageTable />
+            {/* <HomepageTable /> */}
           </Grid>
           <Grid item xs={12} sm={4}>
             <Paper elevation={10}>
@@ -62,4 +159,4 @@ class Homepage extends Component {
   }
 }
 
-export default withStyles(useStyles)(Homepage);
+export default withStyles(homepageStyles)(Homepage);

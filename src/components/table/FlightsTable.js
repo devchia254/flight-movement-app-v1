@@ -31,8 +31,9 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const useStyles = makeStyles((theme) => ({
-  table: {
+  tableContainer: {
     minWidth: "300px",
+    maxHeight: "60vh", // This enables table scroll & 'stickyHeader' is ref at Table
     // minWidth: 500,
     // minHeight: 800,
   },
@@ -101,8 +102,8 @@ export default function CustomizedTables({ tableFlights, isLoading }) {
       </Paper>
     </div>
   ) : (
-    <TableContainer component={Paper} className={classes.table}>
-      <Table size="medium" aria-label="customized table">
+    <TableContainer component={Paper} className={classes.tableContainer}>
+      <Table stickyHeader size="medium" aria-label="customized table">
         <TableHead>
           <TableRow>
             {/* <StyledTableCell>Flight No.</StyledTableCell> */}
@@ -131,7 +132,7 @@ export default function CustomizedTables({ tableFlights, isLoading }) {
               <StyledTableCell align="right">{row.etd}</StyledTableCell>
               <StyledTableCell align="right">{row.eta}</StyledTableCell>
               <StyledTableCell align="right">{row.status}</StyledTableCell>
-              <StyledTableCell align="right">{row.flightDate}</StyledTableCell>
+              {/* <StyledTableCell align="right">{row.flightDate}</StyledTableCell> */}
             </StyledTableRow>
           ))}
         </TableBody>

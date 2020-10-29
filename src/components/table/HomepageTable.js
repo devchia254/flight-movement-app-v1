@@ -18,9 +18,6 @@ import axios from "axios";
 const moment = require("moment"); // require Moment library
 
 const useStyles = (theme) => ({
-  container: {
-    marginTop: theme.spacing(3),
-  },
   homepageLeft: {
     padding: theme.spacing(1),
     // Height: "800px",
@@ -31,11 +28,11 @@ const useStyles = (theme) => ({
     // height: "200px",
     display: "flex",
     justifyContent: "space-between",
-    margin: "2em 0 2em",
+    margin: "1em 0 1em",
     // flexDirection: "column",
   },
   flightsTable: {
-    height: "100%",
+    // height: "100%",
     // marginBottom: theme.spacing(2),
   },
 });
@@ -134,7 +131,12 @@ class Homepage extends Component {
       });
 
       // Set data into flights from the state
-      this.setState({ flights: [...data], isLoading: false });
+      this.setState({ flights: [...data] });
+
+      // Show off loading spinner
+      setTimeout(() => {
+        this.setState({ isLoading: false });
+      }, 500);
     } catch (error) {
       const resMessage =
         (error.response && error.response.data.message) ||
