@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 
 import HomepageTable from "../components/table/HomepageTable";
-import WeatherCard from "../components/weather/WeatherCard";
+import WeatherPage from "../components/weather/WeatherPage";
 import CarouselSlide from "../components/carousel/CarouselSlide";
 import Arrow from "../components/carousel/Arrow";
 
 import { Container } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
+// import Paper from "@material-ui/core/Paper";
 import Slide from "@material-ui/core/Slide";
 
 const homepageStyles = (theme) => ({
@@ -139,20 +139,20 @@ class Homepage extends Component {
               />
             </div>
           </Grid>
-          <Grid
+          <Grid item xs={12} sm={12}>
+            <div style={{ background: "lightGreen" }}>
+              <WeatherPage />
+            </div>
+          </Grid>
+          {/* <Grid
             item
             // spacing={2}
             xs={12}
             sm={8}
             className={classes.homepageLeft}
           >
-            {/* <HomepageTable /> */}
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Paper elevation={10}>
-              <WeatherCard />
-            </Paper>
-          </Grid>
+            <HomepageTable /> 
+          </Grid> */}
         </Grid>
       </Container>
     );

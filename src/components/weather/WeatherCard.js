@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import kkImage from "../../assets/mtKinabaluCrop.jpg";
-import sdkImage from "../../assets/sdkCrop.jpg";
-import kulImage from "../../assets/klCrop.jpg";
+import React from "react";
+import "../../assets/icon/weather-icons.min.css";
+import kkImage from "../../assets/img/mtKinabaluCrop.jpg";
+import sdkImage from "../../assets/img/sdkCrop.jpg";
+import kulImage from "../../assets/img/klCrop.jpg";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -9,17 +10,14 @@ import Button from "@material-ui/core/Button";
 import { Typography } from "@material-ui/core";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 
-// API Key for Openweather
-const api = {
-  key: "5c1fb17063422a6d6abcfbd2c228fd59",
-  base: "https://api.openweathermap.org/data/2.5/",
-};
-
 const useStyles = makeStyles((theme) => ({
   mainBg: {
     backgroundSize: "cover",
     backgroundPosition: "bottom",
-    borderRadius: "inherit",
+    // borderRadius: "inherit",
+    borderRadius: "1em",
+
+    width: "300px",
   },
 
   kkBg: {
@@ -43,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     // "linear-gradient(to bottom, rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0.75))",
 
     padding: "25px",
-    borderRadius: "inherit",
+    borderRadius: "inherit", // inherits from mainBg
   },
 
   contentBox: {
@@ -113,78 +111,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function WeatherCard() {
-  // OpenWeatherAPI city IDs
-  const cityId = {
-    kotaKinabalu: "1733432",
-    sandakan: "1734052",
-    kualaLumpur: "1733046",
-  };
-
-  const [location, setLocation] = useState(cityId.kotaKinabalu);
-  const [weather, setWeather] = useState({});
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-
-    // Fetch Weather Data from API
-    const fetchWeatherApi = async () => {
-      try {
-        // Fetch response
-        const response = await fetch(
-          `${api.base}weather?id=${location}&units=metric&APPID=${api.key}`,
-          { signal: signal }
-        );
-
-        // Convert response to JSON
-        const result = await response.json();
-
-        // Set weather details to state
-        setWeather(result);
-      } catch (error) {
-        const resMessage =
-          (error.response && error.response.data.message) ||
-          error.message ||
-          error.toString();
-
-        if (error.name === "AbortError") {
-          console.log("Fetching Weather API was aborted");
-        } else if (resMessage) {
-          console.log("Error: ", resMessage);
-        }
-      }
-    };
-
-    // Call Fetch function after first mount
-    fetchWeatherApi();
-
-    // Set interval for fetching weather every 15 minutes
-    const weatherTimer = setInterval(() => {
-      // REMOVE AT PRODUCTION
-      console.log(`Weather fetched after 15 minutes`);
-      console.log(`---------------------------------`);
-      // Only below is important, above is for testing only
-      fetchWeatherApi();
-    }, 900000);
-
-    // Clean up UseEffect Hook
-    return () => {
-      // Clear timer when removed from DOM
-      clearInterval(weatherTimer);
-      abortController.abort();
-    };
-  }, [location]);
-
-  // Get City ID based on onClick Event
-  const getCityId = (e) => {
-    setLocation(e.currentTarget.name);
-  };
-
-  const getWeatherIcon = (data) => {
-    const link = `http://openweathermap.org/img/wn/${data}@2x.png`;
-    return link;
-  };
+export default function WeatherCard(props) {
+  const classes = useStyles();
+  const moment = require("moment"); // require Moment library
 
   const changeBg = (name) => {
     switch (name) {
@@ -204,13 +133,8 @@ function WeatherCard() {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
-  const classes = useStyles();
-  const moment = require("moment"); // require Moment library
+  const { getCityId, cityId, weather } = props;
 
-  // const displayState = {
-  //   LOCATION: location,
-  //   WEATHER: weather,
-  // };
   return (
     // <React.Fragment>
     <div
@@ -248,12 +172,10 @@ function WeatherCard() {
             </div>
             <div className={classes.weatherBox}>
               <div className={classes.weatherIcon}>
-                <img
-                  alt={weather.weather[0].main}
-                  src={getWeatherIcon(weather.weather[0].icon)}
-                  width="100"
-                  height="100"
-                />
+                <i
+                  className={`wi wi-owm-${weather.weather[0].id}`}
+                  style={{ fontSize: "4rem" }}
+                ></i>
               </div>
               <div className={classes.weatherDesc}>
                 <Typography variant="h5" style={{ fontWeight: 700 }}>
@@ -356,5 +278,3 @@ function WeatherCard() {
     // </React.Fragment>
   );
 }
-
-export default WeatherCard;
