@@ -33,7 +33,7 @@ const StyledTableRow = withStyles((theme) => ({
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
     minWidth: "300px",
-    maxHeight: "60vh", // This enables table scroll & 'stickyHeader' is ref at Table
+    maxHeight: "50vh", // This enables table scroll & 'stickyHeader' is ref at Table
     // minWidth: 500,
     // minHeight: 800,
   },

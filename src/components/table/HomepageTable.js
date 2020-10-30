@@ -12,6 +12,8 @@ import { withStyles } from "@material-ui/core/styles";
 // import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 
 import axios from "axios";
 
@@ -24,6 +26,10 @@ const useStyles = (theme) => ({
     // display: "grid",
     // gridTemplateRows: "1fr 2fr",
   },
+  homepageTitle: {
+    display: "flex",
+    justifyContent: "center",
+  },
   dateNav: {
     // height: "200px",
     display: "flex",
@@ -34,6 +40,9 @@ const useStyles = (theme) => ({
   flightsTable: {
     // height: "100%",
     // marginBottom: theme.spacing(2),
+  },
+  importantNotes: {
+    marginTop: theme.spacing(1),
   },
 });
 
@@ -220,6 +229,9 @@ class Homepage extends Component {
     return (
       <React.Fragment>
         {/* <pre>{JSON.stringify(displayState, null, 2)}</pre> */}
+        <div className={classes.homepageTitle}>
+          <Typography variant="h3">Flight Schedule</Typography>
+        </div>
         <div className={classes.dateNav}>
           <Button
             variant="outlined"
@@ -249,6 +261,33 @@ class Homepage extends Component {
             tableFlights={filteredFlights}
             isLoading={this.state.isLoading}
           />
+        </div>
+        <div className={classes.importantNotes}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6">
+                Important Notes before Boarding
+              </Typography>
+              <ul style={{ margin: 0 }}>
+                <li>
+                  <Typography variant="body1">
+                    Check-in counter is open 1 hour before departure
+                  </Typography>
+                </li>
+                <li>
+                  <Typography variant="body1">
+                    Declare any dangerous goods
+                  </Typography>
+                </li>
+                <li>
+                  <Typography variant="body1">
+                    Thank you for not smoking in the terminal (Observe for
+                    designated Smoking Area)
+                  </Typography>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
         </div>
       </React.Fragment>
     );
