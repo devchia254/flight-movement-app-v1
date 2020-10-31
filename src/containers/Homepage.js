@@ -139,10 +139,8 @@ class Homepage extends Component {
               />
             </div>
           </Grid>
-          <Grid item xs={12} sm={12}>
-            <div style={{ background: "lightGreen" }}>
-              <WeatherPage />
-            </div>
+          <Grid item xs={12} sm={12} style={{ background: "lightGreen" }}>
+            <WeatherPage />
           </Grid>
           {/* <Grid
             item

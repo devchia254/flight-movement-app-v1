@@ -1,12 +1,23 @@
 import React, { useState, useEffect } from "react";
 
 import WeatherCard from "./WeatherCard";
+import WeatherInfo from "./WeatherInfo";
+
+import { makeStyles } from "@material-ui/core/styles";
 
 // API Key for Openweather
 const api = {
   key: "5c1fb17063422a6d6abcfbd2c228fd59",
   base: "https://api.openweathermap.org/data/2.5/",
 };
+
+const useStyles = makeStyles((theme) => ({
+  weatherPage: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+}));
 
 function WeatherPage() {
   // OpenWeatherAPI city IDs
@@ -16,6 +27,7 @@ function WeatherPage() {
     kualaLumpur: "1733046",
   };
 
+  const classes = useStyles();
   const [location, setLocation] = useState(cityId.kotaKinabalu);
   const [weather, setWeather] = useState({});
 
@@ -82,7 +94,10 @@ function WeatherPage() {
   };
   return (
     <React.Fragment>
-      <WeatherCard getCityId={getCityId} cityId={cityId} weather={weather} />
+      <div className={classes.weatherPage}>
+        <WeatherCard getCityId={getCityId} cityId={cityId} weather={weather} />
+        <WeatherInfo getCityId={getCityId} cityId={cityId} weather={weather} />
+      </div>
       <pre>{JSON.stringify(displayState, null, 2)}</pre>
     </React.Fragment>
 
