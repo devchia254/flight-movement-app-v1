@@ -44,11 +44,11 @@ const homepageStyles = (theme) => ({
 });
 
 const SLIDE_INFO = [
-  { backgroundColor: "#ff7c7c", title: <HomepageTable /> },
-  { backgroundColor: "#ffb6b9", title: "Slide 2" },
-  { backgroundColor: "#8deaff", title: "Slide 3" },
-  { backgroundColor: "#ffe084", title: "Slide 4" },
-  { backgroundColor: "#d9d9d9", title: "Slide 5" },
+  { backgroundColor: "#ff7c7c", component: <HomepageTable /> },
+  { backgroundColor: "#ffb6b9", component: <WeatherPage /> },
+  { backgroundColor: "#8deaff", component: "Slide 3" },
+  { backgroundColor: "#ffe084", component: "Slide 4" },
+  { backgroundColor: "#d9d9d9", component: "Slide 5" },
 ];
 
 class Homepage extends Component {
@@ -139,18 +139,13 @@ class Homepage extends Component {
               />
             </div>
           </Grid>
-          <Grid item xs={12} sm={12} style={{ background: "lightGreen" }}>
-            <WeatherPage />
-          </Grid>
+          {/* Below testing slide purposes*/}
           {/* <Grid
             item
-            // spacing={2}
             xs={12}
-            sm={8}
-            className={classes.homepageLeft}
-          >
-            <HomepageTable /> 
-          </Grid> */}
+            sm={12}
+            style={{ background: "lightGreen" }}
+          ></Grid> */}
         </Grid>
       </Container>
     );

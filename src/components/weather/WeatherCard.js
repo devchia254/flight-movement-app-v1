@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
       "linear-gradient(315deg, rgba(114,237,242, 0.6),rgba(81,81,229, 1))",
     // "linear-gradient(to bottom, rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0.75))",
 
-    padding: "25px",
+    padding: "2rem",
     borderRadius: "inherit", // inherits from mainBg
     height: "inherit", // inherits from mainBg
   },
@@ -54,6 +54,10 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    height: "100%",
+
+    // background: "chocolate",
+    // border: "2px solid green",
   },
 
   headerBox: {
@@ -62,7 +66,10 @@ const useStyles = makeStyles((theme) => ({
     // justifyContent: "space-between",
     flexWrap: "wrap",
     width: "100%",
-    margin: theme.spacing(2, 0),
+    marginBottom: theme.spacing(2),
+
+    // background: "salmon",
+    // border: "2px dashed blue",
   },
 
   // headerBoxTemp: {
@@ -80,28 +87,36 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "flex",
     flexDirection: "column",
+    marginBottom: theme.spacing(2),
+
+    // background: "darkorange",
+    // border: "2px dashed yellow",
   },
 
   icon: {
     fontSize: "6rem",
-    margin: theme.spacing(2, 0),
+    margin: theme.spacing(3, 0),
     // color: "#ffffff",
   },
 
-  weatherDesc: {
-    // color: "#fff",
-    // textShadow: "1px 1px rgba(50, 50, 70, 0.5)",
-    // fontWeight: "Bold",
-    // boxShadow: "3px 6px rgba(0, 0, 0, 0.2)",
-  },
+  // weatherDesc: {
+  //   // color: "#fff",
+  //   // textShadow: "1px 1px rgba(50, 50, 70, 0.5)",
+  //   // fontWeight: "Bold",
+  //   // boxShadow: "3px 6px rgba(0, 0, 0, 0.2)",
+  // },
 
   footerBox: {
     // display: "flex",
     // alignItems: "center",
     width: "100%",
-    margin: theme.spacing(2, 0),
+    // margin: theme.spacing(2, 0),
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))",
+    height: "100%",
+
+    // background: "indigo",
+    // border: "2px dashed rosybrown",
   },
 
   footerItem: {
@@ -111,7 +126,10 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "end",
+    justifyContent: "center",
+
+    // background: "chocolate",
+    // border: "1px solid green",
   },
 
   // footerBoxGrid2: {
@@ -126,22 +144,6 @@ const useStyles = makeStyles((theme) => ({
   // footerItems: {
   //   justifySelf: "center",
   // },
-
-  locationBox: {
-    // height: "100%", // This extends over the parent div. Review later
-    width: "100%",
-    margin: theme.spacing(1, 0),
-    display: "flex",
-    justifyContent: "center",
-    flexWrap: "wrap",
-  },
-
-  locationBtn: {
-    borderRadius: theme.spacing(3),
-    padding: theme.spacing(0.5),
-    fontWeight: 600,
-    margin: theme.spacing(0.5, 2),
-  },
 }));
 
 export default function WeatherCard(props) {
@@ -181,7 +183,7 @@ export default function WeatherCard(props) {
         {typeof weather.main != "undefined" ? (
           <div className={classes.contentBox}>
             <div className={classes.headerBox}>
-              <Typography variant="h5">
+              <Typography variant="h5" style={{ marginBottom: "0.5rem" }}>
                 {moment().format("dddd D MMM YYYY")}
               </Typography>
               <Typography
@@ -207,12 +209,15 @@ export default function WeatherCard(props) {
                 ></i>
               </div>
               <div className={classes.headerBoxTemp}>
-                <Typography variant="h4" style={{ fontWeight: "700" }}>
+                <Typography
+                  variant="h4"
+                  style={{ fontWeight: "700", marginBottom: "0.5rem" }}
+                >
                   {Math.round(weather.main.temp)}°C
                 </Typography>
               </div>
               <div className={classes.weatherDesc}>
-                <Typography variant="h6" style={{ fontWeight: 0 }}>
+                <Typography variant="h6" style={{ fontWeight: 700 }}>
                   {capitalise(weather.weather[0].description)}
                 </Typography>
               </div>
@@ -227,7 +232,7 @@ export default function WeatherCard(props) {
                   variant="body2"
                   style={{ display: "flex", alignItems: "center" }}
                 >
-                  Wind: {weather.wind.speed}m/s
+                  Wind {weather.wind.speed}m/s
                 </Typography>
               </div>
               <div className={classes.footerItem}>

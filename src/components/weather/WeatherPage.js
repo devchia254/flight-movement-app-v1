@@ -3,7 +3,9 @@ import React, { useState, useEffect } from "react";
 import WeatherCard from "./WeatherCard";
 import WeatherInfo from "./WeatherInfo";
 
-import { makeStyles } from "@material-ui/core/styles";
+import CustomTheme from "../../assets/theme/CustomTheme"; // Testing custom theme
+
+import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 
 // API Key for Openweather
 const api = {
@@ -16,6 +18,10 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    height: "100%",
+
+    // background: "darkorange",
+    // border: "2px dashed yellow",
   },
 }));
 
@@ -88,17 +94,27 @@ function WeatherPage() {
     setLocation(e.currentTarget.name);
   };
 
-  const displayState = {
-    LOCATION: location,
-    WEATHER: weather,
-  };
+  // const displayState = {
+  //   LOCATION: location,
+  //   WEATHER: weather,
+  // };
   return (
     <React.Fragment>
       <div className={classes.weatherPage}>
-        <WeatherCard getCityId={getCityId} cityId={cityId} weather={weather} />
-        <WeatherInfo getCityId={getCityId} cityId={cityId} weather={weather} />
+        <ThemeProvider theme={CustomTheme.weatherTheme}>
+          <WeatherCard
+            getCityId={getCityId}
+            cityId={cityId}
+            weather={weather}
+          />
+          <WeatherInfo
+            getCityId={getCityId}
+            cityId={cityId}
+            weather={weather}
+          />
+        </ThemeProvider>
       </div>
-      <pre>{JSON.stringify(displayState, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(displayState, null, 2)}</pre> */}
     </React.Fragment>
 
     // </React.Fragment>

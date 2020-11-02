@@ -2,12 +2,12 @@ import React from "react";
 import { Card, makeStyles } from "@material-ui/core";
 
 export default function CarouselSlide(props) {
-  const { backgroundColor, title } = props.content;
+  const { backgroundColor, component } = props.content;
 
   const useStyles = makeStyles((theme) => ({
     card: {
       backgroundColor,
-      borderRadius: 5,
+      borderRadius: 0,
       // minHeight: "70vh",
       padding: theme.spacing(1),
       height: "90vh",
@@ -28,8 +28,8 @@ export default function CarouselSlide(props) {
   const classes = useStyles();
 
   return (
-    <Card className={classes.card}>
-      <div className={classes.slideComponent}>{title}</div>
+    <Card elevation={0} className={classes.card}>
+      <div className={classes.slideComponent}>{component}</div>
     </Card>
   );
 }

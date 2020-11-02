@@ -1,15 +1,10 @@
 import React from "react";
 import "../../assets/icon/weather-icons.min.css";
 import "../../assets/icon/weather-icons-wind.min.css";
-import kkImage from "../../assets/img/mtKinabaluCrop.jpg";
-import sdkImage from "../../assets/img/sdkCrop.jpg";
-import kulImage from "../../assets/img/klCrop.jpg";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-// import Avatar from "@material-ui/core/Avatar";
 import { Typography } from "@material-ui/core";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
 
 const useStyles = makeStyles((theme) => ({
   mainBg: {
@@ -19,49 +14,50 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "0 1em 1em 0",
 
     width: "30vw", // width of card
-    height: "75vh",
+    height: "75vh", // height of card
     maxHeight: "80vh",
     backgroundColor: "#343d4b",
-  },
-
-  kkBg: {
-    backgroundImage: `url(${kkImage})`,
-  },
-
-  sdkBg: {
-    backgroundImage: `url(${sdkImage})`,
-  },
-
-  kulBg: {
-    backgroundImage: `url(${kulImage})`,
-  },
-
-  warmBg: {},
-
-  cardBox: {
-    // minHeight: "60vh",
-    backgroundImage:
-      "linear-gradient(340deg, rgba(114,237,242, 0.4),rgba(81,81,229, 0.9))",
-    // "linear-gradient(to bottom, rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0.75))",
-
-    padding: "25px",
-    borderRadius: "inherit", // inherits from mainBg
-    height: "inherit", // inherits from mainBg
+    color: "#ffffff",
+    padding: theme.spacing(2, 4),
   },
 
   contentBox: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    height: "70%", // cumulates with locationBox
+    // margin: theme.spacing(0, 2),
+
+    // background: "papayawhip",
+    // border: "2px solid darkcyan",
+  },
+
+  contentItem: {
+    margin: theme.spacing(1.5, 0),
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+
+    // background: "seagreen",
+    // border: "1px solid black",
+  },
+
+  weatherHeader: {
+    fontWeight: 700,
   },
 
   locationBox: {
     // height: "100%", // This extends over the parent div. Review later
-    width: "100%",
-    margin: theme.spacing(1, 0),
+    // width: "100%",
+    // margin: theme.spacing(0, 2),
     display: "flex",
     justifyContent: "center",
+    alignItems: "center",
     flexWrap: "wrap",
+    height: "30%", // cumulates with contentBox
+
+    // background: "antiquewhite",
+    // border: "1px solid black",
   },
 
   locationBtn: {
@@ -69,6 +65,10 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0.5),
     fontWeight: 600,
     margin: theme.spacing(0.5, 2),
+    color: "#ffffff",
+
+    backgroundImage:
+      "linear-gradient(315deg, rgba(114,237,242, 1),rgba(81,81,229, 1))",
   },
 }));
 
@@ -81,7 +81,49 @@ export default function WeatherInfo(props) {
     // <React.Fragment>
     <div className={classes.mainBg}>
       {typeof weather.main != "undefined" ? (
-        <div className={classes.contentBox}>Hello</div>
+        <div className={classes.contentBox}>
+          <div className={classes.contentItem}>
+            <Typography variant="body1" className={classes.weatherHeader}>
+              TEMP. (MIN-MAX)
+            </Typography>
+            <Typography variant="body1">
+              {weather.main.temp_min.toFixed(1)} -{" "}
+              {weather.main.temp_max.toFixed(1)}°C
+            </Typography>
+          </div>
+          <div className={classes.contentItem}>
+            <Typography variant="body1" className={classes.weatherHeader}>
+              WIND DIRECTION
+            </Typography>
+            <Typography variant="body1">{weather.wind.deg}°</Typography>
+          </div>
+          <div className={classes.contentItem}>
+            <Typography variant="body1" className={classes.weatherHeader}>
+              CLOUDINESS
+            </Typography>
+            <Typography variant="body1">{weather.clouds.all}%</Typography>
+          </div>
+          <div className={classes.contentItem}>
+            <Typography variant="body1" className={classes.weatherHeader}>
+              RAIN (1HR)
+            </Typography>
+            <Typography variant="body1">
+              {weather.rain ? weather.rain["1h"] : "-"} mm
+            </Typography>
+          </div>
+          <div className={classes.contentItem}>
+            <Typography variant="body1" className={classes.weatherHeader}>
+              HUMIDITY
+            </Typography>
+            <Typography variant="body1">{weather.main.humidity}%</Typography>
+          </div>
+          <div className={classes.contentItem}>
+            <Typography variant="body1" className={classes.weatherHeader}>
+              PRESSURE
+            </Typography>
+            <Typography variant="body1">{weather.main.pressure} hPa</Typography>
+          </div>
+        </div>
       ) : (
         // Show something if fetching fails
         <div className={classes.contentBox}></div>
