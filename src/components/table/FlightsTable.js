@@ -107,14 +107,28 @@ export default function CustomizedTables({ tableFlights, isLoading }) {
         <TableHead>
           <TableRow>
             {/* <StyledTableCell>Flight No.</StyledTableCell> */}
-            <StyledTableCell>Company</StyledTableCell>
-            <StyledTableCell align="right">Aircraft</StyledTableCell>
-            <StyledTableCell align="right">Destination</StyledTableCell>
+            <StyledTableCell>
+              <Typography variant="h6">Company</Typography>
+            </StyledTableCell>
+            <StyledTableCell align="right">
+              <Typography variant="h6">Aircraft</Typography>
+            </StyledTableCell>
+            <StyledTableCell align="right">
+              <Typography variant="h6">Destination</Typography>
+            </StyledTableCell>
             {/* <StyledTableCell align="right">Date</StyledTableCell> */}
-            <StyledTableCell align="right">Check In</StyledTableCell>
-            <StyledTableCell align="right">ETD</StyledTableCell>
-            <StyledTableCell align="right">ETA</StyledTableCell>
-            <StyledTableCell align="right">Status</StyledTableCell>
+            <StyledTableCell align="right">
+              <Typography variant="h6">Check In</Typography>
+            </StyledTableCell>
+            <StyledTableCell align="right">
+              <Typography variant="h6">ETD</Typography>
+            </StyledTableCell>
+            <StyledTableCell align="right">
+              <Typography variant="h6">ETA</Typography>
+            </StyledTableCell>
+            <StyledTableCell align="right">
+              <Typography variant="h6">Status</Typography>
+            </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -126,12 +140,24 @@ export default function CustomizedTables({ tableFlights, isLoading }) {
               <StyledTableCell component="th" scope="row">
                 {row.company}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.acReg}</StyledTableCell>
-              <StyledTableCell align="right">{row.destination}</StyledTableCell>
-              <StyledTableCell align="right">{row.checkIn}</StyledTableCell>
-              <StyledTableCell align="right">{row.etd}</StyledTableCell>
-              <StyledTableCell align="right">{row.eta}</StyledTableCell>
-              <StyledTableCell align="right">{row.status}</StyledTableCell>
+              <StyledTableCell align="right">
+                <Typography variant="body2">{row.acReg}</Typography>
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                <Typography variant="body2">{row.destination}</Typography>
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                <Typography variant="body2">{row.checkIn}</Typography>
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                <Typography variant="body2">{row.etd}</Typography>
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                <Typography variant="body2">{row.eta}</Typography>
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                <Typography variant="body2">{row.status}</Typography>
+              </StyledTableCell>
               {/* <StyledTableCell align="right">{row.flightDate}</StyledTableCell> */}
             </StyledTableRow>
           ))}

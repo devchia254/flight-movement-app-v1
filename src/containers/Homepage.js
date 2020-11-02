@@ -3,7 +3,10 @@ import React, { Component } from "react";
 import HomepageTable from "../components/table/HomepageTable";
 import WeatherPage from "../components/weather/WeatherPage";
 import CarouselSlide from "../components/carousel/CarouselSlide";
+import Image from "../components/carousel/Image";
 import Arrow from "../components/carousel/Arrow";
+import dg from "../assets/img/dg.jpg";
+import covid1 from "../assets/img/covid1.jpg";
 
 import { Container } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
@@ -46,8 +49,11 @@ const homepageStyles = (theme) => ({
 const SLIDE_INFO = [
   { backgroundColor: "#ff7c7c", component: <HomepageTable /> },
   { backgroundColor: "#ffb6b9", component: <WeatherPage /> },
-  { backgroundColor: "#8deaff", component: "Slide 3" },
-  { backgroundColor: "#ffe084", component: "Slide 4" },
+  {
+    backgroundColor: "#8deaff",
+    component: <Image file={dg} title="Dangerous Goods" />,
+  },
+  { backgroundColor: "#ffe084", component: <Image file={covid1} /> },
   { backgroundColor: "#d9d9d9", component: "Slide 5" },
 ];
 

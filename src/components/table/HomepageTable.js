@@ -34,7 +34,7 @@ const useStyles = (theme) => ({
     // height: "200px",
     display: "flex",
     justifyContent: "space-between",
-    margin: "1em 0 1em",
+    margin: theme.spacing(1, 0),
     // flexDirection: "column",
   },
   flightsTable: {
