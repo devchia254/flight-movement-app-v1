@@ -234,26 +234,28 @@ class Homepage extends Component {
         </div>
         <div className={classes.dateNav}>
           <Button
+            size="small"
             variant="outlined"
             color="primary"
             name="minusOneDay"
             onClick={this.previousDates}
             disabled={this.state.disablePrevBtn}
           >
-            Previous Date
+            Previous
           </Button>
           <Typography variant="h5" style={{ textAlign: "center" }}>
             {/* Full Date format */}
             {moment(this.state.date).format("dddd Do MMMM YYYY")}
           </Typography>
           <Button
+            size="small"
             variant="outlined"
             color="primary"
             name="plusOneDay"
             onClick={this.followingDates}
             disabled={this.state.disableFollowingBtn}
           >
-            Following Date
+            Next
           </Button>
         </div>
         <div className={classes.flightsTable}>

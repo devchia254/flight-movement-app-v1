@@ -13,6 +13,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 // import Paper from "@material-ui/core/Paper";
 import Slide from "@material-ui/core/Slide";
+import Hidden from "@material-ui/core/Hidden";
 
 const homepageStyles = (theme) => ({
   container: {
@@ -35,11 +36,6 @@ const homepageStyles = (theme) => ({
     height: "100%",
     // alignItems: "",
     // marginBottom: theme.spacing(2),
-  },
-  carouselBox: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
   },
   carousel: {
     width: "100%",
@@ -119,28 +115,52 @@ class Homepage extends Component {
       <Container maxWidth="lg">
         <Grid container spacing={2} className={classes.container}>
           {/* <pre>{JSON.stringify(this.state, null, 2)}</pre> */}
-          <Grid item xs={12}>
-            <div className={classes.carouselBox}>
-              <Arrow
-                direction="left"
-                clickFunction={() => this.onArrowClick("left")}
-              />
+          <Grid container item xs={12}>
+            {/* <div className={classes.carouselBox}> */}
+            <Grid item sm={1} xs={0}>
+              <Hidden xsDown>
+                <Arrow
+                  direction="left"
+                  clickFunction={() => this.onArrowClick("left")}
+                />
+              </Hidden>
+            </Grid>
+            <Grid item sm={10} xs={12}>
               <Slide
                 in={this.state.slideIn}
                 direction={this.state.slideDirection}
                 // timeout={{ appear: 5000 }}
-                mountOnEnter
+                // mountOnEnter
                 // unmountOnExit
               >
                 <div className={classes.carousel}>
                   <CarouselSlide content={content} />
                 </div>
               </Slide>
-              <Arrow
-                direction="right"
-                clickFunction={() => this.onArrowClick("right")}
-              />
-            </div>
+            </Grid>
+            <Grid item sm={1} xs={0}>
+              <Hidden xsDown>
+                <Arrow
+                  direction="right"
+                  clickFunction={() => this.onArrowClick("right")}
+                />
+              </Hidden>
+            </Grid>
+            {/* Below: Hidden when sm(600px) and above */}
+            <Hidden smUp>
+              <Grid item xs={6}>
+                <Arrow
+                  direction="left"
+                  clickFunction={() => this.onArrowClick("left")}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Arrow
+                  direction="right"
+                  clickFunction={() => this.onArrowClick("right")}
+                />
+              </Grid>
+            </Hidden>
           </Grid>
           {/* Below testing slide purposes*/}
           {/* <Grid
