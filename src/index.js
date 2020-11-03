@@ -2,18 +2,22 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
+import { ThemeProvider } from "@material-ui/core/styles";
 
 import "./index.css";
 import App from "./containers/App";
+import CustomTheme from "./assets/theme/CustomTheme";
 import * as serviceWorker from "./serviceWorker";
 
-// const history = createBrowserHistory();
+const { appTheme } = CustomTheme;
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <SnackbarProvider maxSnack={3}>
-        <App />
+        <ThemeProvider theme={appTheme}>
+          <App />
+        </ThemeProvider>
       </SnackbarProvider>
     </BrowserRouter>
   </React.StrictMode>,

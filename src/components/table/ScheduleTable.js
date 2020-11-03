@@ -56,6 +56,8 @@ function ScheduleTable(props) {
 
   // Styling
   const myHeaders = {
+    backgroundColor: "#3f51b5",
+    color: "#ffffff",
     fontWeight: 600,
   };
 

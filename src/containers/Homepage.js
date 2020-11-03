@@ -1,25 +1,22 @@
 import React, { Component } from "react";
 
-import AuthPublic from "../services/auth/auth-public";
-
-// import makeData from "../test/makeData"; // Fake data generator
-import HomeTable from "../components/table/HomeTable";
-import WeatherCard from "../components/weather/WeatherCard";
+import HomepageTable from "../components/table/HomepageTable";
+import WeatherPage from "../components/weather/WeatherPage";
+import CarouselSlide from "../components/carousel/CarouselSlide";
+import Image from "../components/carousel/Image";
+import Arrow from "../components/carousel/Arrow";
+import dg from "../assets/img/dg.jpg";
+import covid1 from "../assets/img/covid1.jpg";
 
 import { Container } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+// import Paper from "@material-ui/core/Paper";
+import Slide from "@material-ui/core/Slide";
 
-import axios from "axios";
-
-const moment = require("moment"); // require Moment library
-
-const useStyles = (theme) => ({
+const homepageStyles = (theme) => ({
   container: {
-    marginTop: theme.spacing(3),
+    // marginTop: theme.spacing(3),
   },
   homepageLeft: {
     padding: theme.spacing(1),
@@ -34,238 +31,128 @@ const useStyles = (theme) => ({
     margin: "2em 0 2em",
     // flexDirection: "column",
   },
-  homeTable: {
+  flightsTable: {
     height: "100%",
+    // alignItems: "",
     // marginBottom: theme.spacing(2),
+  },
+  carouselBox: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  carousel: {
+    width: "100%",
   },
 });
 
-class Homepage extends Component {
-  // Cancel XHR Requests (axios) when component unmounts abruptly
-  cancelToken = axios.CancelToken.source();
+const SLIDE_INFO = [
+  { component: <HomepageTable /> },
+  { component: <WeatherPage /> },
+  { component: <Image file={dg} title="Dangerous Goods" /> },
+  { component: <Image file={covid1} /> },
+  // { backgroundColor: "#d9d9d9", component: "Slide 5" },
+];
 
+class Homepage extends Component {
   constructor() {
-    // console.log("Constructor");
     super();
     this.state = {
-      flights: [],
-      date: moment().format("YYYY-MM-DD"),
-      minDays: -3,
-      maxDays: 3,
-      clicks: 0,
-      disablePrevBtn: false,
-      disableFollowingBtn: false,
-      isLoading: false,
-      minutes: 0, // Testing interval only
+      index: 0,
+      slideIn: true,
+      slideDirection: "down",
     };
   }
 
   componentDidMount() {
-    this.setState({ isLoading: true });
-    // Fetch flights after the first mount of Homepage component
-    this.fetchPublicFlights();
-
-    // Set interval to fetch public flights every 5 minutes
-    this.flightsTimer = setInterval(() => {
-      this.testingInterval(); // REMOVE AT PRODUCTION
-
-      // Only below is important, above is for testing only
-      this.fetchPublicFlights();
-    }, 300000);
+    // this.carouselTimer = setInterval(() => this.onArrowClick("right"), 10000);
   }
-
-  // Testing only
-  testingInterval = () => {
-    this.setState((prevState) => {
-      return { minutes: prevState.minutes + 5 };
-    });
-    console.log(
-      `Flight fetches: ${this.state.minutes / 5}, Minutes passed: ${
-        this.state.minutes
-      }`
-    );
-  };
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   // This can disable the button 1 step faster but I donot like the logic of it
-  //   if (prevState.clicks - 1 === this.state.minDays) {
-  //     this.setState({ disablePrevBtn: true });
-  //   } else if (prevState.clicks + 1 === this.state.maxDays) {
-  //     this.setState({ disableFollowingBtn: true });
-  //   }
-  // }
 
   componentWillUnmount() {
-    // Clear timer when removed from DOM
-    clearInterval(this.flightsTimer);
-    this.cancelToken.cancel("API request was interrupted and cancelled");
+    // clearInterval(this.carouselTimer);
   }
 
-  fetchPublicFlights = async () => {
-    try {
-      // Fetch response from API
-      const response = await AuthPublic.publicFlights(this.cancelToken);
-      // Map response into useful data
-      const data = await response.data.flightData.map((flight) => {
-        const {
-          flight_id,
-          flight_no,
-          company,
-          ac_reg,
-          destination,
-          check_in,
-          etd,
-          eta,
-          status,
-        } = flight;
-
-        return {
-          flightId: flight_id,
-          flightNo: flight_no,
-          company: company,
-          acReg: ac_reg,
-          destination: destination,
-          flightDate: moment(check_in, true).format("YYYY-MM-DD"), // Accepted ISO 8601 string for Calendar Date and new field to manipulate date in homepage
-          checkIn: moment(check_in, true).format("HH:mm"),
-          etd: moment(etd, true).format("HH:mm"),
-          eta: moment(eta, true).format("HH:mm"),
-          status: status,
-        };
-      });
-
-      // Set data into flights from the state
-      this.setState({ flights: [...data], isLoading: false });
-    } catch (error) {
-      const resMessage =
-        (error.response && error.response.data.message) ||
-        error.message ||
-        error.toString();
-
-      if (axios.isCancel(error)) {
-        console.log("Axios: ", error.message);
-      } else if (resMessage) {
-        console.log("Error with fetching public flights: ", resMessage);
-      }
-    }
+  // Slide No.
+  setIndex = (newIndex) => {
+    this.setState({ index: newIndex });
   };
 
-  previousDates = () => {
-    const { clicks, minDays } = this.state;
-    if (clicks > minDays) {
-      this.setState((prevState) => {
-        console.log({
-          clicks: prevState.clicks - 1,
-          disablePrevBtn: prevState.disablePrevBtn,
-          disableFollowingBtn: prevState.disableFollowingBtn,
-        });
-        return {
-          clicks: prevState.clicks - 1,
-          date: moment()
-            .add(prevState.clicks - 1, "d")
-            .format("YYYY-MM-DD", true),
-          disableFollowingBtn: false,
-          disablePrevBtn:
-            prevState.clicks - 1 === prevState.minDays ? true : false,
-        };
-      });
-    }
+  // Slide appear/exit
+  setSlideIn = (bool) => {
+    this.setState({ slideIn: bool });
   };
 
-  followingDates = () => {
-    const { clicks, maxDays } = this.state;
+  // Direction of Slide movement
+  setSlideDirection = (i) => {
+    this.setState({ slideDirection: i });
+  };
 
-    if (clicks < maxDays) {
-      this.setState((prevState) => {
-        console.log({
-          clicks: prevState.clicks + 1,
-          disablePrevBtn: prevState.disablePrevBtn,
-          disableFollowingBtn: prevState.disableFollowingBtn,
-        });
-        return {
-          clicks: prevState.clicks + 1,
-          date: moment()
-            .add(prevState.clicks + 1, "d")
-            .format("YYYY-MM-DD", true),
-          disablePrevBtn: false,
-          disableFollowingBtn:
-            prevState.clicks + 1 === prevState.maxDays ? true : false,
-        };
-      });
-    }
+  onArrowClick = (direction) => {
+    const numSlides = SLIDE_INFO.length;
+
+    const increment = direction === "left" ? -1 : 1;
+    const newIndex = (this.state.index + increment + numSlides) % numSlides; // Does not exceed numSlides - 1
+
+    // console.log(
+    //   ` (${this.state.index} + ${increment} + ${numSlides}) % ${numSlides} = ${newIndex}`
+    // );
+
+    // Handles the exit of the slide
+    this.setSlideDirection(direction);
+    this.setSlideIn(false);
+
+    // Handles the appearance (the opposite direction from exit) of a new slide (newIndex)
+    const oppDirection = direction === "left" ? "right" : "left";
+    setTimeout(() => {
+      this.setIndex(newIndex);
+      this.setSlideDirection(oppDirection);
+      this.setSlideIn(true);
+    }, 500);
   };
 
   render() {
     const { classes } = this.props;
 
-    // Filter flights based on the date and pass it to HomeTable
-    const filteredFlights = this.state.flights.filter((flight) => {
-      return flight.flightDate === this.state.date;
-    });
-
-    // const today = moment().format("DD/MM/YYYY");
-    // console.log(moment()._d);
-    // console.log(moment().add(3, "d")._d);
-
-    const displayState = {
-      date: this.state.date,
-      minDays: this.state.minDays,
-      maxDays: this.state.maxDays,
-      clicks: this.state.clicks,
-      disablePrevBtn: this.state.disablePrevBtn,
-      disableFollowingBtn: this.state.disableFollowingBtn,
-    };
+    const content = SLIDE_INFO[this.state.index];
 
     return (
       <Container maxWidth="lg">
         <Grid container spacing={2} className={classes.container}>
-          <Grid
-            item
-            // spacing={2}
-            xs={12}
-            sm={8}
-            className={classes.homepageLeft}
-          >
-            <pre>{JSON.stringify(displayState, null, 2)}</pre>
-            <div className={classes.dateNav}>
-              <Button
-                variant="outlined"
-                color="primary"
-                name="minusOneDay"
-                onClick={this.previousDates}
-                disabled={this.state.disablePrevBtn}
+          {/* <pre>{JSON.stringify(this.state, null, 2)}</pre> */}
+          <Grid item xs={12}>
+            <div className={classes.carouselBox}>
+              <Arrow
+                direction="left"
+                clickFunction={() => this.onArrowClick("left")}
+              />
+              <Slide
+                in={this.state.slideIn}
+                direction={this.state.slideDirection}
+                // timeout={{ appear: 5000 }}
+                mountOnEnter
+                // unmountOnExit
               >
-                Previous Date
-              </Button>
-              <Typography variant="h5" style={{ textAlign: "center" }}>
-                {/* Full Date format */}
-                {moment(this.state.date).format("dddd Do MMMM YYYY")}
-              </Typography>
-              <Button
-                variant="outlined"
-                color="primary"
-                name="plusOneDay"
-                onClick={this.followingDates}
-                disabled={this.state.disableFollowingBtn}
-              >
-                Following Date
-              </Button>
-            </div>
-            <div className={classes.homeTable}>
-              <HomeTable
-                tableFlights={filteredFlights}
-                isLoading={this.state.isLoading}
+                <div className={classes.carousel}>
+                  <CarouselSlide content={content} />
+                </div>
+              </Slide>
+              <Arrow
+                direction="right"
+                clickFunction={() => this.onArrowClick("right")}
               />
             </div>
           </Grid>
-          <Grid item xs={12} sm={4}>
-            <Paper elevation={10}>
-              <WeatherCard />
-            </Paper>
-          </Grid>
+          {/* Below testing slide purposes*/}
+          {/* <Grid
+            item
+            xs={12}
+            sm={12}
+            style={{ background: "lightGreen" }}
+          ></Grid> */}
         </Grid>
       </Container>
     );
   }
 }
 
-export default withStyles(useStyles)(Homepage);
+export default withStyles(homepageStyles)(Homepage);
