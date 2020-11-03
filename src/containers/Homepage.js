@@ -47,14 +47,11 @@ const homepageStyles = (theme) => ({
 });
 
 const SLIDE_INFO = [
-  { backgroundColor: "#ff7c7c", component: <HomepageTable /> },
-  { backgroundColor: "#ffb6b9", component: <WeatherPage /> },
-  {
-    backgroundColor: "#8deaff",
-    component: <Image file={dg} title="Dangerous Goods" />,
-  },
-  { backgroundColor: "#ffe084", component: <Image file={covid1} /> },
-  { backgroundColor: "#d9d9d9", component: "Slide 5" },
+  { component: <HomepageTable /> },
+  { component: <WeatherPage /> },
+  { component: <Image file={dg} title="Dangerous Goods" /> },
+  { component: <Image file={covid1} /> },
+  // { backgroundColor: "#d9d9d9", component: "Slide 5" },
 ];
 
 class Homepage extends Component {

@@ -7,6 +7,8 @@ const imageStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
   },
   image: {
     marginTop: theme.spacing(1),
