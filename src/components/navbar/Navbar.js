@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 // import Link from "@material-ui/core/Link";
 import PersonIcon from "@material-ui/icons/Person";
 import Button from "@material-ui/core/Button";
+import Hidden from "@material-ui/core/Hidden";
 
 import DrawerButton from "./Drawer";
 
@@ -70,14 +71,30 @@ class Navbar extends Component {
             </Typography>
             {/* if there is a user, show profile link */}
             {currentUser && (
-              <Button
-                color="inherit"
-                className={classes.profileButton}
-                component={this.ProfileLink}
-                startIcon={<PersonIcon className={classes.profileIcon} />}
-              >
-                {!currentUser ? "username here" : currentUser.email}
-              </Button>
+              <React.Fragment>
+                {/* Hidden when BELOW 600px for Profile link - Start */}
+                <Hidden xsDown>
+                  <Button
+                    color="inherit"
+                    className={classes.profileButton}
+                    component={this.ProfileLink}
+                    startIcon={<PersonIcon className={classes.profileIcon} />}
+                  >
+                    {!currentUser ? "username here" : currentUser.email}
+                  </Button>
+                </Hidden>
+                {/* Hidden when BELOW 600px for Profile link - End */}
+                {/* Hidden when 600px & ABOVE for Profile link - Start */}
+                <Hidden smUp>
+                  <Button
+                    color="inherit"
+                    className={classes.profileButton}
+                    component={this.ProfileLink}
+                    startIcon={<PersonIcon className={classes.profileIcon} />}
+                  ></Button>
+                </Hidden>
+                {/* Hidden when 600px & ABOVE for Profile link - End */}
+              </React.Fragment>
             )}
           </Toolbar>
         </AppBar>
