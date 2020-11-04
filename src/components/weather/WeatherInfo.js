@@ -11,9 +11,16 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: "cover",
     backgroundPosition: "bottom",
     // borderRadius: "inherit",
-    borderRadius: "0 1em 1em 0",
+    [theme.breakpoints.up("md")]: {
+      borderRadius: "0 1em 1em 0",
+    },
+    [theme.breakpoints.down("sm")]: {
+      borderRadius: "1em",
+    },
 
-    width: "30vw", // width of card
+    // width: "30vw", // width of card
+    width: "350px",
+    minWidth: "300px",
     height: "75vh", // height of card
     maxHeight: "80vh",
     backgroundColor: "#343d4b",
@@ -46,6 +53,10 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 700,
   },
 
+  weatherValue: {
+    textAlign: "end",
+  },
+
   locationBox: {
     // height: "100%", // This extends over the parent div. Review later
     // width: "100%",
@@ -64,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(3),
     padding: theme.spacing(0.5),
     fontWeight: 600,
-    margin: theme.spacing(0.5, 2),
+    margin: theme.spacing(0.5, 1.5),
     color: "#ffffff",
 
     backgroundImage:
@@ -86,7 +97,7 @@ export default function WeatherInfo(props) {
             <Typography variant="body1" className={classes.weatherHeader}>
               TEMP. (MIN-MAX)
             </Typography>
-            <Typography variant="body1">
+            <Typography variant="body1" className={classes.weatherValue}>
               {weather.main.temp_min.toFixed(1)} -{" "}
               {weather.main.temp_max.toFixed(1)}°C
             </Typography>
@@ -95,19 +106,23 @@ export default function WeatherInfo(props) {
             <Typography variant="body1" className={classes.weatherHeader}>
               WIND DIRECTION
             </Typography>
-            <Typography variant="body1">{weather.wind.deg}°</Typography>
+            <Typography variant="body1" className={classes.weatherValue}>
+              {weather.wind.deg}°
+            </Typography>
           </div>
           <div className={classes.contentItem}>
             <Typography variant="body1" className={classes.weatherHeader}>
               CLOUDINESS
             </Typography>
-            <Typography variant="body1">{weather.clouds.all}%</Typography>
+            <Typography variant="body1" className={classes.weatherValue}>
+              {weather.clouds.all}%
+            </Typography>
           </div>
           <div className={classes.contentItem}>
             <Typography variant="body1" className={classes.weatherHeader}>
               RAIN (1HR)
             </Typography>
-            <Typography variant="body1">
+            <Typography variant="body1" className={classes.weatherValue}>
               {weather.rain ? weather.rain["1h"] : "-"} mm
             </Typography>
           </div>
@@ -115,13 +130,17 @@ export default function WeatherInfo(props) {
             <Typography variant="body1" className={classes.weatherHeader}>
               HUMIDITY
             </Typography>
-            <Typography variant="body1">{weather.main.humidity}%</Typography>
+            <Typography variant="body1" className={classes.weatherValue}>
+              {weather.main.humidity}%
+            </Typography>
           </div>
           <div className={classes.contentItem}>
             <Typography variant="body1" className={classes.weatherHeader}>
               PRESSURE
             </Typography>
-            <Typography variant="body1">{weather.main.pressure} hPa</Typography>
+            <Typography variant="body1" className={classes.weatherValue}>
+              {weather.main.pressure} hPa
+            </Typography>
           </div>
         </div>
       ) : (

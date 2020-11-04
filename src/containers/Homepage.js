@@ -116,7 +116,7 @@ class Homepage extends Component {
         <Grid container spacing={2} className={classes.container}>
           {/* <pre>{JSON.stringify(this.state, null, 2)}</pre> */}
           <Grid container item xs={12}>
-            <Grid item sm={1} xs={0}>
+            <Grid item sm={1}>
               {/* Hidden when BELOW 600px for Arrow - Start */}
               <Hidden xsDown>
                 <Arrow
@@ -139,7 +139,7 @@ class Homepage extends Component {
                 </div>
               </Slide>
             </Grid>
-            <Grid item sm={1} xs={0}>
+            <Grid item sm={1}>
               {/* Hidden when BELOW 600px for Arrow - Start */}
               <Hidden xsDown>
                 <Arrow

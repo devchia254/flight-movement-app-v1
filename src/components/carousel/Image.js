@@ -28,7 +28,9 @@ export default function Image(props) {
   return (
     <React.Fragment>
       <div className={classes.imageSlide}>
-        <Typography variant="h3">{title}</Typography>
+        <Typography variant="h3" style={{ textAlign: "center" }}>
+          {title}
+        </Typography>
         <img src={file} alt="Something here" className={classes.image}></img>
       </div>
     </React.Fragment>

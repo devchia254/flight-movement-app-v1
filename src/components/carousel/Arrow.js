@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    border: "2px solid blue",
+    // border: "2px solid blue",
   },
 }));
 
