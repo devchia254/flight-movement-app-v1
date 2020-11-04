@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    // border: "2px solid blue",
+    border: "2px solid blue",
   },
 }));
 
@@ -26,7 +26,9 @@ export default function Arrow(props) {
 
   return (
     <div className={classes.arrow}>
-      <IconButton onClick={clickFunction}>{icon}</IconButton>
+      <IconButton fontSize="small" onClick={clickFunction}>
+        {icon}
+      </IconButton>
     </div>
   );
 }

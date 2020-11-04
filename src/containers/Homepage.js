@@ -116,14 +116,15 @@ class Homepage extends Component {
         <Grid container spacing={2} className={classes.container}>
           {/* <pre>{JSON.stringify(this.state, null, 2)}</pre> */}
           <Grid container item xs={12}>
-            {/* <div className={classes.carouselBox}> */}
             <Grid item sm={1} xs={0}>
+              {/* Hidden when BELOW 600px for Arrow - Start */}
               <Hidden xsDown>
                 <Arrow
                   direction="left"
                   clickFunction={() => this.onArrowClick("left")}
                 />
               </Hidden>
+              {/* Hidden when BELOW 600px for Arrow - End */}
             </Grid>
             <Grid item sm={10} xs={12}>
               <Slide
@@ -139,14 +140,16 @@ class Homepage extends Component {
               </Slide>
             </Grid>
             <Grid item sm={1} xs={0}>
+              {/* Hidden when BELOW 600px for Arrow - Start */}
               <Hidden xsDown>
                 <Arrow
                   direction="right"
                   clickFunction={() => this.onArrowClick("right")}
                 />
               </Hidden>
+              {/* Hidden when BELOW 600px for Arrow - End */}
             </Grid>
-            {/* Below: Hidden when sm(600px) and above */}
+            {/* Hidden when 600px & ABOVE for Arrow - Start */}
             <Hidden smUp>
               <Grid item xs={6}>
                 <Arrow
@@ -161,6 +164,7 @@ class Homepage extends Component {
                 />
               </Grid>
             </Hidden>
+            {/* Hidden when 600px & ABOVE for Arrow - End */}
           </Grid>
           {/* Below testing slide purposes*/}
           {/* <Grid

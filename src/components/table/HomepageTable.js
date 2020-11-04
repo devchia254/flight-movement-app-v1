@@ -14,6 +14,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import Hidden from "@material-ui/core/Hidden";
 
 import axios from "axios";
 
@@ -29,6 +30,8 @@ const useStyles = (theme) => ({
   homepageTitle: {
     display: "flex",
     justifyContent: "center",
+    textAlign: "center",
+    padding: theme.spacing(2, 0),
   },
   dateNav: {
     // height: "200px",
@@ -229,9 +232,16 @@ class Homepage extends Component {
     return (
       <React.Fragment>
         {/* <pre>{JSON.stringify(displayState, null, 2)}</pre> */}
-        <div className={classes.homepageTitle}>
-          <Typography variant="h3">Flight Schedule</Typography>
-        </div>
+        <Hidden xsDown>
+          <div className={classes.homepageTitle}>
+            <Typography variant="h3">Flight Schedule</Typography>
+          </div>
+        </Hidden>
+        <Hidden smUp>
+          <div className={classes.homepageTitle}>
+            <Typography variant="h4">Flight Schedule</Typography>
+          </div>
+        </Hidden>
         <div className={classes.dateNav}>
           <Button
             size="small"
@@ -243,10 +253,22 @@ class Homepage extends Component {
           >
             Previous
           </Button>
-          <Typography variant="h5" style={{ textAlign: "center" }}>
-            {/* Full Date format */}
-            {moment(this.state.date).format("dddd Do MMMM YYYY")}
-          </Typography>
+          {/* Hidden when BELOW 600px for Date Header - Start*/}
+          <Hidden xsDown>
+            <Typography variant="h5" style={{ textAlign: "center" }}>
+              {/* Full Date format */}
+              {moment(this.state.date).format("dddd Do MMMM YYYY")}
+            </Typography>
+          </Hidden>
+          {/* Hidden when BELOW 600px for Date Header - End*/}
+          {/* Hidden when 600px and ABOVE for Date Header - Start*/}
+          <Hidden smUp>
+            <Typography variant="h6" style={{ textAlign: "center" }}>
+              {/* Full Date format */}
+              {moment(this.state.date).format("dddd Do MMMM YYYY")}
+            </Typography>
+          </Hidden>
+          {/* Hidden when 600px and ABOVE for Date Header - End*/}
           <Button
             size="small"
             variant="outlined"
