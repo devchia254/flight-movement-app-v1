@@ -19,13 +19,14 @@ class CustomTheme {
       },
       h4: {
         fontFamily: "Quicksand",
+        fontWeight: 500,
       },
       h5: {
         fontFamily: "Quicksand",
       },
       h6: {
         fontFamily: "Quicksand",
-        fontWeight: 500,
+        // fontWeight: 500,
       },
     },
   });

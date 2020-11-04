@@ -6,6 +6,7 @@ import WeatherInfo from "./WeatherInfo";
 import CustomTheme from "../../assets/theme/CustomTheme"; // Testing custom theme
 
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
 
 // API Key for Openweather
 const api = {
@@ -19,9 +20,32 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
-
+    width: "100%",
+    // margin: theme.spacing(2, 0),
     // background: "darkorange",
     // border: "2px dashed yellow",
+  },
+
+  item1: {
+    display: "flex",
+    alignItems: "center",
+    [theme.breakpoints.up("md")]: {
+      justifyContent: "flex-end",
+    },
+    [theme.breakpoints.down("sm")]: {
+      justifyContent: "center",
+    },
+  },
+
+  item2: {
+    display: "flex",
+    alignItems: "center",
+    [theme.breakpoints.up("md")]: {
+      justifyContent: "flex-start",
+    },
+    [theme.breakpoints.down("sm")]: {
+      justifyContent: "center",
+    },
   },
 }));
 
@@ -100,20 +124,24 @@ function WeatherPage() {
   // };
   return (
     <React.Fragment>
-      <div className={classes.weatherPage}>
-        <ThemeProvider theme={CustomTheme.weatherTheme}>
-          <WeatherCard
-            getCityId={getCityId}
-            cityId={cityId}
-            weather={weather}
-          />
-          <WeatherInfo
-            getCityId={getCityId}
-            cityId={cityId}
-            weather={weather}
-          />
-        </ThemeProvider>
-      </div>
+      <ThemeProvider theme={CustomTheme.weatherTheme}>
+        <Grid container className={classes.weatherPage}>
+          <Grid item md={6} sm={12} xs={12} className={classes.item1}>
+            <WeatherCard
+              getCityId={getCityId}
+              cityId={cityId}
+              weather={weather}
+            />
+          </Grid>
+          <Grid item md={6} sm={12} xs={12} className={classes.item2}>
+            <WeatherInfo
+              getCityId={getCityId}
+              cityId={cityId}
+              weather={weather}
+            />
+          </Grid>
+        </Grid>
+      </ThemeProvider>
       {/* <pre>{JSON.stringify(displayState, null, 2)}</pre> */}
     </React.Fragment>
 

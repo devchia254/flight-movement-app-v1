@@ -18,7 +18,8 @@ const useStyles = makeStyles((theme) => ({
     // borderRadius: "inherit",
     borderRadius: "1em",
 
-    width: "25vw", // width of card
+    width: "325px",
+    minWidth: "300px", // width of card
     height: "80vh",
     // maxHeight: "80vh",
     color: "#ffffff",
@@ -183,8 +184,11 @@ export default function WeatherCard(props) {
         {typeof weather.main != "undefined" ? (
           <div className={classes.contentBox}>
             <div className={classes.headerBox}>
-              <Typography variant="h5" style={{ marginBottom: "0.5rem" }}>
-                {moment().format("dddd D MMM YYYY")}
+              <Typography
+                variant="h5"
+                style={{ marginBottom: "0.5rem", textAlign: "center" }}
+              >
+                {moment().format("ddd D MMM YYYY")}
               </Typography>
               <Typography
                 variant="h6"
