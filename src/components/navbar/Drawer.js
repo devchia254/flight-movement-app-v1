@@ -16,7 +16,6 @@ import ScheduleIcon from "@material-ui/icons/Schedule";
 import RegisterIcon from "@material-ui/icons/PersonAdd";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import LogOutIcon from "@material-ui/icons/PowerSettingsNew";
-// import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
   listIcon: {
