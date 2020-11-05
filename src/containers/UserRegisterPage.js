@@ -9,7 +9,6 @@ import { withSnackbar } from "notistack";
 import axios from "axios";
 
 import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
@@ -18,7 +17,10 @@ import Typography from "@material-ui/core/Typography";
 const registerStyles = (theme) => ({
   root: {
     flexGrow: 1,
-    marginTop: theme.spacing(3),
+    margin: theme.spacing(3, 0),
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   paper: {
     padding: theme.spacing(2),
@@ -114,22 +116,15 @@ class UserRegisterPage extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Grid
-        container
-        className={classes.root}
-        direction="column"
-        alignItems="center"
-      >
-        <Grid item xs={12} sm={6} md={6} lg>
-          <Paper elevation={3} className={classes.paper}>
-            <Avatar variant="rounded" className={classes.avatar}>
-              <PersonAddIcon className={classes.icon} />
-            </Avatar>
-            <Typography variant="h4">Register</Typography>
-            <RegisterForm registerUser={this.registerUser} />
-          </Paper>
-        </Grid>
-      </Grid>
+      <div className={classes.root}>
+        <Paper elevation={3} className={classes.paper}>
+          <Avatar variant="rounded" className={classes.avatar}>
+            <PersonAddIcon className={classes.icon} />
+          </Avatar>
+          <Typography variant="h4">Register</Typography>
+          <RegisterForm registerUser={this.registerUser} />
+        </Paper>
+      </div>
     );
   }
 }
