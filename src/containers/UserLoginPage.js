@@ -4,7 +4,6 @@ import LoginForm from "../components/forms/LoginForm";
 import AuthService from "../services/auth/auth-service";
 
 import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import PersonIcon from "@material-ui/icons/Person";
@@ -18,7 +17,10 @@ import { withSnackbar } from "notistack";
 const loginStyles = (theme) => ({
   root: {
     flexGrow: 1,
-    marginTop: theme.spacing(3),
+    margin: theme.spacing(3, 0),
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   paper: {
     padding: theme.spacing(2),
@@ -93,28 +95,15 @@ class UserLoginPage extends Component {
   render() {
     const { classes, history } = this.props;
     return (
-      <Grid
-        container
-        className={classes.root}
-        direction="column"
-        alignItems="center"
-      >
-        {/* <Grid item sm={3} md={3} lg>
-          <Paper className={classes.paper}>xs</Paper>
-        </Grid> */}
-        <Grid item xs={12} sm={6} md={6} lg>
-          <Paper elevation={3} className={classes.paper}>
-            <Avatar variant="rounded" className={classes.avatar}>
-              <PersonIcon className={classes.icon} />
-            </Avatar>
-            <Typography variant="h4">Log In</Typography>
-            <LoginForm history={history} loginUser={this.loginUser} />
-          </Paper>
-        </Grid>
-        {/* <Grid item sm={3} md={3} lg>
-          <Paper className={classes.paper}>xs</Paper>
-        </Grid> */}
-      </Grid>
+      <div className={classes.root}>
+        <Paper elevation={3} className={classes.paper}>
+          <Avatar variant="rounded" className={classes.avatar}>
+            <PersonIcon className={classes.icon} />
+          </Avatar>
+          <Typography variant="h4">Log In</Typography>
+          <LoginForm history={history} loginUser={this.loginUser} />
+        </Paper>
+      </div>
     );
   }
 }
