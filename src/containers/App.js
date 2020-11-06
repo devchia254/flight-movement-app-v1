@@ -13,6 +13,7 @@ import Homepage from "./Homepage";
 import UserLoginPage from "./UserLoginPage";
 import UserRegisterPage from "./UserRegisterPage";
 import UserProfilePage from "./UserProfilePage";
+import AdminUserMgmtPage from "./AdminUserMgmtPage";
 import FourOhFour from "./FourOhFour";
 import Navbar from "../components/navbar/Navbar";
 
@@ -92,6 +93,7 @@ class App extends Component {
           <ProtectedRoute path="/schedule" component={SchedulePage} />
           <ProtectedRoute path="/profile" component={UserProfilePage} />
           <AdminRoute path="/register" component={UserRegisterPage} />
+          <AdminRoute path="/manage-user" component={AdminUserMgmtPage} />
           <Route path="*" component={FourOhFour} />
         </Switch>
       </div>

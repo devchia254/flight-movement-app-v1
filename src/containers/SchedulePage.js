@@ -292,7 +292,7 @@ class SchedulePage extends Component {
 
     return (
       <React.Fragment>
-        <Container fixed>
+        <Container>
           {/* <Typography variant="h4" className={classes.header}>
             Schedule flight
           </Typography> */}

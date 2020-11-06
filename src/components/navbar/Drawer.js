@@ -16,7 +16,7 @@ import ScheduleIcon from "@material-ui/icons/Schedule";
 import RegisterIcon from "@material-ui/icons/PersonAdd";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import LogOutIcon from "@material-ui/icons/PowerSettingsNew";
-// import Divider from "@material-ui/core/Divider";
+import AccessibilityIcon from "@material-ui/icons/Accessibility";
 
 const useStyles = makeStyles((theme) => ({
   listIcon: {
@@ -134,6 +134,15 @@ export default function DrawerButton(props) {
               primary="Register"
               name="register"
               icon={<RegisterIcon color="primary" />}
+            />
+          )}
+
+          {showRegister && (
+            <ListItemLink
+              to="/manage-user"
+              primary="Manage User"
+              name="manageUser"
+              icon={<AccessibilityIcon color="primary" />}
             />
           )}
         </div>
