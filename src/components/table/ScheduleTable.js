@@ -1,6 +1,6 @@
 import React from "react";
 import MaterialTable from "material-table"; // MTableToolbar
-import EditModal from "../modals/EditModal";
+import EditScheduleModal from "../modals/EditScheduleModal";
 
 // Material UI Icons
 import { forwardRef } from "react";
@@ -172,7 +172,7 @@ function ScheduleTable(props) {
           }
         }
       />
-      <EditModal
+      <EditScheduleModal
         flightObj={flightObj}
         editFlight={editFlight}
         handleClose={handleClose}

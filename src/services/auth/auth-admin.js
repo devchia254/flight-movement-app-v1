@@ -11,12 +11,12 @@ class AuthSchedule {
     });
   }
 
-  // editFlight(data, flightId, cancelToken) {
-  //   return axios.put(API_URL + `/${flightId}`, data, {
-  //     headers: authHeader(),
-  //     cancelToken: cancelToken.token,
-  //   });
-  // }
+  editUser(data, userId, cancelToken) {
+    return axios.put(API_URL + `/${userId}`, data, {
+      headers: authHeader(),
+      // cancelToken: cancelToken.token,
+    });
+  }
 
   // deleteFlight(flightId, cancelToken) {
   //   return axios.delete(API_URL + `/${flightId}`, {

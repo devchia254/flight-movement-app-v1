@@ -1,6 +1,6 @@
 import React from "react";
 import MaterialTable from "material-table"; // MTableToolbar
-import EditModal from "../modals/EditModal";
+import EditUserModal from "../modals/EditUserModal";
 
 // Material UI Icons
 import { forwardRef } from "react";
@@ -51,7 +51,7 @@ const tableIcons = {
 const moment = require("moment"); // require Moment library
 
 function UsersTable(props) {
-  const { flights, deleteFlight, editFlight } = props;
+  const { users, deleteUser, editUser } = props;
   // const theme = useTheme();
 
   // Styling
@@ -62,21 +62,16 @@ function UsersTable(props) {
   };
 
   // Table Rows
-  const tableFlights = flights.map((flight) => {
+  const tableUsers = users.map((user, i) => {
     return {
-      flightId: flight.flightId,
-      flightNo: flight.flightNo,
-      company: flight.company,
-      acReg: flight.acReg,
-      destination: flight.destination,
-      checkIn: moment(flight.checkIn, true).format("DD/MM/YYYY HH:mm"), // Strict mode: ISO 8601 (Before conversion to readable format)
-      etd: moment(flight.etd, true).format("DD/MM/YYYY HH:mm"),
-      eta: moment(flight.eta, true).format("DD/MM/YYYY HH:mm"),
-      status: flight.status,
-      // userEmail: flight.userEmail,
-      // createdAt: moment(flight.createdAt, true).format("DD/MM/YYYY HH:mm"),
-      updatedAt: moment(flight.updatedAt, true).format("DD/MM/YYYY HH:mm"),
-      // updatedBy: flight.updatedBy,
+      no: i + 1,
+      userId: user.userId,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      createdAt: moment(user.createdAt, true).format("DD/MM/YYYY HH:mm"),
+      updatedAt: moment(user.updatedAt, true).format("DD/MM/YYYY HH:mm"),
     };
   });
 
@@ -84,35 +79,25 @@ function UsersTable(props) {
   const columns = [
     // Flight ID commented out coz only used for assigning a unique ID for each row
     // { title: "ID", field: "id" },
-    { title: "Flight No.", field: "flightNo" },
-    { title: "Company", field: "company" },
-    { title: "Aircraft Reg.", field: "acReg" },
+    { title: "No.", field: "no" },
+    { title: "Email", field: "email" },
+    { title: "First Name", field: "firstName" },
     {
-      title: "Destination",
-      field: "destination",
+      title: "Last Name",
+      field: "lastName",
     },
     {
-      title: "Check In",
-      field: "checkIn",
+      title: "Role",
+      field: "role",
     },
     {
-      title: "ETD",
-      field: "etd",
+      title: "Created at",
+      field: "createdAt",
     },
     {
-      title: "ETA",
-      field: "eta",
-    },
-    { title: "Status", field: "status" },
-    {
-      title: "Last Modified",
+      title: "Updated at",
       field: "updatedAt",
-      defaultSort: "desc",
-      // customSort: (a, b) => {
-      //   const momentA = moment(a.dateTime, "DD/MM/YYYY HH:mm");
-      //   const momentB = moment(b.dateTime, "DD/MM/YYYY HH:mm");
-      //   return momentA.diff(momentB);
-      // },
+      // defaultSort: "desc",
     },
   ];
 
@@ -123,20 +108,20 @@ function UsersTable(props) {
 
   // React Hook: Store rowData from onClick prop
   const [rowDetails, setRowDetails] = React.useState();
-  const flightObj = { ...rowDetails }; // Stores the rowData into a new object
+  const userObj = { ...rowDetails }; // Stores the rowData into a new object
 
   return (
     <React.Fragment>
       {/* <ThemeProvider theme={customTheme}></ThemeProvider> */}
       <MaterialTable
         icons={tableIcons}
-        title="Record of Flights"
+        title="Record of Users"
         columns={columns}
-        data={tableFlights}
+        data={tableUsers}
         actions={[
           {
             icon: () => <EditIcon />,
-            tooltip: "Edit Flight",
+            tooltip: "Edit User",
             onClick: (evt, rowData) => {
               setRowDetails(rowData);
               handleClickOpen();
@@ -145,9 +130,9 @@ function UsersTable(props) {
           },
           {
             icon: () => <DeleteOutline />,
-            tooltip: "Delete Flight",
+            tooltip: "Delete User",
             onClick: (evt, rowData) => {
-              deleteFlight(rowData.flightId);
+              deleteUser(rowData.userId);
             },
             // disabled: rowData.birthYear < 2000,
           },
@@ -172,9 +157,9 @@ function UsersTable(props) {
           }
         }
       />
-      <EditModal
-        flightObj={flightObj}
-        editFlight={editFlight}
+      <EditUserModal
+        userObj={userObj}
+        editUser={editUser}
         handleClose={handleClose}
         open={open}
       />
