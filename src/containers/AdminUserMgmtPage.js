@@ -138,7 +138,36 @@ class AdminUserMgmtPage extends Component {
     }
   };
 
-  deleteUser = () => {};
+  deleteUser = async (deleteDataId) => {
+    if (window.confirm("Are you sure?")) {
+      try {
+        // Fetch response from API
+        const response = await AuthAdmin.deleteUser(deleteDataId);
+
+        // Optimistic UI update: Delete Flight
+        this.setState((prevState) => {
+          const filterUser = prevState.users.filter(
+            (user, i, arr) => user.userId !== deleteDataId // Return users where the user ID from state does not match with the user ID from the Schedule table
+          );
+          return { users: filterUser };
+        });
+
+        this.snackbarSuccess(response.data.message);
+      } catch (error) {
+        const resMessage =
+          (error.response && error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        // if (axios.isCancel(error)) {
+        //   console.log("Axios: ", error.message);
+        // } else
+        if (resMessage) {
+          this.snackbarFail(resMessage);
+        }
+      }
+    }
+  };
 
   render() {
     return (

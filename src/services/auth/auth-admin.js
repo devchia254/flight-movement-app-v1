@@ -18,12 +18,12 @@ class AuthSchedule {
     });
   }
 
-  // deleteFlight(flightId, cancelToken) {
-  //   return axios.delete(API_URL + `/${flightId}`, {
-  //     headers: authHeader(),
-  //     cancelToken: cancelToken.token,
-  //   });
-  // }
+  deleteUser(userId, cancelToken) {
+    return axios.delete(API_URL + `/${userId}`, {
+      headers: authHeader(),
+      // cancelToken: cancelToken.token,
+    });
+  }
 }
 
 export default new AuthSchedule();
