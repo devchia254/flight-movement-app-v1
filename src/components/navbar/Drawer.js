@@ -107,7 +107,7 @@ export default function DrawerButton(props) {
             icon={<HomeRoundedIcon color="primary" />}
           />
 
-          {/* if there is a user, Admin and Standard can viee schedule page */}
+          {/* if there is a user, Admin and Standard can view schedule page */}
           {currentUser && (
             <ListItemLink
               to="/schedule"
@@ -117,7 +117,7 @@ export default function DrawerButton(props) {
             />
           )}
 
-          {/* if there is no user, Admin and Standard can view login page */}
+          {/* if there is no user logged in, login page can be viewed */}
           {!currentUser && (
             <ListItemLink
               to="/login"
@@ -127,8 +127,7 @@ export default function DrawerButton(props) {
             />
           )}
 
-          {/* Only Admin can view */}
-          {showRegister && (
+          {!currentUser && (
             <ListItemLink
               to="/register"
               primary="Register"
@@ -137,6 +136,7 @@ export default function DrawerButton(props) {
             />
           )}
 
+          {/* Only Admin can view */}
           {showRegister && (
             <ListItemLink
               to="/manage-user"
@@ -145,6 +145,15 @@ export default function DrawerButton(props) {
               icon={<AccessibilityIcon color="primary" />}
             />
           )}
+
+          {/* {showRegister && (
+            <ListItemLink
+              to="/register"
+              primary="Register"
+              name="register"
+              icon={<RegisterIcon color="primary" />}
+            />
+          )} */}
         </div>
         <div className={classes.bottomSection}>
           {currentUser && (
