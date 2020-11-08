@@ -7,10 +7,13 @@ import Typography from "@material-ui/core/Typography";
 
 // Notistack SnackBars
 import { withSnackbar } from "notistack";
-
+import axios from "axios";
 import moment from "moment";
 
 class AdminUserMgmtPage extends Component {
+  // Cancel XHR Requests (axios) when component unmounts abruptly
+  cancelToken = axios.CancelToken.source();
+
   constructor() {
     super();
     this.state = {
@@ -20,6 +23,10 @@ class AdminUserMgmtPage extends Component {
 
   componentDidMount() {
     this.loadAllUsers();
+  }
+
+  componentWillUnmount() {
+    this.cancelToken.cancel("API request was interrupted and cancelled");
   }
 
   // Snackbar Success Messages
@@ -38,7 +45,7 @@ class AdminUserMgmtPage extends Component {
 
   loadAllUsers = async () => {
     try {
-      const response = await AuthAdmin.allUsers();
+      const response = await AuthAdmin.allUsers(this.cancelToken);
 
       const data = response.data.userData.map((user) => {
         const {
@@ -62,23 +69,16 @@ class AdminUserMgmtPage extends Component {
         };
       });
 
-      this.setState((prevState) => {
-        const fetchedUsers = [...prevState.users, ...data];
-
-        return {
-          users: fetchedUsers,
-        };
-      });
+      this.setState({ users: data });
     } catch (error) {
       const resMessage =
         (error.response && error.response.data.message) ||
         error.message ||
         error.toString();
 
-      // if (axios.isCancel(error)) {
-      //   console.log("Axios: ", error.message);
-      // } else
-      if (resMessage) {
+      if (axios.isCancel(error)) {
+        console.log("Axios: ", error.message);
+      } else if (resMessage) {
         console.log("Error with fetching users: ", resMessage);
       }
     }
@@ -86,7 +86,11 @@ class AdminUserMgmtPage extends Component {
 
   editUser = async (putData, putDataId, resetForm) => {
     try {
-      const response = await AuthAdmin.editUser(putData, putDataId);
+      const response = await AuthAdmin.editUser(
+        putData,
+        putDataId,
+        this.cancelToken
+      );
 
       if (response.status === 200) {
         this.snackbarSuccess(response.data.message);
@@ -129,10 +133,9 @@ class AdminUserMgmtPage extends Component {
         error.message ||
         error.toString();
 
-      // if (axios.isCancel(error)) {
-      //   console.log("Axios: ", error.message);
-      // } else
-      if (resMessage) {
+      if (axios.isCancel(error)) {
+        console.log("Axios: ", error.message);
+      } else if (resMessage) {
         this.snackbarFail(resMessage);
       }
     }
@@ -142,7 +145,10 @@ class AdminUserMgmtPage extends Component {
     if (window.confirm("Are you sure?")) {
       try {
         // Fetch response from API
-        const response = await AuthAdmin.deleteUser(deleteDataId);
+        const response = await AuthAdmin.deleteUser(
+          deleteDataId,
+          this.cancelToken
+        );
 
         // Optimistic UI update: Delete Flight
         this.setState((prevState) => {
@@ -159,10 +165,9 @@ class AdminUserMgmtPage extends Component {
           error.message ||
           error.toString();
 
-        // if (axios.isCancel(error)) {
-        //   console.log("Axios: ", error.message);
-        // } else
-        if (resMessage) {
+        if (axios.isCancel(error)) {
+          console.log("Axios: ", error.message);
+        } else if (resMessage) {
           this.snackbarFail(resMessage);
         }
       }

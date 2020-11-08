@@ -7,21 +7,21 @@ class AuthSchedule {
   allUsers(cancelToken) {
     return axios.get(API_URL, {
       headers: authHeader(),
-      // cancelToken: cancelToken.token,
+      cancelToken: cancelToken.token,
     });
   }
 
   editUser(data, userId, cancelToken) {
     return axios.put(API_URL + `/${userId}`, data, {
       headers: authHeader(),
-      // cancelToken: cancelToken.token,
+      cancelToken: cancelToken.token,
     });
   }
 
   deleteUser(userId, cancelToken) {
     return axios.delete(API_URL + `/${userId}`, {
       headers: authHeader(),
-      // cancelToken: cancelToken.token,
+      cancelToken: cancelToken.token,
     });
   }
 }
