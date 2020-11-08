@@ -115,7 +115,7 @@ class Homepage extends Component {
       // Fetch response from API
       const response = await AuthPublic.publicFlights(this.cancelToken);
       // Map response into useful data
-      const data = await response.data.flightData.map((flight) => {
+      const publicFlightData = await response.data.flightData.map((flight) => {
         const {
           flight_id,
           flight_no,
@@ -143,7 +143,7 @@ class Homepage extends Component {
       });
 
       // Set data into flights from the state
-      this.setState({ flights: [...data] });
+      this.setState({ flights: publicFlightData });
 
       // Show off loading spinner
       setTimeout(() => {

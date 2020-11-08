@@ -4,11 +4,21 @@ import UsersTable from "../components/table/UsersTable";
 
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
+import Hidden from "@material-ui/core/Hidden";
+import { withStyles } from "@material-ui/core/styles";
 
 // Notistack SnackBars
 import { withSnackbar } from "notistack";
 import axios from "axios";
 import moment from "moment";
+
+const userMgmtStyles = (theme) => ({
+  titleSection: {
+    margin: theme.spacing(2, 0),
+    display: "flex",
+    justifyContent: "center",
+  },
+});
 
 class AdminUserMgmtPage extends Component {
   // Cancel XHR Requests (axios) when component unmounts abruptly
@@ -47,7 +57,7 @@ class AdminUserMgmtPage extends Component {
     try {
       const response = await AuthAdmin.allUsers(this.cancelToken);
 
-      const data = response.data.userData.map((user) => {
+      const userData = response.data.userData.map((user) => {
         const {
           user_id,
           user_email,
@@ -68,8 +78,8 @@ class AdminUserMgmtPage extends Component {
           updatedAt: updatedAt,
         };
       });
-
-      this.setState({ users: data });
+      // Set user data into the state
+      this.setState({ users: userData });
     } catch (error) {
       const resMessage =
         (error.response && error.response.data.message) ||
@@ -175,17 +185,30 @@ class AdminUserMgmtPage extends Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     return (
       <Container>
-        <Typography variant="h3">User Management</Typography>
-        <UsersTable
-          users={this.state.users}
-          editUser={this.editUser}
-          deleteUser={this.deleteUser}
-        />
+        <Hidden xsDown>
+          <div className={classes.titleSection}>
+            <Typography variant="h3">User Management</Typography>
+          </div>
+        </Hidden>
+        <Hidden smUp>
+          <div className={classes.titleSection}>
+            <Typography variant="h4">User Management</Typography>
+          </div>
+        </Hidden>
+        <div className={classes.contentSection}>
+          <UsersTable
+            users={this.state.users}
+            editUser={this.editUser}
+            deleteUser={this.deleteUser}
+          />
+        </div>
       </Container>
     );
   }
 }
 
-export default withSnackbar(AdminUserMgmtPage);
+export default withSnackbar(withStyles(userMgmtStyles)(AdminUserMgmtPage));
