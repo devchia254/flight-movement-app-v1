@@ -8,6 +8,8 @@ import Typography from "@material-ui/core/Typography";
 // Notistack SnackBars
 import { withSnackbar } from "notistack";
 
+import moment from "moment";
+
 class AdminUserMgmtPage extends Component {
   constructor() {
     super();
@@ -82,35 +84,37 @@ class AdminUserMgmtPage extends Component {
     }
   };
 
-  editUser = async (putData, putDataId) => {
+  editUser = async (putData, putDataId, resetForm) => {
     try {
       const response = await AuthAdmin.editUser(putData, putDataId);
 
       if (response.status === 200) {
         this.snackbarSuccess(response.data.message);
         // Clear form after submit (Formik)
-        // resetForm({
-        //   values: {
-        //     flightNo: "",
-        //     company: "",
-        //     acReg: "",
-        //     destination: "",
-        //     checkIn: null,
-        //     etd: null,
-        //     eta: null,
-        //     status: "",
-        //   },
-        // });
+        resetForm({
+          values: {
+            email: "",
+            firstName: "",
+            lastName: "",
+            role: "",
+          },
+        });
       }
 
       // Optimistic UI Update: Edit User
       this.setState((prevState) => {
         const updateUsers = prevState.users.map((user) => {
-          // Match the IDs between the flight edited from form (putData) with the flight stored in the state
+          // Match the IDs between the user edited from form (putData) with the user stored in the state
           if (putDataId === user.userId) {
+            // Manipulated putData to be added into state
+            const updateUserProps = {
+              ...putData,
+              updatedAt: moment().format(), // Now() in ISO 8601 format
+            };
+
             return {
-              ...user, // Flight from state with matched ID
-              ...putData, // Assign new putData values with the matched flight from state
+              ...user, // User from state with matched ID
+              ...updateUserProps, // Assign new putData values with the matched flight from state
             };
           }
           return user; // Return rest of the users
