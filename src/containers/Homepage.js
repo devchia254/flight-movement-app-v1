@@ -19,12 +19,6 @@ const homepageStyles = (theme) => ({
   container: {
     // marginTop: theme.spacing(3),
   },
-  homepageLeft: {
-    padding: theme.spacing(1),
-    // Height: "800px",
-    // display: "grid",
-    // gridTemplateRows: "1fr 2fr",
-  },
   dateNav: {
     // height: "200px",
     display: "flex",
@@ -112,7 +106,7 @@ class Homepage extends Component {
     const content = SLIDE_INFO[this.state.index];
 
     return (
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid container spacing={2} className={classes.container}>
           {/* <pre>{JSON.stringify(this.state, null, 2)}</pre> */}
           <Grid container item xs={12}>

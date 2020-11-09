@@ -8,6 +8,7 @@ export default function CarouselSlide(props) {
   const useStyles = makeStyles((theme) => ({
     card: {
       // backgroundColor: "salmon",
+      padding: theme.spacing(1),
       borderRadius: 0,
       // paddingTop: theme.spacing(2),
       minHeight: "90vh",
