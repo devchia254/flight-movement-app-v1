@@ -49,7 +49,7 @@ const DialogTitle = withStyles(styles)((props) => {
   );
 });
 
-const EditModal = withStyles(styles)((props) => {
+const EditScheduleModal = withStyles(styles)((props) => {
   const { classes } = props;
   const { open, handleClose, flightObj, editFlight } = props;
 
@@ -77,4 +77,4 @@ const EditModal = withStyles(styles)((props) => {
   );
 });
 
-export default EditModal;
+export default EditScheduleModal;

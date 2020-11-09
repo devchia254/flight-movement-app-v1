@@ -84,7 +84,7 @@ class SchedulePage extends Component {
       // Fetch response from API
       const response = await AuthSchedule.allFlights(this.cancelToken);
       // Manipulate response data to useful data
-      const data = await response.data.flightData.map((flight) => {
+      const flightData = await response.data.flightData.map((flight) => {
         const {
           flight_id,
           flight_no,
@@ -117,10 +117,7 @@ class SchedulePage extends Component {
         };
       });
       // Set useful data to the State
-      this.setState((prevState) => {
-        const fetchedflights = [...prevState.flights, ...data];
-        return { flights: fetchedflights };
-      });
+      this.setState({ flights: flightData });
     } catch (error) {
       const resMessage =
         (error.response && error.response.data.message) ||

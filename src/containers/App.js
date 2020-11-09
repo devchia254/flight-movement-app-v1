@@ -83,6 +83,7 @@ class App extends Component {
           <Route exact path="/" component={Homepage} />
           <RedirectUserRoute
             path="/login"
+            // props allows access to history
             render={(props) => (
               <UserLoginPage
                 {...props}
@@ -90,9 +91,14 @@ class App extends Component {
               />
             )}
           />
+          <RedirectUserRoute
+            path="/register"
+            // props allows access to history
+            render={(props) => <UserRegisterPage {...props} />}
+          />
           <ProtectedRoute path="/schedule" component={SchedulePage} />
           <ProtectedRoute path="/profile" component={UserProfilePage} />
-          <AdminRoute path="/register" component={UserRegisterPage} />
+          {/* <AdminRoute path="/register" component={UserRegisterPage} /> */}
           <AdminRoute path="/manage-user" component={AdminUserMgmtPage} />
           <Route path="*" component={FourOhFour} />
         </Switch>

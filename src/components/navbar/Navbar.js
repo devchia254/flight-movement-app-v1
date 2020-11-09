@@ -91,7 +91,9 @@ class Navbar extends Component {
                     className={classes.profileButton}
                     component={this.ProfileLink}
                     startIcon={<PersonIcon className={classes.profileIcon} />}
-                  ></Button>
+                  >
+                    {" "}
+                  </Button>
                 </Hidden>
                 {/* Hidden when 600px & ABOVE for Profile link - End */}
               </React.Fragment>

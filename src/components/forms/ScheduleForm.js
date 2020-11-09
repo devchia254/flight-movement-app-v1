@@ -3,7 +3,7 @@ import { Button } from "@material-ui/core";
 import { Formik, Form, Field } from "formik";
 import MyField from "../formik-fields/MyField.js";
 import MyKBDateTimePicker from "../formik-fields/MyKBDateTimePicker.js";
-import MySelect from "../formik-fields/MySelect.js";
+import MySelectForStatuses from "../formik-fields/MySelectForStatuses.js";
 import * as yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
 // import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
@@ -104,7 +104,7 @@ function ScheduleForm({ createFlight }) {
             component={MyKBDateTimePicker}
           />
           {/* <MyField label="Status" name="status" /> */}
-          <MySelect label="Status" name="status" />
+          <MySelectForStatuses label="Status" name="status" />
           <Button
             disabled={props.isSubmitting}
             type="submit"

@@ -1,5 +1,5 @@
 import axios from "axios";
-import authHeader from "./auth-header";
+// import authHeader from "./auth-header";
 
 const API_URL = "http://localhost:3030/api/auth/";
 
@@ -18,7 +18,7 @@ class AuthService {
 
   register(data, cancelToken) {
     return axios.post(API_URL + "signup", data, {
-      headers: authHeader(),
+      // headers: authHeader(),
       cancelToken: cancelToken.token,
     });
   }
