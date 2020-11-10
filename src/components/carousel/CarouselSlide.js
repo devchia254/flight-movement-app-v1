@@ -19,11 +19,11 @@ export default function CarouselSlide(props) {
       // width: "100%",
       // boxShadow: "20px 20px 20px black",
       display: "flex",
-      // justifyContent: "center",
+      justifyContent: "center",
     },
 
     slideComponent: {
-      width: "100%",
+      minWidth: "80%",
     },
   }));
 

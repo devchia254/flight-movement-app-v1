@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+// Auth routes
 import AuthService from "../services/auth/auth-service";
+// Components
 import SchedulePage from "./SchedulePage";
 import Homepage from "./Homepage";
 import UserLoginPage from "./UserLoginPage";
@@ -29,8 +31,8 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // Manages the view of Navbar & Drawer links based on type of user logged in
     const user = AuthService.getCurrentUser();
-
     if (user) {
       this.setState({
         currentUser: user,
@@ -39,6 +41,7 @@ class App extends Component {
     }
   }
 
+  // User login status managed by the state
   loginCurrentUserState(userForState) {
     if (userForState) {
       this.setState({
@@ -48,25 +51,24 @@ class App extends Component {
     }
   }
 
+  // Logout user from state
   logoutFromState() {
+    // Remove user from state first before localStorage
     const user = AuthService.getCurrentUser();
-
-    AuthService.logout();
-    // Redirect after logout is at Drawer
     this.setState((state) => {
       return {
         currentUser: undefined,
         showRegister: user.role.includes("ROLE_ADMIN") && !state.showRegister,
       };
     });
+
+    AuthService.logout();
   }
 
   render() {
-    // console.log(this.state);
     return (
       <div className="App">
         <CssBaseline />
-        {/* Navbar handles the state of links relative to the type of user*/}
         <Navbar
           currentUser={this.state.currentUser}
           showRegister={this.state.showRegister}
@@ -74,8 +76,7 @@ class App extends Component {
         >
           Flight Movement App
         </Navbar>
-        <div className="content"></div>
-        {/* Link is at Drawer */}
+        {/* Switch Router (Links are at Navbar & Drawer) */}
         <Switch>
           <Route exact path="/" component={Homepage} />
           <RedirectUserRoute
@@ -95,7 +96,6 @@ class App extends Component {
           />
           <ProtectedRoute path="/schedule" component={SchedulePage} />
           <ProtectedRoute path="/profile" component={UserProfilePage} />
-          {/* <AdminRoute path="/register" component={UserRegisterPage} /> */}
           <AdminRoute path="/manage-user" component={AdminUserMgmtPage} />
           <Route path="*" component={FourOhFour} />
         </Switch>

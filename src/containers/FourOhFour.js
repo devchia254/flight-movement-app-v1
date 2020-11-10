@@ -1,5 +1,5 @@
 import React from "react";
-
+// Material UI
 import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -26,7 +26,7 @@ export default function FourOhFour(props) {
         PAGE 404
       </Typography>
       <Typography variant="h6" gutterBottom>
-        This route is not available: "{location.pathname}""
+        This route is not available: "{location.pathname}"
       </Typography>
     </Container>
   );
