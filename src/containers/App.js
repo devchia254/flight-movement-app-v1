@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Route } from "react-router-dom";
-import { ProtectedRoute } from "../services/routes/protected-route";
-import { RedirectUserRoute } from "../services/routes/redirectuser-route";
-import { AdminRoute } from "../services/routes/admin-route";
-
 import AuthService from "../services/auth/auth-service";
-
-import CssBaseline from "@material-ui/core/CssBaseline";
-
 import SchedulePage from "./SchedulePage";
 import Homepage from "./Homepage";
 import UserLoginPage from "./UserLoginPage";
@@ -16,8 +8,13 @@ import UserProfilePage from "./UserProfilePage";
 import AdminUserMgmtPage from "./AdminUserMgmtPage";
 import FourOhFour from "./FourOhFour";
 import Navbar from "../components/navbar/Navbar";
-
-import { withRouter } from "react-router-dom";
+// React Router & Cutomer Routes
+import { Switch, Route, withRouter } from "react-router-dom";
+import { ProtectedRoute } from "../services/routes/protected-route";
+import { RedirectUserRoute } from "../services/routes/redirectuser-route";
+import { AdminRoute } from "../services/routes/admin-route";
+// Material UI
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 class App extends Component {
   constructor(props) {
