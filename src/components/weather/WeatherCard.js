@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
     width: "325px",
     minWidth: "300px", // width of card
     height: "80vh",
+    maxHeight: "500px",
+    boxShadow:
+      "0px 4px 5px -2px rgba(0,0,0,0.2),0px 7px 10px 1px rgba(0,0,0,0.14),0px 2px 16px 1px rgba(0,0,0,0.12)",
     // maxHeight: "80vh",
     color: "#ffffff",
     // padding: theme.spacing(1),
@@ -45,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage:
       "linear-gradient(315deg, rgba(114,237,242, 0.6),rgba(81,81,229, 1))",
     // "linear-gradient(to bottom, rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0.75))",
+    maxHeight: "inherit",
 
     padding: "2rem",
     borderRadius: "inherit", // inherits from mainBg

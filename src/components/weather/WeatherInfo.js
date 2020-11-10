@@ -22,8 +22,10 @@ const useStyles = makeStyles((theme) => ({
     width: "350px",
     minWidth: "300px",
     height: "75vh", // height of card
-    maxHeight: "80vh",
+    maxHeight: "450px",
     backgroundColor: "#343d4b",
+    boxShadow:
+      "0px 4px 5px -2px rgba(0,0,0,0.2),0px 7px 10px 1px rgba(0,0,0,0.14),0px 2px 16px 1px rgba(0,0,0,0.12)",
     color: "#ffffff",
     padding: theme.spacing(2, 4),
   },

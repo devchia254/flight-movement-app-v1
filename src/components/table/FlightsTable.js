@@ -138,25 +138,25 @@ export default function CustomizedTables({ tableFlights, isLoading }) {
                 {row.flightNo}
               </StyledTableCell> */}
               <StyledTableCell component="th" scope="row">
-                {row.company}
+                <Typography variant="body1">{row.company}</Typography>
               </StyledTableCell>
               <StyledTableCell align="right">
-                <Typography variant="body2">{row.acReg}</Typography>
+                <Typography variant="body1">{row.acReg}</Typography>
               </StyledTableCell>
               <StyledTableCell align="right">
-                <Typography variant="body2">{row.destination}</Typography>
+                <Typography variant="body1">{row.destination}</Typography>
               </StyledTableCell>
               <StyledTableCell align="right">
-                <Typography variant="body2">{row.checkIn}</Typography>
+                <Typography variant="body1">{row.checkIn}</Typography>
               </StyledTableCell>
               <StyledTableCell align="right">
-                <Typography variant="body2">{row.etd}</Typography>
+                <Typography variant="body1">{row.etd}</Typography>
               </StyledTableCell>
               <StyledTableCell align="right">
-                <Typography variant="body2">{row.eta}</Typography>
+                <Typography variant="body1">{row.eta}</Typography>
               </StyledTableCell>
               <StyledTableCell align="right">
-                <Typography variant="body2">{row.status}</Typography>
+                <Typography variant="body1">{row.status}</Typography>
               </StyledTableCell>
               {/* <StyledTableCell align="right">{row.flightDate}</StyledTableCell> */}
             </StyledTableRow>
