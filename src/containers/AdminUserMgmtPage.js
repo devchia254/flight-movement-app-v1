@@ -108,7 +108,7 @@ class AdminUserMgmtPage extends Component {
   // Edit User (Only for email, firstName, lastName and role)
   async editUser(putData, putDataId, resetForm) {
     try {
-      const response = await AuthAdmin.ediUser(
+      const response = await AuthAdmin.editUser(
         putData,
         putDataId,
         this.cancelToken

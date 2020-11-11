@@ -1,9 +1,12 @@
 import React from "react";
-
+// Material UI
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, MenuItem } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
+// Formik
 import { useField } from "formik";
 
+// List of roles
 const roles = [
   {
     value: "admin",
@@ -16,9 +19,7 @@ const roles = [
 ];
 
 const useStyles = makeStyles((theme) => ({
-  field: {
-    // minWidth: "150px",
-  },
+  field: {},
 }));
 
 const CustomSelect = ({ label, type, ...props }) => {
@@ -27,7 +28,6 @@ const CustomSelect = ({ label, type, ...props }) => {
   const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : null;
 
-  // console.log("type: ", type);
   return (
     <TextField
       {...field}

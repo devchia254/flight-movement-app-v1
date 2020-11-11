@@ -1,11 +1,14 @@
 import React from "react";
-import { Button } from "@material-ui/core";
+// Formik
 import { Formik, Form } from "formik";
+// Custom Formik components
 import MyField from "../formik-fields/MyField.js";
 import MySelectForRoles from "../formik-fields/MySelectForRoles.js";
-import * as yup from "yup";
+// Material UI
 import { makeStyles } from "@material-ui/core/styles";
-// import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
+import Button from "@material-ui/core/Button";
+// Other dependencies
+import * as yup from "yup"; // custom form validation
 
 // Modal Styling
 const useStyles = makeStyles((theme) => ({
@@ -24,10 +27,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// Yup: String Validation
 const yupStringRules = yup
   .string()
   .required("Required")
-  .max(20, "Must be 20 characters or less");
+  .max(50, "Not more than 50 characters");
 
 // Yup Configurations
 const yupValidationSchema = yup.object().shape({
@@ -63,11 +67,7 @@ function EditUserForm({ userObj, editUser, handleClose }) {
           <MyField label="Email" name="email" />
           <MyField label="First Name" name="firstName" />
           <MyField label="Last Name" name="lastName" />
-          <MySelectForRoles
-            label="Role"
-            name="role"
-            // value={props.initialValues.status}
-          />
+          <MySelectForRoles label="Role" name="role" />
           <Button
             disabled={props.isSubmitting}
             type="submit"
@@ -79,7 +79,6 @@ function EditUserForm({ userObj, editUser, handleClose }) {
             submit
           </Button>
           {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
-          {/* <DisplayFormikProps {...props} /> */}
         </Form>
       )}
     </Formik>

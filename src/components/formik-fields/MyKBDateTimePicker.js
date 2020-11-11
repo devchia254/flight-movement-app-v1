@@ -1,4 +1,5 @@
 import React from "react";
+// Material UI Pickers
 import { KeyboardDateTimePicker } from "@material-ui/pickers";
 
 const MyKBDateTimePicker = ({ form, field, ...props }) => {
@@ -18,7 +19,7 @@ const MyKBDateTimePicker = ({ form, field, ...props }) => {
       format="DD/MM/YYYY HH:mm" // Uses Moment token format
       helperText={errorMsg}
       error={Boolean(currentError)}
-      // if you are using custom validation schema you probably want to pass `true` as third argument
+      // if you are using custom validation schema you need to pass `true` as third argument for onChange
       onChange={(value) => form.setFieldValue(field.name, value, true)}
       {...props}
     />

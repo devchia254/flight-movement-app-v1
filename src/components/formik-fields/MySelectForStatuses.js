@@ -1,9 +1,13 @@
 import React from "react";
-
+// Material UI
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, MenuItem, Tooltip } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
+import Tooltip from "@material-ui/core/Tooltip";
+// Formik
 import { useField } from "formik";
 
+// List of statuses
 const statuses = [
   {
     value: "Scheduled",
@@ -46,12 +50,12 @@ const statuses = [
   },
 ];
 
+// Styling for CustomSelect component
 const useStyles = makeStyles((theme) => ({
-  field: {
-    // minWidth: "150px",
-  },
+  field: {},
 }));
 
+// Styling for ToolTip only
 const customTooltip = makeStyles((theme) => ({
   arrow: {
     color: theme.palette.common.black,
@@ -64,11 +68,9 @@ const customTooltip = makeStyles((theme) => ({
 
 const CustomSelect = ({ label, type, ...props }) => {
   const classes = useStyles();
-
   const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : null;
 
-  // console.log("type: ", type);
   return (
     <TextField
       {...field}

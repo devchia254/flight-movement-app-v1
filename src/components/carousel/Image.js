@@ -1,4 +1,5 @@
 import React from "react";
+// Material UI
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
@@ -15,15 +16,12 @@ const imageStyles = makeStyles((theme) => ({
     width: "100%",
     maxWidth: "100%",
     maxHeight: "70vh",
-    // height,
   },
 }));
 
 export default function Image(props) {
   const { file, title } = props;
-  // const { title } = props.content;
 
-  // console.log(props);
   const classes = imageStyles();
   return (
     <React.Fragment>

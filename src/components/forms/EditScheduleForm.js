@@ -1,13 +1,16 @@
 import React from "react";
-import { Button } from "@material-ui/core";
+// Formik
 import { Formik, Form, Field } from "formik";
 import MyField from "../formik-fields/MyField.js";
+// Custom Formik components
 import MyKBDateTimePicker from "../formik-fields/MyKBDateTimePicker.js";
 import MySelectForStatuses from "../formik-fields/MySelectForStatuses.js";
-import * as yup from "yup";
+// Material UI
 import { makeStyles } from "@material-ui/core/styles";
-// import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
-const moment = require("moment"); // require Moment library
+import Button from "@material-ui/core/Button";
+// Other Dependencies
+import * as yup from "yup"; // custom form validation
+import moment from "moment"; // require Moment library
 
 // Modal Styling
 const useStyles = makeStyles((theme) => ({
@@ -26,10 +29,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// Yup: String Validation
 const yupStringRules = yup
   .string()
   .required("Required")
-  .max(20, "Must be 20 characters or less");
+  .max(50, "Not more than 50 characters");
 
 // Yup Configurations
 const yupValidationSchema = yup.object().shape({
@@ -43,7 +47,7 @@ const yupValidationSchema = yup.object().shape({
   status: yupStringRules,
 });
 
-function EditForm({ flightObj, editFlight, handleClose }) {
+function EditScheduleForm({ flightObj, editFlight, handleClose }) {
   const classes = useStyles();
   return (
     <Formik
@@ -89,12 +93,7 @@ function EditForm({ flightObj, editFlight, handleClose }) {
             name="eta"
             component={MyKBDateTimePicker}
           />
-          {/* <MyField label="Status" name="status" /> */}
-          <MySelectForStatuses
-            label="Status"
-            name="status"
-            // value={props.initialValues.status}
-          />
+          <MySelectForStatuses label="Status" name="status" />
           <Button
             disabled={props.isSubmitting}
             type="submit"
@@ -106,11 +105,10 @@ function EditForm({ flightObj, editFlight, handleClose }) {
             submit
           </Button>
           {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
-          {/* <DisplayFormikProps {...props} /> */}
         </Form>
       )}
     </Formik>
   );
 }
 
-export default EditForm;
+export default EditScheduleForm;
