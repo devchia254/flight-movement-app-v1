@@ -1,32 +1,19 @@
 import React, { Component } from "react";
-
-import AuthPublic from "../../services/auth/auth-public";
-
-// import makeData from "../test/makeData"; // Fake data generator
 import FlightsTable from "./FlightsTable";
-// import WeatherCard from "../components/weather/WeatherCard";
-
-// import { Container } from "@material-ui/core";
+// Auth Requests
+import AuthPublic from "../../services/auth/auth-public";
+// Material UI
 import { withStyles } from "@material-ui/core/styles";
-// import Grid from "@material-ui/core/Grid";
-// import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Hidden from "@material-ui/core/Hidden";
-
+// Other dependencies
 import axios from "axios";
-
-const moment = require("moment"); // require Moment library
+import moment from "moment"; // require Moment library
 
 const useStyles = (theme) => ({
-  homepageLeft: {
-    padding: theme.spacing(1),
-    // Height: "800px",
-    // display: "grid",
-    // gridTemplateRows: "1fr 2fr",
-  },
   homepageTitle: {
     display: "flex",
     justifyContent: "center",
@@ -34,16 +21,11 @@ const useStyles = (theme) => ({
     padding: theme.spacing(2, 0),
   },
   dateNav: {
-    // height: "200px",
     display: "flex",
     justifyContent: "space-between",
     margin: theme.spacing(1, 0),
-    // flexDirection: "column",
   },
-  flightsTable: {
-    // height: "100%",
-    // marginBottom: theme.spacing(2),
-  },
+  flightsTable: {},
   importantNotes: {
     marginTop: theme.spacing(1),
   },
@@ -53,9 +35,8 @@ class Homepage extends Component {
   // Cancel XHR Requests (axios) when component unmounts abruptly
   cancelToken = axios.CancelToken.source();
 
-  constructor() {
-    // console.log("Constructor");
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       flights: [],
       date: moment().format("YYYY-MM-DD"),
@@ -65,8 +46,12 @@ class Homepage extends Component {
       disablePrevBtn: false,
       disableFollowingBtn: false,
       isLoading: false,
-      minutes: 0, // Testing interval only
+      // minutes: 0, // Testing interval only
     };
+
+    this.fetchPublicFlights = this.fetchPublicFlights.bind(this);
+    this.previousDates = this.previousDates.bind(this);
+    this.followingDates = this.followingDates.bind(this);
   }
 
   componentDidMount() {
@@ -76,33 +61,22 @@ class Homepage extends Component {
 
     // Set interval to fetch public flights every 5 minutes
     this.flightsTimer = setInterval(() => {
-      this.testingInterval(); // REMOVE AT PRODUCTION
-
-      // Only below is important, above is for testing only
+      // this.testingInterval(); // Testing interval
       this.fetchPublicFlights();
     }, 300000);
   }
 
-  // Testing only
-  testingInterval = () => {
-    this.setState((prevState) => {
-      return { minutes: prevState.minutes + 5 };
-    });
-    console.log(
-      `Flight fetches: ${this.state.minutes / 5}, Minutes passed: ${
-        this.state.minutes
-      }`
-    );
-  };
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   // This can disable the button 1 step faster but I donot like the logic of it
-  //   if (prevState.clicks - 1 === this.state.minDays) {
-  //     this.setState({ disablePrevBtn: true });
-  //   } else if (prevState.clicks + 1 === this.state.maxDays) {
-  //     this.setState({ disableFollowingBtn: true });
-  //   }
-  // }
+  // // Testing only
+  // testingInterval = () => {
+  //   this.setState((prevState) => {
+  //     return { minutes: prevState.minutes + 5 };
+  //   });
+  //   console.log(
+  //     `Flight fetches: ${this.state.minutes / 5}, Minutes passed: ${
+  //       this.state.minutes
+  //     }`
+  //   );
+  // };
 
   componentWillUnmount() {
     // Clear timer when removed from DOM
@@ -110,7 +84,7 @@ class Homepage extends Component {
     this.cancelToken.cancel("API request was interrupted and cancelled");
   }
 
-  fetchPublicFlights = async () => {
+  async fetchPublicFlights() {
     try {
       // Fetch response from API
       const response = await AuthPublic.publicFlights(this.cancelToken);
@@ -145,7 +119,7 @@ class Homepage extends Component {
       // Set data into flights from the state
       this.setState({ flights: publicFlightData });
 
-      // Show off loading spinner
+      // Show loading spinner prior to displaying flights
       setTimeout(() => {
         this.setState({ isLoading: false });
       }, 500);
@@ -161,17 +135,14 @@ class Homepage extends Component {
         console.log("Error with fetching public flights: ", resMessage);
       }
     }
-  };
+  }
 
-  previousDates = () => {
+  // See previous dates (-3 days)
+  previousDates() {
     const { clicks, minDays } = this.state;
+
     if (clicks > minDays) {
       this.setState((prevState) => {
-        // console.log({
-        //   clicks: prevState.clicks - 1,
-        //   disablePrevBtn: prevState.disablePrevBtn,
-        //   disableFollowingBtn: prevState.disableFollowingBtn,
-        // });
         return {
           clicks: prevState.clicks - 1,
           date: moment()
@@ -183,18 +154,14 @@ class Homepage extends Component {
         };
       });
     }
-  };
+  }
 
-  followingDates = () => {
+  // See following dates (+3 days)
+  followingDates() {
     const { clicks, maxDays } = this.state;
 
     if (clicks < maxDays) {
       this.setState((prevState) => {
-        // console.log({
-        //   clicks: prevState.clicks + 1,
-        //   disablePrevBtn: prevState.disablePrevBtn,
-        //   disableFollowingBtn: prevState.disableFollowingBtn,
-        // });
         return {
           clicks: prevState.clicks + 1,
           date: moment()
@@ -206,7 +173,7 @@ class Homepage extends Component {
         };
       });
     }
-  };
+  }
 
   render() {
     const { classes } = this.props;
@@ -215,19 +182,6 @@ class Homepage extends Component {
     const filteredFlights = this.state.flights.filter((flight) => {
       return flight.flightDate === this.state.date;
     });
-
-    // const today = moment().format("DD/MM/YYYY");
-    // console.log(moment()._d);
-    // console.log(moment().add(3, "d")._d);
-
-    // const displayState = {
-    //   date: this.state.date,
-    //   minDays: this.state.minDays,
-    //   maxDays: this.state.maxDays,
-    //   clicks: this.state.clicks,
-    //   disablePrevBtn: this.state.disablePrevBtn,
-    //   disableFollowingBtn: this.state.disableFollowingBtn,
-    // };
 
     return (
       <React.Fragment>

@@ -1,7 +1,7 @@
 import React from "react";
-import MaterialTable from "material-table"; // MTableToolbar
 import EditScheduleModal from "../modals/EditScheduleModal";
-
+// Material Table
+import MaterialTable from "material-table"; // MTableToolbar
 // Material UI Icons
 import { forwardRef } from "react";
 import AddBox from "@material-ui/icons/AddBox";
@@ -17,12 +17,11 @@ import LastPage from "@material-ui/icons/LastPage";
 import Remove from "@material-ui/icons/Remove";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
-
-// Action Column Icons
+// Material UI - Action Column Icons
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
-
-// import { useTheme } from "@material-ui/core/styles";
+// Other Dependencies
+import moment from "moment"; // require Moment library
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -48,11 +47,8 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-const moment = require("moment"); // require Moment library
-
 function ScheduleTable(props) {
   const { flights, deleteFlight, editFlight } = props;
-  // const theme = useTheme();
 
   // Styling
   const myHeaders = {
@@ -64,7 +60,7 @@ function ScheduleTable(props) {
   // Table Rows
   const tableFlights = flights.map((flight) => {
     return {
-      flightId: flight.flightId,
+      flightId: flight.flightId, // Necessary for editing & deleting
       flightNo: flight.flightNo,
       company: flight.company,
       acReg: flight.acReg,
@@ -73,16 +69,12 @@ function ScheduleTable(props) {
       etd: moment(flight.etd, true).format("DD/MM/YYYY HH:mm"),
       eta: moment(flight.eta, true).format("DD/MM/YYYY HH:mm"),
       status: flight.status,
-      // userEmail: flight.userEmail,
-      // createdAt: moment(flight.createdAt, true).format("DD/MM/YYYY HH:mm"),
       updatedAt: moment(flight.updatedAt, true).format("DD/MM/YYYY HH:mm"),
-      // updatedBy: flight.updatedBy,
     };
   });
 
   // Table columns
   const columns = [
-    // Flight ID commented out coz only used for assigning a unique ID for each row
     // { title: "ID", field: "id" },
     { title: "Flight No.", field: "flightNo" },
     { title: "Company", field: "company" },
@@ -108,11 +100,6 @@ function ScheduleTable(props) {
       title: "Last Modified",
       field: "updatedAt",
       defaultSort: "desc",
-      // customSort: (a, b) => {
-      //   const momentA = moment(a.dateTime, "DD/MM/YYYY HH:mm");
-      //   const momentB = moment(b.dateTime, "DD/MM/YYYY HH:mm");
-      //   return momentA.diff(momentB);
-      // },
     },
   ];
 
@@ -127,7 +114,6 @@ function ScheduleTable(props) {
 
   return (
     <React.Fragment>
-      {/* <ThemeProvider theme={customTheme}></ThemeProvider> */}
       <MaterialTable
         icons={tableIcons}
         title="Record of Flights"
@@ -141,7 +127,6 @@ function ScheduleTable(props) {
               setRowDetails(rowData);
               handleClickOpen();
             },
-            // onClick: (event, rowData) => alert("You saved " + rowData.name),
           },
           {
             icon: () => <DeleteOutline />,
@@ -149,7 +134,6 @@ function ScheduleTable(props) {
             onClick: (evt, rowData) => {
               deleteFlight(rowData.flightId);
             },
-            // disabled: rowData.birthYear < 2000,
           },
         ]}
         options={{
@@ -158,19 +142,6 @@ function ScheduleTable(props) {
           filtering: false,
           headerStyle: myHeaders,
         }}
-        // Overrides the present material-table component
-        components={
-          {
-            // Removes Paper component's box shadow
-            // Container: (props) => <Paper {...props} elevation={1} />,
-            // Toolbar: (props) => (
-            //   <div>
-            //     <MTableToolbar {...props} />
-            //     Hello
-            //   </div>
-            // ),
-          }
-        }
       />
       <EditScheduleModal
         flightObj={flightObj}

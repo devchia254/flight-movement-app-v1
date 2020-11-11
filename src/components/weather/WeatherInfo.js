@@ -1,24 +1,22 @@
 import React from "react";
+// Weather Icons
 import "../../assets/icon/weather-icons.min.css";
 import "../../assets/icon/weather-icons-wind.min.css";
-
+// Material UI
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import { Typography } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   mainBg: {
     backgroundSize: "cover",
     backgroundPosition: "bottom",
-    // borderRadius: "inherit",
     [theme.breakpoints.up("md")]: {
       borderRadius: "0 1em 1em 0",
     },
     [theme.breakpoints.down("sm")]: {
       borderRadius: "1em",
     },
-
-    // width: "30vw", // width of card
     width: "350px",
     minWidth: "300px",
     height: "75vh", // height of card
@@ -35,10 +33,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     height: "70%", // cumulates with locationBox
-    // margin: theme.spacing(0, 2),
-
-    // background: "papayawhip",
-    // border: "2px solid darkcyan",
   },
 
   contentItem: {
@@ -46,9 +40,6 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "flex",
     justifyContent: "space-between",
-
-    // background: "seagreen",
-    // border: "1px solid black",
   },
 
   weatherHeader: {
@@ -60,17 +51,11 @@ const useStyles = makeStyles((theme) => ({
   },
 
   locationBox: {
-    // height: "100%", // This extends over the parent div. Review later
-    // width: "100%",
-    // margin: theme.spacing(0, 2),
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     flexWrap: "wrap",
     height: "30%", // cumulates with contentBox
-
-    // background: "antiquewhite",
-    // border: "1px solid black",
   },
 
   locationBtn: {
@@ -79,7 +64,6 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 600,
     margin: theme.spacing(0.5, 1.5),
     color: "#ffffff",
-
     backgroundImage:
       "linear-gradient(315deg, rgba(114,237,242, 1),rgba(81,81,229, 1))",
   },
@@ -91,7 +75,6 @@ export default function WeatherInfo(props) {
   const { getCityId, cityId, weather } = props;
 
   return (
-    // <React.Fragment>
     <div className={classes.mainBg}>
       {typeof weather.main != "undefined" ? (
         <div className={classes.contentBox}>
@@ -180,6 +163,5 @@ export default function WeatherInfo(props) {
       </div>
     </div>
     // <pre>{JSON.stringify(displayState, null, 2)}</pre>
-    // </React.Fragment>
   );
 }

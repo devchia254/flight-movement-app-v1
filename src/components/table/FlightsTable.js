@@ -1,4 +1,5 @@
 import React from "react";
+// Material UI
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -7,7 +8,8 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { Avatar, Typography } from "@material-ui/core";
+import Avatar from "@material-ui/core/Avatar";
+import Typography from "@material-ui/core/Typography";
 import ClearIcon from "@material-ui/icons/Clear";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -22,6 +24,7 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
+// Varied, coloured table rows
 const StyledTableRow = withStyles((theme) => ({
   root: {
     "&:nth-of-type(odd)": {
@@ -34,22 +37,16 @@ const useStyles = makeStyles((theme) => ({
   tableContainer: {
     minWidth: "300px",
     maxHeight: "50vh", // This enables table scroll & 'stickyHeader' is ref at Table
-    // minWidth: 500,
-    // minHeight: 800,
   },
   noFltBox: {
-    // minWidth: "500px",
     width: "100%",
     height: "80%",
     maxHeight: "70vh",
     display: "flex",
     justifyContent: "center",
     marginTop: theme.spacing(2),
-    // alignItems: "center",
   },
   loadingBox: {
-    // background: "salmon",
-    // paddingTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -63,20 +60,18 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     height: "70px",
     width: "auto",
-    marginTop: theme.spacing(4),
+    margin: theme.spacing(4, 0),
   },
   avatar: {
     backgroundColor: "inherit",
     margin: theme.spacing(1),
     border: "3px solid white",
   },
-  icon: {
-    // backgroundColor: "inherit",
-    // color: "green",
-  },
+  icon: {},
 }));
 
 export default function CustomizedTables({ tableFlights, isLoading }) {
+  // Sorts flights based on the 'Check In' column starting from the earliest
   const sortFlights = tableFlights.sort((a, b) => {
     return a.checkIn.localeCompare(b.checkIn);
   });
@@ -116,7 +111,6 @@ export default function CustomizedTables({ tableFlights, isLoading }) {
             <StyledTableCell align="right">
               <Typography variant="h6">Destination</Typography>
             </StyledTableCell>
-            {/* <StyledTableCell align="right">Date</StyledTableCell> */}
             <StyledTableCell align="right">
               <Typography variant="h6">Check In</Typography>
             </StyledTableCell>
@@ -129,6 +123,7 @@ export default function CustomizedTables({ tableFlights, isLoading }) {
             <StyledTableCell align="right">
               <Typography variant="h6">Status</Typography>
             </StyledTableCell>
+            {/* <StyledTableCell align="right">Date</StyledTableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
