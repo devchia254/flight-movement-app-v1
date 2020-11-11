@@ -1,18 +1,16 @@
 import React, { Component } from "react";
-
-import AuthService from "../services/auth/auth-service";
 import RegisterForm from "../components/forms/RegisterForm";
-
-// Notistack SnackBars
-import { withSnackbar } from "notistack";
-
-import axios from "axios";
-
-import Paper from "@material-ui/core/Paper";
+// Auth Requests
+import AuthService from "../services/auth/auth-service";
+// Material UI
 import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import Typography from "@material-ui/core/Typography";
+// Other dependencies
+import { withSnackbar } from "notistack";
+import axios from "axios";
 
 const registerStyles = (theme) => ({
   root: {
@@ -44,10 +42,12 @@ class UserRegisterPage extends Component {
   // Cancel XHR Requests (axios) when component unmounts abruptly
   cancelToken = axios.CancelToken.source();
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {};
 
+    this.snackbarSuccess = this.snackbarSuccess.bind(this);
+    this.snackbarFail = this.snackbarFail.bind(this);
     this.registerUser = this.registerUser.bind(this);
   }
 
@@ -55,11 +55,13 @@ class UserRegisterPage extends Component {
     this.cancelToken.cancel("API request was interrupted and cancelled");
   }
 
+  // Snackbar Sucess Messages
   snackbarSuccess(msg) {
     this.props.enqueueSnackbar(msg, {
       variant: "success",
     });
   }
+
   // Snackbar Fail Messages
   snackbarFail(msg) {
     this.props.enqueueSnackbar(msg, {
@@ -82,7 +84,10 @@ class UserRegisterPage extends Component {
     try {
       // Fetch reponse from API
       const response = await AuthService.register(postData, this.cancelToken);
-      this.snackbarSuccess(response.data.message);
+
+      if (response.status === 200) {
+        this.snackbarSuccess(response.data.message);
+      }
 
       // Formik reset function
       resetForm({
@@ -102,14 +107,13 @@ class UserRegisterPage extends Component {
         error.message ||
         error.toString();
 
-      if (resMessage) {
+      // Axios error
+      if (axios.isCancel(error)) {
+        console.log("Axios: ", error.message);
+      } else if (resMessage) {
+        // Other network errors
         this.snackbarFail(resMessage);
       }
-
-      // this.setState({
-      //   loading: false,
-      //   message: resMessage,
-      // });
     }
   }
 

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import AuthAdmin from "../services/auth/auth-admin";
 import UsersTable from "../components/table/UsersTable";
+// Auth Requests
+import AuthAdmin from "../services/auth/auth-admin";
 // Material UI
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
@@ -30,6 +31,8 @@ class AdminUserMgmtPage extends Component {
       users: [],
     };
 
+    this.snackbarSuccess = this.snackbarSuccess.bind(this);
+    this.snackbarFail = this.snackbarFail.bind(this);
     this.loadAllUsers = this.loadAllUsers.bind(this);
     this.editUser = this.editUser.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
@@ -63,7 +66,7 @@ class AdminUserMgmtPage extends Component {
     try {
       const response = await AuthAdmin.allUsers(this.cancelToken);
 
-      const userData = response.data.userData.map((user) => {
+      const userData = await response.data.userData.map((user) => {
         const {
           user_id,
           user_email,

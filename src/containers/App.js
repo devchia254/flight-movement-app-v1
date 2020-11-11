@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// Auth routes
+// Auth Requests
 import AuthService from "../services/auth/auth-service";
 // Components
 import SchedulePage from "./SchedulePage";
@@ -10,7 +10,7 @@ import UserProfilePage from "./UserProfilePage";
 import AdminUserMgmtPage from "./AdminUserMgmtPage";
 import FourOhFour from "./FourOhFour";
 import Navbar from "../components/navbar/Navbar";
-// React Router & Cutomer Routes
+// React Router & Custom Routes
 import { Switch, Route, withRouter } from "react-router-dom";
 import { ProtectedRoute } from "../services/routes/protected-route";
 import { RedirectUserRoute } from "../services/routes/redirectuser-route";

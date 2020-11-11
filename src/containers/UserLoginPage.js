@@ -1,18 +1,16 @@
 import React, { Component } from "react";
-
 import LoginForm from "../components/forms/LoginForm";
+// Auth Requests
 import AuthService from "../services/auth/auth-service";
-
-import Paper from "@material-ui/core/Paper";
+// Material UI
 import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
 import PersonIcon from "@material-ui/icons/Person";
 import Typography from "@material-ui/core/Typography";
-// import Card from "@material-ui/core/Card";
-// import CardContent from "@material-ui/core/CardContent";
-import axios from "axios";
-
+// Other dependencies
 import { withSnackbar } from "notistack";
+import axios from "axios";
 
 const loginStyles = (theme) => ({
   root: {
@@ -47,19 +45,23 @@ class UserLoginPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+
+    this.snackbarFail = this.snackbarFail.bind(this);
+    this.loginUser = this.loginUser.bind(this);
   }
 
   componentWillUnmount() {
     this.cancelToken.cancel("API request was interrupted and cancelled");
   }
 
-  snackbarFail = (msg) => {
+  // Snackbar Fail Messages
+  snackbarFail(msg) {
     this.props.enqueueSnackbar(msg, {
       variant: "error",
     });
-  };
+  }
 
-  loginUser = async (loginFormData) => {
+  async loginUser(loginFormData) {
     // Login form data for POST request
     const postData = {
       email: loginFormData.email,
@@ -80,17 +82,15 @@ class UserLoginPage extends Component {
         error.message ||
         error.toString();
 
+      // Axios error
       if (resMessage) {
         this.snackbarFail(resMessage);
       } else if (axios.isCancel(error)) {
+        // Other network errors
         console.log("Axios: ", error.message);
       }
-      // this.setState({
-      //   loading: false,
-      //   message: resMessage,
-      // });
     }
-  };
+  }
 
   render() {
     const { classes, history } = this.props;

@@ -1,27 +1,22 @@
 import React, { Component } from "react";
-// import { generate } from "shortid";
-import AuthService from "../services/auth/auth-service";
-import AuthSchedule from "../services/auth/auth-schedule";
 import ScheduleModal from "../components/modals/ScheduleModal.js";
 import ScheduleTable from "../components/table/ScheduleTable.js";
-
-// import makeData from "../test/makeData"; // Fake data generator
-import axios from "axios";
-
+// Auth Requests
+import AuthService from "../services/auth/auth-service";
+import AuthSchedule from "../services/auth/auth-schedule";
 // Material UI
 import { Container } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-// import Typography from "@material-ui/core/Typography";
 import AddIcon from "@material-ui/icons/Add";
-
 // Notistack SnackBars
 import { withSnackbar } from "notistack";
-
 // Material-UI Date Pickers (Moment Library)
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"; // Requires a Date lib to be chosen
 import MomentUtils from "@date-io/moment";
-const moment = require("moment"); // require Moment library
+// Other Dependencies
+import axios from "axios";
+import moment from "moment"; // require Moment library
 
 const scheduleStyles = (theme) => ({
   header: {
@@ -40,12 +35,18 @@ class SchedulePage extends Component {
   constructor() {
     super();
     this.state = {
-      // flights: [
-      //   // ...makeData(20),
-      // ]
       flights: [],
       open: false, // Trigger Dialog(modal) to be visible
     };
+
+    this.snackbarSuccess = this.snackbarSuccess.bind(this);
+    this.snackbarFail = this.snackbarFail.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.loadAllFlights = this.loadAllFlights.bind(this);
+    this.createFlight = this.createFlight.bind(this);
+    this.editFlight = this.editFlight.bind(this);
+    this.deleteFlight = this.deleteFlight.bind(this);
   }
 
   componentDidMount() {
@@ -62,6 +63,7 @@ class SchedulePage extends Component {
       variant: "success",
     });
   }
+
   // Snackbar Fail Messages
   snackbarFail(msg) {
     this.props.enqueueSnackbar(msg, {
@@ -70,16 +72,18 @@ class SchedulePage extends Component {
     });
   }
 
-  // Schedule Modal Button functions below
-  openModal = () => {
+  // Schedule Modal Button Open
+  openModal() {
     this.setState({ open: true });
-  };
+  }
 
-  closeModal = () => {
+  // Schedule Modal Button Close
+  closeModal() {
     this.setState({ open: false });
-  };
+  }
 
-  loadAllFlights = async () => {
+  // Fetch all flights
+  async loadAllFlights() {
     try {
       // Fetch response from API
       const response = await AuthSchedule.allFlights(this.cancelToken);
@@ -124,15 +128,18 @@ class SchedulePage extends Component {
         error.message ||
         error.toString();
 
+      // Axios error
       if (axios.isCancel(error)) {
         console.log("Axios: ", error.message);
       } else if (resMessage) {
+        // Other network errors
         console.log("Error with fetching flights: ", resMessage);
       }
     }
-  };
+  }
 
-  createFlight = async (scheduleformData) => {
+  // Schedule a flight
+  async createFlight(scheduleformData) {
     // Combine form data and user email for POST request
     const postData = {
       ...scheduleformData,
@@ -147,7 +154,9 @@ class SchedulePage extends Component {
       );
 
       // Response data deliver success message
-      this.snackbarSuccess(response.data.message);
+      if (response.status === 200) {
+        this.snackbarSuccess(response.data.message);
+      }
 
       // Optimistic UI Update: Create flight
       this.setState((prevState) => {
@@ -172,16 +181,18 @@ class SchedulePage extends Component {
         error.message ||
         error.toString();
 
+      // Axios error
       if (axios.isCancel(error)) {
         console.log("Axios: ", error.message);
       } else if (resMessage) {
+        // Other network errors
         this.snackbarFail(resMessage);
       }
     }
-  };
+  }
 
-  // Edit Product
-  editFlight = async (editFormData, putDataId, resetForm) => {
+  // Edit a flight
+  async editFlight(editFormData, putDataId, resetForm) {
     // Combine edited form data and user email for PUT request
     const putData = {
       ...editFormData,
@@ -241,15 +252,17 @@ class SchedulePage extends Component {
         error.message ||
         error.toString();
 
+      // Axios error
       if (axios.isCancel(error)) {
         console.log("Axios: ", error.message);
       } else if (resMessage) {
+        // Other network errors
         this.snackbarFail(resMessage);
       }
     }
-  };
+  }
 
-  deleteFlight = async (deleteDataId) => {
+  async deleteFlight(deleteDataId) {
     // Warning dialog before deleting flight
     if (window.confirm("Are you sure?")) {
       try {
@@ -281,43 +294,37 @@ class SchedulePage extends Component {
         }
       }
     }
-  };
+  }
 
   render() {
     const { flights } = this.state;
     const { classes } = this.props;
 
     return (
-      <React.Fragment>
-        <Container>
-          {/* <Typography variant="h4" className={classes.header}>
-            Schedule flight
-          </Typography> */}
-          <MuiPickersUtilsProvider utils={MomentUtils}>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              startIcon={<AddIcon />}
-              className={classes.button}
-              onClick={this.openModal}
-            >
-              Schedule
-              {/* <Typography variant="h6">Schedule</Typography> */}
-            </Button>
-            <ScheduleModal
-              createFlight={this.createFlight}
-              open={this.state.open}
-              closeModal={this.closeModal}
-            />
-            <ScheduleTable
-              flights={flights}
-              deleteFlight={this.deleteFlight}
-              editFlight={this.editFlight}
-            />
-          </MuiPickersUtilsProvider>
-        </Container>
-      </React.Fragment>
+      <Container maxWidth="xl">
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            startIcon={<AddIcon />}
+            className={classes.button}
+            onClick={this.openModal}
+          >
+            Schedule
+          </Button>
+          <ScheduleModal
+            createFlight={this.createFlight}
+            open={this.state.open}
+            closeModal={this.closeModal}
+          />
+          <ScheduleTable
+            flights={flights}
+            deleteFlight={this.deleteFlight}
+            editFlight={this.editFlight}
+          />
+        </MuiPickersUtilsProvider>
+      </Container>
     );
   }
 }
