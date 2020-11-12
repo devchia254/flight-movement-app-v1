@@ -1,7 +1,6 @@
 import React from "react";
 import EditUserForm from "../forms/EditUserForm";
-
-// Material Dialog
+// Material UI
 import { withStyles } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -14,10 +13,7 @@ const styles = (theme) => ({
   dialogTitle: {
     padding: theme.spacing(2, 5, 0),
   },
-  dialogContent: {
-    // paddingTop: theme.spacing(1),
-    // backgroundColor: "green",
-  },
+  dialogContent: {},
   closeButton: {
     position: "absolute",
     right: theme.spacing(3),
@@ -26,7 +22,7 @@ const styles = (theme) => ({
   },
 });
 
-// customized-dialog-title component
+// Customised Dialog Title component
 const DialogTitle = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props;
   return (
@@ -61,7 +57,6 @@ const EditUserModal = withStyles(styles)((props) => {
       aria-describedby="form-dialog-content"
       fullWidth={true}
       maxWidth="xs"
-      // className={classes.root}
     >
       <DialogTitle id="customized-dialog-title" onClose={handleClose}>
         Edit User Details

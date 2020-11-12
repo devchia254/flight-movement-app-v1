@@ -1,30 +1,36 @@
 import React from "react";
-
-import { makeStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
+// Formik
 import { Formik, Form } from "formik";
+// Custom Formik components
 import MyField from "../formik-fields/MyField.js";
-import * as yup from "yup";
-// import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
+// Material UI
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+// Other dependencies
+import * as yup from "yup"; // custom form validation
 
+// Yup: Email Validation
 const yupEmailRules = yup
   .string()
   .required("Required")
   .email("Must be a valid email");
 
+// Yup: Password Validation
 const yupPwdRules = yup
   .string()
   .required("Required")
-  .min(8, "Must not be less 8 characters");
+  .min(8, "Must not be less than 8 characters");
 
+// Yup: Password Verification
 const yupPwdVerify = yup
   .string()
   .oneOf([yup.ref("password"), null], "Passwords must match");
 
+// Yup: String Validation
 const yupStringRules = yup
   .string()
   .required("Required")
-  .max(20, "Must be 20 characters or less");
+  .max(50, "Not more than 50 characters");
 
 // Yup Configurations
 const yupValidationSchema = yup.object().shape({
@@ -54,19 +60,6 @@ const useStyles = makeStyles((theme) => ({
 function RegisterForm(props) {
   const { registerUser } = props;
   const classes = useStyles();
-  // const { enqueueSnackbar } = useSnackbar();
-
-  // const regError = (msg) => {
-  //   enqueueSnackbar(msg, {
-  //     variant: "error",
-  //   });
-  // };
-
-  // const regSuccess = (msg) => {
-  //   enqueueSnackbar(msg, {
-  //     variant: "success",
-  //   });
-  // };
 
   return (
     <Formik
@@ -81,7 +74,7 @@ function RegisterForm(props) {
       onSubmit={(values, { resetForm, setSubmitting }) => {
         setSubmitting(true); // Makes async call and disables submit button
 
-        registerUser(values, resetForm);
+        registerUser(values, resetForm); // Lift values to state
 
         setSubmitting(false); // Enables submit button once submitted
       }}
@@ -108,7 +101,6 @@ function RegisterForm(props) {
             submit
           </Button>
           {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
-          {/* <DisplayFormikProps {...props} /> */}
         </Form>
       )}
     </Formik>

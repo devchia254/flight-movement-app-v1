@@ -1,7 +1,7 @@
 import React from "react";
-import MaterialTable from "material-table"; // MTableToolbar
 import EditUserModal from "../modals/EditUserModal";
-
+// Material Table
+import MaterialTable from "material-table"; // MTableToolbar
 // Material UI Icons
 import { forwardRef } from "react";
 import AddBox from "@material-ui/icons/AddBox";
@@ -17,12 +17,9 @@ import LastPage from "@material-ui/icons/LastPage";
 import Remove from "@material-ui/icons/Remove";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
-
-// Action Column Icons
+// Material UI - Action Column Icons
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
-
-// import { useTheme } from "@material-ui/core/styles";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -52,7 +49,6 @@ const moment = require("moment"); // require Moment library
 
 function UsersTable(props) {
   const { users, deleteUser, editUser } = props;
-  // const theme = useTheme();
 
   // Styling
   const myHeaders = {
@@ -65,7 +61,7 @@ function UsersTable(props) {
   const tableUsers = users.map((user, i) => {
     return {
       no: i + 1,
-      userId: user.userId,
+      userId: user.userId, // Necessary for editing & deleting
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
@@ -77,7 +73,6 @@ function UsersTable(props) {
 
   // Table columns
   const columns = [
-    // Flight ID commented out coz only used for assigning a unique ID for each row
     // { title: "ID", field: "id" },
     { title: "No.", field: "no" },
     { title: "Email", field: "email" },
@@ -112,7 +107,6 @@ function UsersTable(props) {
 
   return (
     <React.Fragment>
-      {/* <ThemeProvider theme={customTheme}></ThemeProvider> */}
       <MaterialTable
         icons={tableIcons}
         title="Record of Users"
@@ -126,7 +120,6 @@ function UsersTable(props) {
               setRowDetails(rowData);
               handleClickOpen();
             },
-            // onClick: (event, rowData) => alert("You saved " + rowData.name),
           },
           {
             icon: () => <DeleteOutline />,
@@ -134,7 +127,6 @@ function UsersTable(props) {
             onClick: (evt, rowData) => {
               deleteUser(rowData.userId);
             },
-            // disabled: rowData.birthYear < 2000,
           },
         ]}
         options={{
@@ -143,19 +135,6 @@ function UsersTable(props) {
           filtering: false,
           headerStyle: myHeaders,
         }}
-        // Overrides the present material-table component
-        components={
-          {
-            // Removes Paper component's box shadow
-            // Container: (props) => <Paper {...props} elevation={1} />,
-            // Toolbar: (props) => (
-            //   <div>
-            //     <MTableToolbar {...props} />
-            //     Hello
-            //   </div>
-            // ),
-          }
-        }
       />
       <EditUserModal
         userObj={userObj}

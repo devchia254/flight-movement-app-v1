@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-
 import WeatherCard from "./WeatherCard";
 import WeatherInfo from "./WeatherInfo";
-
-import CustomTheme from "../../assets/theme/CustomTheme"; // Testing custom theme
-
+// Custome Theme
+import CustomTheme from "../../assets/theme/CustomTheme";
+// Material UI
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
@@ -21,9 +20,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     height: "100%",
     width: "100%",
-    // margin: theme.spacing(2, 0),
-    // background: "darkorange",
-    // border: "2px dashed yellow",
   },
 
   item1: {
@@ -50,6 +46,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function WeatherPage() {
+  const classes = useStyles();
+
   // OpenWeatherAPI city IDs
   const cityId = {
     kotaKinabalu: "1733432",
@@ -57,7 +55,6 @@ function WeatherPage() {
     kualaLumpur: "1733046",
   };
 
-  const classes = useStyles();
   const [location, setLocation] = useState(cityId.kotaKinabalu);
   const [weather, setWeather] = useState({});
 
@@ -98,10 +95,10 @@ function WeatherPage() {
 
     // Set interval for fetching weather every 15 minutes
     const weatherTimer = setInterval(() => {
-      // REMOVE AT PRODUCTION
-      console.log(`Weather fetched after 15 minutes`);
-      console.log(`---------------------------------`);
-      // Only below is important, above is for testing only
+      // // Testing fetch method
+      // console.log(`Weather fetched after 15 minutes`);
+      // console.log(`---------------------------------`);
+
       fetchWeatherApi();
     }, 900000);
 
@@ -118,10 +115,6 @@ function WeatherPage() {
     setLocation(e.currentTarget.name);
   };
 
-  // const displayState = {
-  //   LOCATION: location,
-  //   WEATHER: weather,
-  // };
   return (
     <React.Fragment>
       <ThemeProvider theme={CustomTheme.weatherTheme}>
@@ -144,8 +137,6 @@ function WeatherPage() {
       </ThemeProvider>
       {/* <pre>{JSON.stringify(displayState, null, 2)}</pre> */}
     </React.Fragment>
-
-    // </React.Fragment>
   );
 }
 

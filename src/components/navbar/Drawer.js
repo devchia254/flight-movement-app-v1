@@ -1,17 +1,17 @@
 import React from "react";
+// React Router
 import { Link as RouterLink } from "react-router-dom";
-
+// Material UI
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+// Material UI Icons
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
-// import UserIcon from "@material-ui/icons/AccountCircleOutlined";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-// import CreateIcon from "@material-ui/icons/Create";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 import RegisterIcon from "@material-ui/icons/PersonAdd";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
@@ -60,7 +60,6 @@ function ListItemLink(props) {
         className={classes.listItem}
         component={renderLink}
         name={name}
-        // onClick={(evt) => console.log(evt.currentTarget.name)}
         onClick={logoutFromState}
       >
         {icon ? (
@@ -89,8 +88,7 @@ export default function DrawerButton(props) {
     setState({ ...state, left: open });
   };
 
-  // const logoutFromState = () => console.log("Testing Log Out!");
-
+  // Drawer List Items
   const list = (anchor) => (
     <div
       className={classes.list}
@@ -127,6 +125,7 @@ export default function DrawerButton(props) {
             />
           )}
 
+          {/* if there is no user logged in, register page can be viewed */}
           {!currentUser && (
             <ListItemLink
               to="/register"
@@ -145,17 +144,9 @@ export default function DrawerButton(props) {
               icon={<AccessibilityIcon color="primary" />}
             />
           )}
-
-          {/* {showRegister && (
-            <ListItemLink
-              to="/register"
-              primary="Register"
-              name="register"
-              icon={<RegisterIcon color="primary" />}
-            />
-          )} */}
         </div>
         <div className={classes.bottomSection}>
+          {/* If there is a user, show log out button */}
           {currentUser && (
             <ListItemLink
               // Redirect after logout

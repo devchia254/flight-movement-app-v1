@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-
+// Auth Requests
 import AuthService from "../services/auth/auth-service";
-
+// Material UI
 import { withStyles } from "@material-ui/core/styles";
-// import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-// import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
@@ -26,21 +24,12 @@ const useStyles = (theme) => ({
     minWidth: "300px",
     maxWidth: "500px",
   },
-  // avatar: {
-  //   margin: theme.spacing(3),
-  //   backgroundColor: theme.palette.secondary.main,
-  //   width: theme.spacing(6),
-  //   height: theme.spacing(6),
-  // },
   headerBox: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     width: "100%",
     marginBottom: theme.spacing(2),
-
-    // backgroundColor: "mediumaquamarine",
-    // border: "2px solid darkslateblue",
   },
   icon: {
     fontSize: "6rem",
@@ -50,9 +39,6 @@ const useStyles = (theme) => ({
     display: "flex",
     flexDirection: "column",
     width: "100%",
-
-    // backgroundColor: "darkkhaki",
-    // border: "2px solid olivedrab",
   },
   contentItem: {
     display: "flex",
@@ -60,9 +46,6 @@ const useStyles = (theme) => ({
     alignItems: "baseline",
     width: "100%",
     marginBottom: theme.spacing(2),
-
-    // backgroundColor: "mistyrose",
-    // border: "2px dashed goldenrod",
   },
 });
 

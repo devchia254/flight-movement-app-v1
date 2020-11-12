@@ -1,18 +1,18 @@
 import React from "react";
-
-import { makeStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
+// Formik
 import { Formik, Form } from "formik";
+// Custom Formik components
 import MyField from "../formik-fields/MyField.js";
-import * as yup from "yup";
+// Material UI
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+// Other dependencies
+import * as yup from "yup"; // custom form validation
 
-// import { DisplayFormikProps } from "../../test/DisplayFormikProps.js";
+// Yup: Password Validation
+const yupPwdRules = yup.string().required("Required");
 
-const yupPwdRules = yup
-  .string()
-  .required("Required")
-  .min(3, "Must not be less 3 characters (CHANGE LATER!)");
-
+// Yup: Email Validation
 const yupEmailRules = yup
   .string()
   .required("Required")
@@ -53,8 +53,8 @@ function LoginForm(props) {
       validationSchema={yupValidationSchema}
       onSubmit={(values, { resetForm, setSubmitting }) => {
         setSubmitting(true); // Makes async call and disables submit button
-        loginUser(values);
-        setSubmitting(false);
+        loginUser(values); // Lift values to state
+        setSubmitting(false); // Enables submit button once submitted
       }}
     >
       {(props) => (
@@ -72,7 +72,6 @@ function LoginForm(props) {
             submit
           </Button>
           {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
-          {/* <DisplayFormikProps {...props} /> */}
         </Form>
       )}
     </Formik>

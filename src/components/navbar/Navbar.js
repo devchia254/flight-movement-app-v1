@@ -1,16 +1,15 @@
 import React, { Component } from "react";
+import DrawerButton from "./Drawer";
+// React Router
 import { Link as RouterLink } from "react-router-dom";
-
+// Material UI
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-// import Link from "@material-ui/core/Link";
 import PersonIcon from "@material-ui/icons/Person";
 import Button from "@material-ui/core/Button";
 import Hidden from "@material-ui/core/Hidden";
-
-import DrawerButton from "./Drawer";
 
 const navStyle = (theme) => ({
   root: {
@@ -35,21 +34,13 @@ const navStyle = (theme) => ({
   },
 });
 
-// // Toggle between types of users here
-// const ToggleUser = () => {
-//   // const user = AuthService.getAdminUser(); // Test Admin user
-//   // const user = AuthService.getStandardUser(); // Test Standard user
-//   const user = AuthService.getNoUser(); // Test no user
-//   return user;
-// };
-
 class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
 
-  // Custom Link
+  // Custom Link for Profile page
   ProfileLink = React.forwardRef((props, ref) => (
     <RouterLink ref={ref} to="/profile" {...props} />
   ));

@@ -1,14 +1,15 @@
 import React, { Component } from "react";
-import AuthAdmin from "../services/auth/auth-admin";
 import UsersTable from "../components/table/UsersTable";
-
+// Auth Requests
+import AuthAdmin from "../services/auth/auth-admin";
+// Material UI
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Hidden from "@material-ui/core/Hidden";
 import { withStyles } from "@material-ui/core/styles";
-
 // Notistack SnackBars
 import { withSnackbar } from "notistack";
+// Other Dependencies
 import axios from "axios";
 import moment from "moment";
 
@@ -29,6 +30,12 @@ class AdminUserMgmtPage extends Component {
     this.state = {
       users: [],
     };
+
+    this.snackbarSuccess = this.snackbarSuccess.bind(this);
+    this.snackbarFail = this.snackbarFail.bind(this);
+    this.loadAllUsers = this.loadAllUsers.bind(this);
+    this.editUser = this.editUser.bind(this);
+    this.deleteUser = this.deleteUser.bind(this);
   }
 
   componentDidMount() {
@@ -45,6 +52,7 @@ class AdminUserMgmtPage extends Component {
       variant: "success",
     });
   }
+
   // Snackbar Fail Messages
   snackbarFail(msg) {
     this.props.enqueueSnackbar(msg, {
@@ -53,11 +61,12 @@ class AdminUserMgmtPage extends Component {
     });
   }
 
-  loadAllUsers = async () => {
+  // Fetch all users for componentDidMount
+  async loadAllUsers() {
     try {
       const response = await AuthAdmin.allUsers(this.cancelToken);
 
-      const userData = response.data.userData.map((user) => {
+      const userData = await response.data.userData.map((user) => {
         const {
           user_id,
           user_email,
@@ -86,15 +95,18 @@ class AdminUserMgmtPage extends Component {
         error.message ||
         error.toString();
 
+      // Axios error
       if (axios.isCancel(error)) {
         console.log("Axios: ", error.message);
       } else if (resMessage) {
+        // Other network errors
         console.log("Error with fetching users: ", resMessage);
       }
     }
-  };
+  }
 
-  editUser = async (putData, putDataId, resetForm) => {
+  // Edit User (Only for email, firstName, lastName and role)
+  async editUser(putData, putDataId, resetForm) {
     try {
       const response = await AuthAdmin.editUser(
         putData,
@@ -102,6 +114,7 @@ class AdminUserMgmtPage extends Component {
         this.cancelToken
       );
 
+      // If request was successful - show snackbar
       if (response.status === 200) {
         this.snackbarSuccess(response.data.message);
         // Clear form after submit (Formik)
@@ -128,7 +141,7 @@ class AdminUserMgmtPage extends Component {
 
             return {
               ...user, // User from state with matched ID
-              ...updateUserProps, // Assign new putData values with the matched flight from state
+              ...updateUserProps, // Assign new putData values with the matched user from state
             };
           }
           return user; // Return rest of the users
@@ -143,15 +156,18 @@ class AdminUserMgmtPage extends Component {
         error.message ||
         error.toString();
 
+      // Axios error
       if (axios.isCancel(error)) {
         console.log("Axios: ", error.message);
       } else if (resMessage) {
+        // Other network errors
         this.snackbarFail(resMessage);
       }
     }
-  };
+  }
 
-  deleteUser = async (deleteDataId) => {
+  // Delete User
+  async deleteUser(deleteDataId) {
     if (window.confirm("Are you sure?")) {
       try {
         // Fetch response from API
@@ -160,29 +176,34 @@ class AdminUserMgmtPage extends Component {
           this.cancelToken
         );
 
-        // Optimistic UI update: Delete Flight
+        // If request was successful - show snackbar
+        if (response.status === 200) {
+          this.snackbarSuccess(response.data.message);
+        }
+
+        // Optimistic UI update: Delete User
         this.setState((prevState) => {
           const filterUser = prevState.users.filter(
             (user, i, arr) => user.userId !== deleteDataId // Return users where the user ID from state does not match with the user ID from the Schedule table
           );
           return { users: filterUser };
         });
-
-        this.snackbarSuccess(response.data.message);
       } catch (error) {
         const resMessage =
           (error.response && error.response.data.message) ||
           error.message ||
           error.toString();
 
+        // Axios error
         if (axios.isCancel(error)) {
           console.log("Axios: ", error.message);
         } else if (resMessage) {
+          // Other network errors
           this.snackbarFail(resMessage);
         }
       }
     }
-  };
+  }
 
   render() {
     const { classes } = this.props;
