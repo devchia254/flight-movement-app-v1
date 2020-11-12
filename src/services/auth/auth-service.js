@@ -1,9 +1,9 @@
 import axios from "axios";
-// import authHeader from "./auth-header";
 
 const API_URL = "http://localhost:3030/api/auth/";
 
 class AuthService {
+  // Login user
   login(data, cancelToken) {
     return axios
       .post(API_URL + "signin", data, { cancelToken: cancelToken.token })
@@ -15,53 +15,27 @@ class AuthService {
         return response.data;
       });
   }
-
+  // Register User
   register(data, cancelToken) {
     return axios.post(API_URL + "signup", data, {
-      // headers: authHeader(),
       cancelToken: cancelToken.token,
     });
   }
-
-  // LAST WORKING HERE: 20/09/20
+  // Logout User
   logout() {
     localStorage.removeItem("user");
-    // window.location.reload();
   }
-
+  // Get User details from localStorage
   getCurrentUser() {
     return JSON.parse(localStorage.getItem("user"));
   }
-
+  // Get email from User details in localStorage
   getUserEmail() {
     const user = JSON.parse(localStorage.getItem("user"));
 
     if (user && user.email) {
       return user.email;
     } else return null;
-  }
-
-  // getStandardUser() {
-  //   return {
-  //     accessToken: "encrypted123",
-  //     email: "stdUser@email.com",
-  //     id: 1,
-  //     roles: ["ROLE_USER"],
-  //     username: "stdUser",
-  //   };
-  // }
-  // getAdminUser() {
-  //   return {
-  //     accessToken: "encrypted456",
-  //     email: "admUser@email.com",
-  //     id: 1,
-  //     roles: ["ROLE_ADMIN"],
-  //     username: "admUser",
-  //   };
-  // }
-
-  getNoUser() {
-    return undefined;
   }
 }
 
