@@ -1,20 +1,21 @@
 import React, { Component } from "react";
 // Auth Requests
 import AuthService from "../services/auth/auth-service";
-// Components
-import SchedulePage from "./SchedulePage";
-import Homepage from "./Homepage";
-import UserLoginPage from "./UserLoginPage";
-import UserRegisterPage from "./UserRegisterPage";
-import UserProfilePage from "./UserProfilePage";
-import AdminUserMgmtPage from "./AdminUserMgmtPage";
+// Component Pages
+import SchedulePage from "./schedulepage/SchedulePage";
+import Homepage from "./homepage/Homepage";
+import LoginPage from "./loginpage/LoginPage";
+import RegisterPage from "./registerpage/RegisterPage";
+import ProfilePage from "./profilepage/ProfilePage";
+import UserMgmtPage from "./usermgmtpage/UserMgmtPage";
 import FourOhFour from "./FourOhFour";
-import Navbar from "../components/navbar/Navbar";
+// Other Components
+import Navbar from "../components/navigation/Navbar";
 // React Router & Custom Routes
 import { Switch, Route, withRouter } from "react-router-dom";
-import { ProtectedRoute } from "../services/routes/protected-route";
-import { RedirectUserRoute } from "../services/routes/redirectuser-route";
-import { AdminRoute } from "../services/routes/admin-route";
+import { ProtectedRoute } from "../components/routes/protected-route";
+import { RedirectUserRoute } from "../components/routes/redirectuser-route";
+import { AdminRoute } from "../components/routes/admin-route";
 // Material UI
 import CssBaseline from "@material-ui/core/CssBaseline";
 
@@ -83,7 +84,7 @@ class App extends Component {
             path="/login"
             // props allows access to history
             render={(props) => (
-              <UserLoginPage
+              <LoginPage
                 {...props}
                 loginCurrentUserState={this.loginCurrentUserState}
               />
@@ -92,11 +93,11 @@ class App extends Component {
           <RedirectUserRoute
             path="/register"
             // props allows access to history
-            render={(props) => <UserRegisterPage {...props} />}
+            render={(props) => <RegisterPage {...props} />}
           />
           <ProtectedRoute path="/schedule" component={SchedulePage} />
-          <ProtectedRoute path="/profile" component={UserProfilePage} />
-          <AdminRoute path="/manage-user" component={AdminUserMgmtPage} />
+          <ProtectedRoute path="/profile" component={ProfilePage} />
+          <AdminRoute path="/manage-user" component={UserMgmtPage} />
           <Route path="*" component={FourOhFour} />
         </Switch>
       </div>
