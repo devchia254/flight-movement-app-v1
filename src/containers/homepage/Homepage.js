@@ -124,9 +124,10 @@ class Homepage extends Component {
       <Container maxWidth="xl">
         <Grid container spacing={2} className={classes.container}>
           <Grid
+            // onMouse Events causes a lot of re-rendering. Comment out when testing homepage
             onMouseOver={this.userPresent}
-            onTouchStart={this.userPresent}
             onMouseOut={this.userNotPresent}
+            onTouchStart={this.userPresent}
             onTouchEnd={this.userNotPresent}
             container
             item
