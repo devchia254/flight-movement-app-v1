@@ -9,8 +9,8 @@ import Grid from "@material-ui/core/Grid";
 
 // API Key for Openweather
 const api = {
-  key: process.env.REACT_APP_OPENWEATHERMAP_KEY,
-  base: process.env.REACT_APP_OPENWEATHERMAP_BASE,
+  key: process.env.OPENWEATHERMAP_KEY,
+  base: process.env.OPENWEATHERMAP_BASE,
 };
 
 const useStyles = makeStyles((theme) => ({
