@@ -1,7 +1,7 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 
-const API_URL = "http://localhost:3030/api/admin/users";
+const API_URL = "https://devchia254-fma-be-v1.herokuapp.com/api/admin/users";
 
 class AuthSchedule {
   // Fetch All Users

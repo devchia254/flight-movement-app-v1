@@ -1,7 +1,7 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 
-const API_URL = "http://localhost:3030/api/user/flights";
+const API_URL = "https://devchia254-fma-be-v1.herokuapp.com/api/user/flights";
 
 class AuthSchedule {
   // Fetch all Flights
