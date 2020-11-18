@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3030/api/auth/";
+const API_URL = "https://devchia254-fma-be-v1.herokuapp.com/api/auth/";
 
 class AuthService {
   // Login user
