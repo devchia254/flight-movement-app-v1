@@ -38,25 +38,33 @@ class Homepage extends Component {
       slideIn: true,
       slideDirection: "down",
       screenUsed: false,
+      increment: 0,
     };
 
     this.setIndex = this.setIndex.bind(this);
     this.setSlideIn = this.setSlideIn.bind(this);
     this.setSlideDirection = this.setSlideDirection.bind(this);
     this.onArrowClick = this.onArrowClick.bind(this);
-    this.userPresent = this.userPresent.bind(this);
-    this.userNotPresent = this.userNotPresent.bind(this);
+    this.userIsPresent = this.userIsPresent.bind(this);
   }
 
   componentDidMount() {
-    this.carouselTimer = setInterval(
-      () => this.onArrowClick("right"),
-      intervalLimit
-    );
+    this.carouselTimer = setInterval(() => {
+      this.onArrowClick("right");
+      console.log("compDidMount");
+    }, intervalLimit);
+
+    this.stopwatch = setInterval(() => {
+      this.setState((prevState) => {
+        return { increment: prevState.increment + 20 };
+      });
+    }, 20000);
   }
 
+  // Not necessary to test
   componentWillUnmount() {
     clearInterval(this.carouselTimer);
+    clearInterval(this.stopwatch);
   }
 
   // Slide No.
@@ -98,20 +106,26 @@ class Homepage extends Component {
   }
 
   // Checks whether the user is interacting on the screen (Both Mouse & Touch)
-  userPresent(e) {
-    this.setState({ screenUsed: true });
-    // If it's true then carousel timer is cleared
+  userIsPresent(e) {
+    console.log("userIsPresent");
     clearInterval(this.carouselTimer);
-  }
+    clearInterval(this.stopwatch);
 
-  // Checks whether the user is out of the screen (Both Mouse & Touch)
-  userNotPresent(e) {
-    this.setState({ screenUsed: false });
-    // If it's false then carousel timer starts again
-    this.carouselTimer = setInterval(
-      () => this.onArrowClick("right"),
-      intervalLimit
-    );
+    this.setState({
+      increment: 0,
+      screenUsed: true,
+    });
+
+    this.carouselTimer = setInterval(() => {
+      this.onArrowClick("right");
+      console.log("compDidMount");
+    }, intervalLimit);
+
+    this.stopwatch = setInterval(() => {
+      this.setState((prevState) => {
+        return { increment: prevState.increment + 20, screenUsed: false };
+      });
+    }, 20000);
   }
 
   render() {
@@ -122,13 +136,13 @@ class Homepage extends Component {
 
     return (
       <Container maxWidth="xl">
+        <pre>{JSON.stringify(this.state, null, 2)}</pre>
+
         <Grid container spacing={2} className={classes.container}>
           <Grid
             // onMouse Events causes a lot of re-rendering. Comment out when testing homepage
-            onMouseOver={this.userPresent}
-            onMouseOut={this.userNotPresent}
-            onTouchStart={this.userPresent}
-            onTouchEnd={this.userNotPresent}
+            onMouseOver={this.userIsPresent} // Mouse trigger
+            onClick={this.userIsPresent} // Mouse & Touch screen trigger
             container
             item
             xs={12}
@@ -182,7 +196,7 @@ class Homepage extends Component {
             {/* Hidden when 600px & ABOVE for Arrow - End */}
           </Grid>
         </Grid>
-        {/* <pre>{JSON.stringify(this.state, null, 2)}</pre> */}
+        <pre>{JSON.stringify(this.state, null, 2)}</pre>
       </Container>
     );
   }
