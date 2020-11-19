@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
   drawerFlex: {
     display: "flex",
     height: "100vh",
+    maxHeight: "100vh",
     flexDirection: "column",
     justifyContent: "space-between",
   },
