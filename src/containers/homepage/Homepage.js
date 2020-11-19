@@ -38,7 +38,6 @@ class Homepage extends Component {
       slideIn: true,
       slideDirection: "down",
       screenUsed: false,
-      increment: 0,
     };
 
     this.setIndex = this.setIndex.bind(this);
@@ -51,17 +50,9 @@ class Homepage extends Component {
   componentDidMount() {
     this.carouselTimer = setInterval(() => {
       this.onArrowClick("right");
-      console.log("compDidMount");
     }, intervalLimit);
-
-    this.stopwatch = setInterval(() => {
-      this.setState((prevState) => {
-        return { increment: prevState.increment + 20 };
-      });
-    }, 20000);
   }
 
-  // Not necessary to test
   componentWillUnmount() {
     clearInterval(this.carouselTimer);
     clearInterval(this.stopwatch);
@@ -88,10 +79,6 @@ class Homepage extends Component {
     const increment = direction === "left" ? -1 : 1; // Increment slide based on direction
     const newIndex = (this.state.index + increment + numSlides) % numSlides; // Does not exceed numSlides - 1
 
-    // console.log(
-    //   ` (${this.state.index} + ${increment} + ${numSlides}) % ${numSlides} = ${newIndex}`
-    // );
-
     // Handles the exit of the slide
     this.setSlideDirection(direction);
     this.setSlideIn(false);
@@ -107,25 +94,19 @@ class Homepage extends Component {
 
   // Checks whether the user is interacting on the screen (Both Mouse & Touch)
   userIsPresent(e) {
-    console.log("userIsPresent");
+    // Timer Cleared
     clearInterval(this.carouselTimer);
-    clearInterval(this.stopwatch);
 
+    // State checker
     this.setState({
-      increment: 0,
       screenUsed: true,
     });
 
+    // Trigger timer again
     this.carouselTimer = setInterval(() => {
       this.onArrowClick("right");
-      console.log("compDidMount");
+      this.setState({ screenUsed: false });
     }, intervalLimit);
-
-    this.stopwatch = setInterval(() => {
-      this.setState((prevState) => {
-        return { increment: prevState.increment + 20, screenUsed: false };
-      });
-    }, 20000);
   }
 
   render() {
@@ -136,8 +117,7 @@ class Homepage extends Component {
 
     return (
       <Container maxWidth="xl">
-        <pre>{JSON.stringify(this.state, null, 2)}</pre>
-
+        {/* <pre>{JSON.stringify(this.state, null, 2)}</pre> */}
         <Grid container spacing={2} className={classes.container}>
           <Grid
             // onMouse Events causes a lot of re-rendering. Comment out when testing homepage
@@ -196,7 +176,7 @@ class Homepage extends Component {
             {/* Hidden when 600px & ABOVE for Arrow - End */}
           </Grid>
         </Grid>
-        <pre>{JSON.stringify(this.state, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(this.state, null, 2)}</pre> */}
       </Container>
     );
   }
