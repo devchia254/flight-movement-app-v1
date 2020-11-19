@@ -10,6 +10,9 @@ export default function CarouselSlide(props) {
       padding: theme.spacing(1),
       borderRadius: 0,
       minHeight: "90vh",
+      [theme.breakpoints.down("xs")]: {
+        minHeight: "80vh",
+      },
       display: "flex",
       justifyContent: "center",
     },

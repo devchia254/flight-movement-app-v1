@@ -27,7 +27,7 @@ const SLIDE_INFO = [
   { component: <ImageSlide file={covid1} /> },
 ];
 
-// Interval for the Slide Transition
+// Interval for the Slide Transition - 20 seconds
 const intervalLimit = 20000;
 
 class Homepage extends Component {
@@ -48,6 +48,7 @@ class Homepage extends Component {
   }
 
   componentDidMount() {
+    // Triggers carousel transition
     this.carouselTimer = setInterval(() => {
       this.onArrowClick("right");
     }, intervalLimit);
@@ -102,7 +103,7 @@ class Homepage extends Component {
       screenUsed: true,
     });
 
-    // Trigger timer again
+    // Triggers carousel transition again
     this.carouselTimer = setInterval(() => {
       this.onArrowClick("right");
       this.setState({ screenUsed: false });
