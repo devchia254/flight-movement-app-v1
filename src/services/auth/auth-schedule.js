@@ -3,6 +3,7 @@ import authHeader from "./auth-header";
 
 const API_URL = "https://devchia254-fma-be-v1.herokuapp.com/api/user/flights";
 
+// ONLY FOR USER & ADMIN
 class AuthSchedule {
   // Fetch all Flights
   allFlights(cancelToken) {

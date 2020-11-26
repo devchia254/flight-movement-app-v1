@@ -3,7 +3,8 @@ import authHeader from "./auth-header";
 
 const API_URL = "https://devchia254-fma-be-v1.herokuapp.com/api/admin/users";
 
-class AuthSchedule {
+// ONLY FOR ADMIN
+class AuthAdmin {
   // Fetch All Users
   allUsers(cancelToken) {
     return axios.get(API_URL, {
@@ -27,4 +28,4 @@ class AuthSchedule {
   }
 }
 
-export default new AuthSchedule();
+export default new AuthAdmin();
