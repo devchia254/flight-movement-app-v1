@@ -1,68 +1,76 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Flight Movement App (Front-end)
 
-## Available Scripts
+`Live:` https://devchia254-fma-v1.herokuapp.com/
 
-In the project directory, you can run:
+![App Snapshot](./readme_assets/homepage.gif)
 
-### `yarn start`
+This web app is designed to be an online Flight Display Information System like at airports. It is a dashboard that provides general information on monitoring flight statuses of the day. The dashboard also shows weather information and additional information such as Flight Safety.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+As a system, users can be registered to be granted permission to schedule flights. It also displays the weather forecast based on three locations and important information such as Flight Safety.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+This is the source code of the **Front-end**.
+To see the Back-end, [**click here**](https://github.com/devchia254/facedetection-api).
 
-### `yarn test`
+## Info
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Flights only show a 6-day coverage (Today +-3days)
+- Since this is meant to be a dashboard displayed on a large TV for people to observe, a carousel with a self-timer (20 secs) was implemented on the homepage to cater this experience.
+- This Front-End was built using React.
+- This Full-Stack App is hosted on Heroku using a Free and Hobby Plan (Since it is free expect a slight delay connecting to the server)
+- It is Mobile Responsive.
 
-### `yarn build`
+## Purpose
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Build a Full-Stack CRUD application.
+- Solidify my React knowledge and broaden my Full-Stack skills and technologies.
+- Develop a project based on client requirements, with the consideration of security practices.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Features
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- User login and registration system that uses JWT Authentication
+- JWT Authorisation stored in Local Storage and HTTP Requests handled by Axios.
+- Project structured using React Router, with protected routes.
+- Form Validation using Formik and Yup
+- Components styled with Material-UI
+- Dynamic Navigation Bar based on type of user (Public i.e. No User, User or Admin)
+- Weather Forecast fetched from OpenWeatherMap API
 
-### `yarn eject`
+## Project Structure
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Source folder Structure
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### Assets
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Contains weather fonts and icons, homepage images, and custom theme.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+#### Components
 
-## Learn More
+Contains either reusable components or components that do not belong to a specific page/route. Custom and protected routes are stored here.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### Containers
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The file structure is based on their routes and each file contain its main parent component and its respective child components. The parent components are stateful meaning they provide state, data, and actions to their child components via props, and also contain side effects.
 
-### Code Splitting
+#### Services
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+These services handles most of the HTTP requests to the backend, including Authentication and Authorisation.
 
-### Analyzing the Bundle Size
+### Project Flow: React Router, Axios & Local Storage
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+![Router & Axios Flow](./readme_assets/routerandaxios.png)
 
-### Making a Progressive Web App
+## NPM Dev Packages:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+`react` , `react-dom` and `react-scripts`, were initiated from the create-react-app command.
+`tachyons` is a package for styling the site with greater ease.
 
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+```json
+"dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-particles-js": "^2.6.0",
+    "react-scripts": "3.0.1",
+    "react-tilt": "^0.1.4",
+    "tachyons": "^4.11.1"
+}
+```
