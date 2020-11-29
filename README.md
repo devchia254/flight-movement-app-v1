@@ -1,68 +1,121 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Flight Movement App (Front-end)
 
-## Available Scripts
+`Live:` https://devchia254-fma-v1.herokuapp.com/
 
-In the project directory, you can run:
+![App Snapshot](./readme_assets/homepage.gif)
 
-### `yarn start`
+This web app is designed to be an online Flight Display Information System like at airports. It is a dashboard that provides general information on monitoring flight statuses of the day. The dashboard also shows weather forecasts and additional information such as Flight Safety.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+As a system, users can be registered to be able to schedule flights.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+This is the source code of the **Front-end**.
+To see the Back-end, [**click here**](https://github.com/devchia254/flight-movement-backend-v1).
 
-### `yarn test`
+## Guide
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Register as a user and login to the app to be able to schedule flights, and it will then be displayed on the homepage (if within the range of +-3 days from today).
 
-### `yarn build`
+## Info
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Flights only show a 7-day coverage (Today +-3days)
+- Since this is meant to be a dashboard displayed on a large TV for people to observe, a carousel with a self-timer (20 secs) was implemented on the homepage to cater this experience.
+- This Front-end was built using React.
+- This Full-Stack App is hosted on Heroku using the Free and Hobby Plan (Since it is free, expect a slight delay connecting to the server)
+- It is Mobile Responsive.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Purpose
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Build a Full-Stack CRUD application.
+- Solidify my React knowledge and broaden my Full-Stack skills and technologies.
+- Develop a project based on client requirements, with the consideration of security practices.
 
-### `yarn eject`
+## Features
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- User login and registration system that uses JWT Authentication.
+- JWT Authorisation stored in Local Storage and HTTP Requests handled by Axios.
+- Project structured using React Router, with protected routes.
+- Form created using Formik and validation with Yup.
+- Components styled with Material-UI
+- Dynamic Navigation Bar based on type of user (Public i.e. No User, User or Admin)
+- Weather Forecast fetched from OpenWeatherMap API
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Project Structure
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Source folder Structure
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+#### Assets
 
-## Learn More
+Contains weather fonts and icons, homepage images, and custom theme.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### Components
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Contains either reusable components or components that do not belong to a specific page/route. Custom and protected routes are stored here.
 
-### Code Splitting
+#### Containers
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+The file structure is based on their routes and each file contain its main parent component and its respective child components. The parent components are stateful meaning they provide state, data, and actions to their child components via props, and also contain side effects.
 
-### Analyzing the Bundle Size
+#### Services
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+These services handles most of the HTTP requests to the backend, including Authentication and Authorisation.
 
-### Making a Progressive Web App
+### Project Flow: React Router, Axios & Local Storage
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+![Router & Axios Flow](./readme_assets/routerandaxios.png)
 
-### Advanced Configuration
+The diagram above shows the communication between the Containers and Services(auth). This gives a general idea on how the React components are performing HTTP requests to interact with the Back-End.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+#### Containers
 
-### Deployment
+- `App` component is the container for React Router (BrowserRouter). It also manages the state for the `NavBar` and `Drawer` components to display the appropriate links based on the type of user.
+- `Homepage`, `RegisterPage` , `LoginPage` are components that can be accessed without being a user.
+- `SchedulePage` and `UserMgmtPage` are protected routes and only users are able to access these components.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+#### Services
 
-### `yarn build` fails to minify
+- All files serve its specific purpose when performing HTTP requests using Axios.
+- `auth-public` fetches flights for the `Homepage` table.
+- `auth-service` handles the requests for registering and logging in the user, and more.
+- `auth-schedule` handles the CRUD operations for the user when scheduling a flight.
+- `auth-admin` is strictly for Admin to manage all users in the app.
+- Both `auth-schedule` and `auth-admin` use `auth-header` to retrieve the JWT from the LocalStorage and subsequently attach it as a header for their HTTP requests.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## Yarn Dev Packages
+
+A brief description of the packages used below:
+
+- `@material-ui/core` uses Material-UI for styling React Components..
+- `@material-ui/pickers` is a Date & Time picker that uses Material-UI.
+- `moment` uses Moment.js as a date management library.
+- `material-table` is a react data table for Material-UI.
+- `notistack` is a snackbar library for displaying notifications to users.
+- `formik` is a library for handling React Forms.
+- `yup` works in conjunction with formik by providing client-side form validation.
+- `typeface-...` are web font files.
+- `serve` is used to create production builds for React apps.
+
+```json
+"dependencies": {
+    "@date-io/moment": "1.x",
+    "@material-ui/core": "^4.9.13",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/pickers": "^3.2.10",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.20.0",
+    "formik": "^2.1.4",
+    "material-table": "^1.58.2",
+    "moment": "^2.26.0",
+    "notistack": "^1.0.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.1",
+    "serve": "^11.3.2",
+    "typeface-montserrat": "^1.1.13",
+    "typeface-nunito": "^1.1.13",
+    "typeface-quicksand": "^1.1.13",
+    "yup": "^0.28.5"
+}
+```
