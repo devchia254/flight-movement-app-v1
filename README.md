@@ -57,7 +57,7 @@ The file structure is based on their routes and each file contain its main paren
 
 #### Services
 
-This folder contains functions and classes that handles most of the HTTP requests to the backend.
+This folder contains functions and classes that handles all of the HTTP requests/responses to the backend.
 
 ### Project Flow: React Router, Axios & Local Storage
 
