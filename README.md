@@ -32,9 +32,9 @@ Register as a user and login to the app to be able to schedule flights, and it w
 ## Features
 
 - User login and registration system that uses JWT Authentication.
-- JWT Authorisation stored in Local Storage and HTTP Requests handled by Axios.
+- JWT is stored in Local Storage and HTTP Requests handled by Axios.
 - Project structured using React Router, with protected routes.
-- Form created using Formik and validation with Yup.
+- Forms are created using Formik and validation with Yup.
 - Components styled with Material-UI
 - Dynamic Navigation Bar based on type of user (Public i.e. No User, User or Admin)
 - Weather Forecast fetched from OpenWeatherMap API
@@ -57,7 +57,7 @@ The file structure is based on their routes and each file contain its main paren
 
 #### Services
 
-These services handles most of the HTTP requests to the backend, including Authentication and Authorisation.
+This folder contains functions and classes that handles most of the HTTP requests to the backend.
 
 ### Project Flow: React Router, Axios & Local Storage
 
@@ -78,7 +78,7 @@ The diagram above shows the communication between the Containers and Services(au
 - `auth-service` handles the requests for registering and logging in the user, and more.
 - `auth-schedule` handles the CRUD operations for the user when scheduling a flight.
 - `auth-admin` is strictly for Admin to manage all users in the app.
-- Both `auth-schedule` and `auth-admin` use `auth-header` to retrieve the JWT from the LocalStorage and subsequently attach it as a header for their HTTP requests.
+- Both `auth-schedule` and `auth-admin` use `auth-header` to retrieve the JWT from the Local Storage and subsequently attach it as a header for their HTTP requests.
 
 ## Yarn Dev Packages
 
