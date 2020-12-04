@@ -84,7 +84,7 @@ The diagram above shows the communication between the Containers and Services(au
 
 A brief description of the packages used below:
 
-- `@material-ui/core` uses Material-UI for styling React Components..
+- `@material-ui/core` uses Material-UI for styling React Components.
 - `@material-ui/pickers` is a Date & Time picker that uses Material-UI.
 - `moment` uses Moment.js as a date management library.
 - `material-table` is a react data table for Material-UI.
@@ -93,6 +93,7 @@ A brief description of the packages used below:
 - `yup` works in conjunction with formik by providing client-side form validation.
 - `typeface-...` are web font files.
 - `serve` is used to create production builds for React apps.
+- `react-router-dom` is used to implement routing in React apps.
 
 ```json
 "dependencies": {
